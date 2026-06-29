@@ -1,0 +1,17 @@
+{
+  "tokenSetOrder": [
+    "primitive/color",
+    "primitive/dimension",
+    "primitive/typography",
+    "semantic/color-light",
+    "semantic/color-dark",
+    "semantic/typography",
+    "semantic/elevation",
+    "semantic/layout",
+    "component/button",
+    "component/input",
+    "component/badge",
+    "component/card",
+    "component/modal"
+  ]
+}

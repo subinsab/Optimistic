@@ -1,0 +1,19 @@
+{
+  "name": "yubi-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Yubi Design System — token-driven, multi-framework (Web Components + React/Angular).",
+  "type": "module",
+  "workspaces": [
+    "packages/tokens",
+    "packages/core",
+    "packages/react",
+    "packages/angular"
+  ],
+  "scripts": {
+    "tokens:build": "npm run build --workspace=@yubi/tokens",
+    "build": "npm run tokens:build && npm run build --workspace=@yubi/core && npm run build --workspace=@yubi/react",
+    "site:build": "npm run tokens:build && node scripts/build-site.mjs",
+    "dev": "npm run build --workspace=@yubi/core -- --watch"
+  }
+}

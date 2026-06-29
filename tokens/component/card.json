@@ -1,0 +1,19 @@
+{
+  "card": {
+    "bg":            { "$value": "{color.bg.panel}",       "$type": "color" },
+    "border":        { "$value": "{color.border.default}", "$type": "color" },
+    "radius":        { "$value": "{radius.xl}",            "$type": "dimension" },
+    "radius-compact":{ "$value": "{radius.lg}",            "$type": "dimension" },
+    "padding":       { "$value": "{space.300}",            "$type": "dimension" },
+    "shadow":        { "$value": "{shadow.sm}",            "$type": "shadow" },
+    "shadow-hover":  { "$value": "{shadow.md}",            "$type": "shadow" },
+    "gap-title":     { "$value": "{space.100}",            "$type": "dimension", "$description": "Title → body" },
+    "gap-action":    { "$value": "{space.200}",            "$type": "dimension", "$description": "Body → action" },
+    "title-font":    { "$value": "{text-style.heading-5}", "$type": "typography" },
+    "title-text":    { "$value": "{color.text.primary}",   "$type": "color" },
+    "body-font":     { "$value": "{text-style.body-3}",    "$type": "typography" },
+    "body-text":     { "$value": "{color.text.secondary}", "$type": "color" },
+    "eyebrow-font":  { "$value": "{text-style.eyebrow}",   "$type": "typography" },
+    "eyebrow-text":  { "$value": "{color.text.muted}",     "$type": "color" }
+  }
+}

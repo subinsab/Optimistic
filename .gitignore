@@ -1,0 +1,14 @@
+# dependencies
+node_modules/
+
+# build artifacts (rebuilt in CI)
+packages/*/dist/
+site/
+
+# misc
+*.log
+.DS_Store
+.env
+
+# local editor/agent settings
+.claude/

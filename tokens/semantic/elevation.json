@@ -1,0 +1,62 @@
+{
+  "shadow": {
+    "none": { "$type": "shadow", "$value": [] },
+    "xs": {
+      "$type": "shadow",
+      "$value": { "color": "rgba(0,0,0,0.06)", "offsetX": "0px", "offsetY": "1px", "blur": "2px", "spread": "0px" },
+      "$description": "Subtle lift, chip badges"
+    },
+    "sm": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "rgba(0,0,0,0.08)", "offsetX": "0px", "offsetY": "1px", "blur": "3px", "spread": "0px" },
+        { "color": "rgba(0,0,0,0.06)", "offsetX": "0px", "offsetY": "1px", "blur": "2px", "spread": "0px" }
+      ],
+      "$description": "Cards, default panel elevation"
+    },
+    "md": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "rgba(0,0,0,0.08)", "offsetX": "0px", "offsetY": "4px", "blur": "6px", "spread": "-1px" },
+        { "color": "rgba(0,0,0,0.05)", "offsetX": "0px", "offsetY": "2px", "blur": "4px", "spread": "-1px" }
+      ],
+      "$description": "Dropdowns, hover on cards"
+    },
+    "lg": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "rgba(0,0,0,0.08)", "offsetX": "0px", "offsetY": "10px", "blur": "15px", "spread": "-3px" },
+        { "color": "rgba(0,0,0,0.04)", "offsetX": "0px", "offsetY": "4px",  "blur": "6px",  "spread": "-2px" }
+      ],
+      "$description": "Popovers, date pickers, floating panels"
+    },
+    "xl": {
+      "$type": "shadow",
+      "$value": [
+        { "color": "rgba(0,0,0,0.08)", "offsetX": "0px", "offsetY": "20px", "blur": "25px", "spread": "-5px" },
+        { "color": "rgba(0,0,0,0.04)", "offsetX": "0px", "offsetY": "10px", "blur": "10px", "spread": "-5px" }
+      ],
+      "$description": "Modals, drawers, full-screen overlays"
+    },
+    "2xl": {
+      "$type": "shadow",
+      "$value": { "color": "rgba(0,0,0,0.18)", "offsetX": "0px", "offsetY": "25px", "blur": "50px", "spread": "-12px" },
+      "$description": "Toasts, highest-priority overlays"
+    },
+    "inner": {
+      "$type": "shadow",
+      "$value": { "color": "rgba(0,0,0,0.08)", "offsetX": "0px", "offsetY": "2px", "blur": "4px", "spread": "0px", "inset": true },
+      "$description": "Pressed states, recessed wells"
+    },
+    "focus": {
+      "$type": "shadow",
+      "$value": { "color": "rgba(129,175,242,0.45)", "offsetX": "0px", "offsetY": "0px", "blur": "0px", "spread": "3px" },
+      "$description": "Focus ring — pair with border.focus"
+    },
+    "focus-error": {
+      "$type": "shadow",
+      "$value": { "color": "rgba(220,38,38,0.30)", "offsetX": "0px", "offsetY": "0px", "blur": "0px", "spread": "3px" },
+      "$description": "Focus ring in error state"
+    }
+  }
+}

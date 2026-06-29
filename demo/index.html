@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yubi Design System — Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Fragment+Mono&display=swap" rel="stylesheet" />
+
+  <!--
+    Run `npm run build` first, then open this file (or serve the repo root).
+    - tokens.css gives full tokens + dark mode. It is OPTIONAL for light mode:
+      every component ships fallback values, so the demo renders correctly
+      even without it.
+    - index.js registers all <yds-*> custom elements.
+  -->
+  <link rel="stylesheet" href="../packages/tokens/dist/css/tokens.css" />
+  <script type="module" src="../packages/core/dist/index.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, sans-serif;
+      background: var(--yds-color-bg-page, #f8fafc);
+      color: var(--yds-color-text-primary, #121926);
+      padding: 40px;
+    }
+    h1 { font-size: 28px; margin: 0 0 4px; }
+    .sub { color: var(--yds-color-text-secondary, #697586); margin: 0 0 32px; }
+    section { margin-bottom: 40px; }
+    h2 {
+      font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--yds-color-text-muted, #9aa3b2); margin: 0 0 16px;
+    }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  </style>
+</head>
+<body>
+  <div class="row" style="justify-content: space-between; margin-bottom: 24px;">
+    <div>
+      <h1>Yubi Design System</h1>
+      <p class="sub">Web Components · token-driven · light / dark</p>
+    </div>
+    <yds-button variant="secondary" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'">
+      Toggle theme
+    </yds-button>
+  </div>
+
+  <section>
+    <h2>Buttons</h2>
+    <div class="row">
+      <yds-button variant="primary">Approve loan</yds-button>
+      <yds-button variant="secondary">Save draft</yds-button>
+      <yds-button variant="danger">Decline</yds-button>
+      <yds-button variant="ghost">Cancel</yds-button>
+      <yds-button variant="link">View details</yds-button>
+      <yds-button variant="primary" loading>Submitting</yds-button>
+      <yds-button variant="primary" disabled>Unavailable</yds-button>
+    </div>
+  </section>
+
+  <section>
+    <h2>Badges</h2>
+    <div class="row">
+      <yds-badge>Draft</yds-badge>
+      <yds-badge variant="success" dot>Approved</yds-badge>
+      <yds-badge variant="warning" dot>Pending</yds-badge>
+      <yds-badge variant="error">Rejected</yds-badge>
+      <yds-badge variant="info">New</yds-badge>
+    </div>
+  </section>
+
+  <section>
+    <h2>Inputs</h2>
+    <div class="grid">
+      <yds-input label="Email" type="email" placeholder="you@company.com" required></yds-input>
+      <yds-input label="Amount" value="50,00,000" helper="Max ₹1,00,00,000"></yds-input>
+      <yds-input label="PAN" value="ABCDE" error="Invalid PAN format"></yds-input>
+    </div>
+  </section>
+
+  <section>
+    <h2>Cards</h2>
+    <div class="grid">
+      <yds-card>
+        <span slot="eyebrow">Application</span>
+        <h3 slot="title">Acme Pvt Ltd</h3>
+        Loan #YM-20413 · ₹50,00,000 · 18 months
+        <div slot="actions">
+          <yds-button variant="primary" size="sm" id="open-modal">Review</yds-button>
+          <yds-button variant="ghost" size="sm">Snooze</yds-button>
+        </div>
+      </yds-card>
+      <yds-card interactive>
+        <span slot="eyebrow">Portfolio</span>
+        <h3 slot="title">Disbursed this month</h3>
+        ₹4.2 Cr across 38 applications.
+      </yds-card>
+    </div>
+  </section>
+
+  <yds-modal heading="Confirm approval" size="md">
+    Approve ₹50,00,000 for Acme Pvt Ltd? This action notifies the applicant.
+    <div slot="footer">
+      <yds-button variant="secondary" id="cancel">Cancel</yds-button>
+      <yds-button variant="primary" id="confirm">Confirm</yds-button>
+    </div>
+  </yds-modal>
+
+  <script type="module">
+    const modal = document.querySelector('yds-modal');
+    document.getElementById('open-modal').addEventListener('yds-click', () => (modal.open = true));
+    document.getElementById('cancel').addEventListener('yds-click', () => (modal.open = false));
+    document.getElementById('confirm').addEventListener('yds-click', () => (modal.open = false));
+    modal.addEventListener('yds-close', () => (modal.open = false));
+  </script>
+</body>
+</html>
