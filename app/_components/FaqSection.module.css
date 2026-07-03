@@ -1,0 +1,83 @@
+.tabs {
+  display: flex;
+  gap: 6px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+.tab {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #7b8089;
+  padding: 12px 20px;
+  transition: color 0.25s, background 0.25s;
+}
+.tab:hover { color: #cfd3da; }
+.tabOn {
+  background: #f4f4f5;
+  color: #0b0b0b;
+}
+.tabOn:hover { color: #0b0b0b; }
+
+.list { animation: faqFade 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes faqFade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  transition: background 0.3s, border-color 0.3s;
+}
+.item:hover { background: rgba(255, 255, 255, 0.02); }
+.itemOpen { border-color: rgba(255, 255, 255, 0.22); }
+
+.q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 24px 4px;
+  color: #cfd3da;
+  transition: color 0.3s;
+}
+.qIcon { display: inline-flex; flex: none; color: #82868f; transition: color 0.3s; }
+.qIcon svg { width: 20px; height: 20px; }
+.qText {
+  flex: 1;
+  font-size: clamp(1rem, 1rem + 0.15vw, 1.1rem);
+  letter-spacing: -0.01em;
+  color: #c4c8cf;
+  transition: color 0.3s;
+}
+.itemOpen .qText { color: #ffffff; }
+.itemOpen .qIcon { color: #e6e8ec; }
+
+.toggle { flex: none; color: #82868f; transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s; }
+.toggle svg { width: 22px; height: 22px; display: block; }
+.itemOpen .toggle { transform: rotate(45deg); color: #fff; }
+
+.ansWrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.itemOpen .ansWrap { grid-template-rows: 1fr; }
+.ans { overflow: hidden; min-height: 0; }
+.ansInner {
+  padding: 0 44px 26px 38px;
+  max-width: 70ch;
+  font-size: clamp(0.95rem, 1rem + 0.05vw, 1.05rem);
+  line-height: 1.7;
+  color: #8a8f9a;
+}

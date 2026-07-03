@@ -1,0 +1,44 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  /* blend into the background — edges dissolve */
+  -webkit-mask-image: radial-gradient(125% 130% at 62% 45%, #000 52%, transparent 100%);
+  mask-image: radial-gradient(125% 130% at 62% 45%, #000 52%, transparent 100%);
+}
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.label {
+  font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em;
+  text-transform: uppercase; color: #6b7079;
+}
+.delta {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.06em; color: var(--acc);
+}
+.val {
+  margin-top: 6px;
+  font-size: clamp(1.6rem, 1rem + 1.4vw, 2.1rem); font-weight: 500;
+  letter-spacing: -0.03em; color: #f2f3f5; font-variant-numeric: tabular-nums;
+}
+.chart { width: 100%; height: auto; display: block; overflow: visible; margin-top: 10px; }
+
+.grid { stroke: rgba(255, 255, 255, 0.05); stroke-width: 1; }
+.area { fill: rgba(255, 255, 255, 0.035); }
+.line {
+  fill: none; stroke: #61646b; stroke-width: 1.6;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1600; stroke-dashoffset: 1600;
+  animation: tgDraw 2.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+.lineAcc {
+  fill: none; stroke: var(--acc); stroke-width: 2;
+  stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 400; stroke-dashoffset: 400;
+  animation: tgDraw 1s ease-out 2.1s forwards;
+}
+@keyframes tgDraw { to { stroke-dashoffset: 0; } }
+
+.ax {
+  font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.1em;
+  fill: #54575e; text-transform: uppercase;
+}
+.ylab { font-family: var(--font-mono); font-size: 8px; fill: #44474d; }

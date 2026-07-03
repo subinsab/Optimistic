@@ -1,0 +1,108 @@
+.layout {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: var(--sp-12);
+  align-items: start;
+}
+
+/* ── FORM ───────────────────────────────────────────────────────── */
+.form { display: flex; flex-direction: column; gap: var(--sp-6); }
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-4); }
+.field { display: flex; flex-direction: column; gap: var(--sp-2); }
+.label { font-size: var(--fs-sm); font-weight: 600; color: var(--text-1); }
+
+.input,
+.textarea {
+  width: 100%;
+  font: inherit;
+  font-size: var(--fs-sm);
+  color: var(--text-1);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  transition: border-color var(--dur-2), box-shadow var(--dur-2);
+}
+.textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
+.input::placeholder,
+.textarea::placeholder { color: var(--text-3); }
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
+}
+
+.chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.chip {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-2);
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--r-full);
+  padding: 8px 14px;
+  transition: color var(--dur-2), background var(--dur-2), border-color var(--dur-2);
+}
+.chip:hover { color: var(--text-1); border-color: var(--border-strong); }
+.chipActive {
+  color: var(--text-1);
+  background: var(--brand-gradient-soft);
+  border-color: var(--accent);
+}
+
+/* ── SUCCESS ────────────────────────────────────────────────────── */
+.success {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-10);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--bg-elev);
+}
+.successMark {
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: var(--r-full);
+  font-size: 1.2rem; font-weight: 700;
+  color: var(--on-accent);
+  background: var(--brand-gradient);
+  margin-bottom: var(--sp-2);
+}
+.successBody { color: var(--text-2); line-height: 1.7; }
+.inlineLink { color: var(--accent-text); font-weight: 600; }
+.success .btn-ghost { margin-top: var(--sp-2); }
+
+/* ── ASIDE ──────────────────────────────────────────────────────── */
+.aside {
+  padding: var(--sp-8);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  background: var(--bg-inset);
+}
+.channels { list-style: none; margin-top: var(--sp-5); display: flex; flex-direction: column; gap: var(--sp-2); }
+.channel {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--bg-elev);
+  transition: border-color var(--dur-2), transform var(--dur-2) var(--ease-out);
+}
+.channel:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.channelLabel { font-size: var(--fs-xs); text-transform: uppercase; letter-spacing: .1em; color: var(--text-3); font-weight: 700; }
+.channelValue { font-size: var(--fs-sm); font-weight: 600; color: var(--text-1); }
+.note { margin-top: var(--sp-5); font-size: var(--fs-sm); color: var(--text-3); }
+
+.formCol, .asideCol { min-width: 0; }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: 1fr; gap: var(--sp-8); }
+}
+@media (max-width: 480px) {
+  .row { grid-template-columns: 1fr; }
+}

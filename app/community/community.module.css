@@ -1,0 +1,43 @@
+.headActions {
+  margin-top: var(--sp-8);
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.icon {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-md);
+  color: var(--accent-text);
+  background: var(--brand-gradient-soft);
+  border: 1px solid var(--border);
+}
+.cardBody { margin-top: var(--sp-3); color: var(--text-2); line-height: 1.7; }
+
+.joinCard {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  padding: var(--sp-20) var(--sp-8);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  background: var(--bg-elev);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.joinCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--glow);
+  pointer-events: none;
+}
+.joinCard > * { position: relative; z-index: 1; }
+.joinTitle { font-size: var(--fs-h1); font-weight: 800; letter-spacing: -0.03em; }
+.joinLead { margin-top: var(--sp-4); color: var(--text-2); font-size: var(--fs-lead); max-width: 50ch; }
+.joinCard .headActions { justify-content: center; }

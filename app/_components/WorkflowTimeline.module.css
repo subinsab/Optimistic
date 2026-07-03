@@ -1,0 +1,82 @@
+.wrap {
+  position: absolute;
+  top: clamp(18px, 3vh, 32px);
+  right: clamp(18px, 2vw, 30px);
+  width: min(76%, 548px);
+  font-family: var(--font-mono);
+  z-index: 2;
+}
+.row {
+  position: relative;
+  height: 34px;
+  margin-bottom: 11px;
+  border: 1px solid #242424;
+  border-radius: 8px;
+  background: #0e0e0e;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 13px;
+  font-size: 0.8rem;
+  color: #aab0ba;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s,
+    box-shadow 0.3s, height 0.3s ease;
+}
+.fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  background: rgba(255, 255, 255, 0.05);
+  border-right: 1px solid rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+}
+.label {
+  position: relative;
+  z-index: 1;
+}
+.ms {
+  position: relative;
+  z-index: 1;
+  color: #7e828c;
+}
+.ind {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.6);
+  opacity: 0;
+  transform: translateX(-0.5px);
+  pointer-events: none;
+}
+.hot {
+  transform: translateY(-3px);
+  border-color: #3a3a3a;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+  color: #eef0f3;
+}
+.done {
+  border-color: #333;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 0 22px rgba(255, 255, 255, 0.05);
+}
+.detail {
+  position: absolute;
+  left: 13px;
+  bottom: 5px;
+  font-size: 0.66rem;
+  color: #6c707a;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.open {
+  height: 50px;
+  align-items: flex-start;
+  padding-top: 8px;
+}
+.open .detail {
+  opacity: 1;
+}

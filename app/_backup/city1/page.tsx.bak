@@ -26,53 +26,29 @@ export default async function Home() {
 
   return (
     <main className={s.home}>
-      {/* ════════ SECTION A — full-screen monochrome architectural city ════════ */}
+      {/* ════════ SECTION A — full-screen live city ════════ */}
       <section className={s.cityFull}>
-        <div className={s.cityGrid} aria-hidden="true" />
         <div className={s.scene}>
           <CityBackground />
         </div>
-        <div className={s.cityVignette} aria-hidden="true" />
-
-        {/* engineering overlay */}
-        <div className={s.engLeft} aria-hidden="true">
-          {["SYS", "CORE", "ARCH", "UI", "DL"].map((l) => (
-            <span key={l} className={s.engItem}>{l}</span>
-          ))}
-        </div>
-        <div className={s.engRight} aria-hidden="true">
-          <span className={s.engItem}>GRID</span>
-          <span className={s.engVer}>v3.2</span>
-        </div>
-
         <div className={s.cityOverlay}>
           <Reveal className={s.eyebrow}>
-            <span className={s.eyebrowHatch} /> OUR INFRASTRUCTURE
+            <span className={s.eyebrowDot} /> THE OPTIMISTIC DESIGN SYSTEM
           </Reveal>
           <Reveal delay={120}>
             <h1 className={s.cityTitle}>
               Build interfaces,
               <br />
-              <span className={s.citySub}>optimistically.</span>
+              <span className={s.neon}>optimistically.</span>
             </h1>
           </Reveal>
           <Reveal delay={220}>
             <p className={s.cityLead}>
-              An AI-friendly design system engineered for production-ready
-              components, tokens, and architecture that scale with AI.
+              An AI-friendly, token-driven design system — production-ready
+              components for React and Angular, from idea to shipped UI.
             </p>
           </Reveal>
         </div>
-
-        {/* bottom status bar */}
-        <div className={s.engStatus} aria-hidden="true">
-          <span className={s.engStatusLabel}>Infrastructure Layer</span>
-          <div className={s.engStat}><span className={s.engK}>Nodes</span><span className={s.engV}>12,048</span></div>
-          <div className={s.engStat}><span className={s.engK}>Components</span><span className={s.engV}>1,284</span></div>
-          <div className={s.engStat}><span className={s.engK}>Tokens</span><span className={s.engV}>8,932</span></div>
-          <div className={s.engStat}><span className={s.engK}>Sync Status</span><span className={s.engLive}>● LIVE</span></div>
-        </div>
-
         <div className={s.scrollCue} aria-hidden="true"><span /> Scroll</div>
       </section>
 
