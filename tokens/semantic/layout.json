@@ -1,0 +1,38 @@
+{
+  "breakpoint": {
+    "xs":  { "$value": "320px",  "$type": "dimension", "$description": "Small phones — base styles" },
+    "sm":  { "$value": "480px",  "$type": "dimension" },
+    "md":  { "$value": "768px",  "$type": "dimension", "$description": "Tablets — layout shifts begin" },
+    "lg":  { "$value": "1024px", "$type": "dimension", "$description": "Fixed sidebar from here" },
+    "xl":  { "$value": "1280px", "$type": "dimension", "$description": "12-col grid active" },
+    "2xl": { "$value": "1440px", "$type": "dimension" },
+    "3xl": { "$value": "1536px", "$type": "dimension" }
+  },
+  "container": {
+    "sm":  { "$value": "640px",  "$type": "dimension" },
+    "md":  { "$value": "768px",  "$type": "dimension" },
+    "lg":  { "$value": "1024px", "$type": "dimension" },
+    "xl":  { "$value": "1280px", "$type": "dimension", "$description": "Default page container" },
+    "2xl": { "$value": "1440px", "$type": "dimension" }
+  },
+  "grid": {
+    "gutter-mobile":  { "$value": "{space.200}", "$type": "dimension" },
+    "gutter-desktop": { "$value": "{space.300}", "$type": "dimension" },
+    "margin-mobile":  { "$value": "{space.250}", "$type": "dimension" },
+    "margin-tablet":  { "$value": "{space.500}", "$type": "dimension" },
+    "margin-desktop": { "$value": "56px",         "$type": "dimension" }
+  },
+  "layout": {
+    "sidebar-width":  { "$value": "272px", "$type": "dimension" },
+    "topbar-height":  { "$value": "56px",  "$type": "dimension" }
+  },
+  "z-index": {
+    "base":     { "$value": "0",    "$type": "number" },
+    "sidebar":  { "$value": "100",  "$type": "number" },
+    "dropdown": { "$value": "150",  "$type": "number" },
+    "topbar":   { "$value": "200",  "$type": "number" },
+    "overlay":  { "$value": "1000", "$type": "number" },
+    "modal":    { "$value": "1100", "$type": "number" },
+    "toast":    { "$value": "1200", "$type": "number" }
+  }
+}

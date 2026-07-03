@@ -1,0 +1,26 @@
+{
+  "text-style": {
+    "display-1": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.d1}", "lineHeight": "{font.line-height.d1}", "letterSpacing": "{font.letter-spacing.display}" } },
+    "display-2": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.d2}", "lineHeight": "{font.line-height.d2}", "letterSpacing": "{font.letter-spacing.tight}" } },
+    "display-3": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.d3}", "lineHeight": "{font.line-height.d3}", "letterSpacing": "{font.letter-spacing.tight}" } },
+
+    "heading-1": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.h1}", "lineHeight": "{font.line-height.h1}", "letterSpacing": "{font.letter-spacing.tight}" } },
+    "heading-2": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.h2}", "lineHeight": "{font.line-height.h2}", "letterSpacing": "{font.letter-spacing.snug}" } },
+    "heading-3": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.h3}", "lineHeight": "{font.line-height.h3}", "letterSpacing": "{font.letter-spacing.snug}" } },
+    "heading-4": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.h4}", "lineHeight": "{font.line-height.h4}", "letterSpacing": "{font.letter-spacing.snug}" } },
+    "heading-5": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.h5}", "lineHeight": "{font.line-height.h5}", "letterSpacing": "{font.letter-spacing.normal}" } },
+    "heading-6": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.h6}", "lineHeight": "{font.line-height.h6}", "letterSpacing": "{font.letter-spacing.normal}" } },
+
+    "body-1": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.regular}", "fontSize": "{font.size.b1}", "lineHeight": "{font.line-height.b1}", "letterSpacing": "{font.letter-spacing.normal}" } },
+    "body-2": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.regular}", "fontSize": "{font.size.b2}", "lineHeight": "{font.line-height.b2}", "letterSpacing": "{font.letter-spacing.normal}" } },
+    "body-3": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.regular}", "fontSize": "{font.size.b3}", "lineHeight": "{font.line-height.b3}", "letterSpacing": "{font.letter-spacing.normal}" } },
+    "body-4": { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.regular}", "fontSize": "{font.size.b4}", "lineHeight": "{font.line-height.b4}", "letterSpacing": "{font.letter-spacing.normal}" } },
+
+    "label":         { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.s1}", "lineHeight": "{font.line-height.s1}", "letterSpacing": "{font.letter-spacing.snug}" }, "$description": "S1 — form labels, button text" },
+    "helper":        { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.regular}", "fontSize": "{font.size.s2}", "lineHeight": "{font.line-height.s2}", "letterSpacing": "{font.letter-spacing.normal}" }, "$description": "S2 — helper / error text" },
+    "eyebrow":       { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.s3}", "lineHeight": "{font.line-height.s3}", "letterSpacing": "{font.letter-spacing.wide}" }, "$description": "S3 — ALL CAPS section labels" },
+    "badge":         { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.regular}", "fontSize": "{font.size.s5}", "lineHeight": "{font.line-height.s5}", "letterSpacing": "{font.letter-spacing.normal}" }, "$description": "S5 — badge / pill text" },
+    "table-header":  { "$type": "typography", "$value": { "fontFamily": "{font.family.base}", "fontWeight": "{font.weight.bold}", "fontSize": "{font.size.t1}", "lineHeight": "{font.line-height.t1}", "letterSpacing": "{font.letter-spacing.wide}" }, "$description": "T1 — ALL CAPS table column headers" },
+    "code":          { "$type": "typography", "$value": { "fontFamily": "{font.family.mono}", "fontWeight": "{font.weight.regular}", "fontSize": "{font.size.b3}", "lineHeight": "{font.line-height.b3}", "letterSpacing": "{font.letter-spacing.normal}" }, "$description": "Monospace — code, tokens, hex" }
+  }
+}

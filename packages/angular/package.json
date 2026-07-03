@@ -1,0 +1,22 @@
+{
+  "name": "@yubi/angular",
+  "version": "0.1.0",
+  "description": "Angular bindings for the Yubi Design System web components.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc"
+  },
+  "peerDependencies": {
+    "@angular/core": ">=16",
+    "@angular/forms": ">=16"
+  },
+  "dependencies": {
+    "@yubi/core": "0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

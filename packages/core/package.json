@@ -1,0 +1,26 @@
+{
+  "name": "@yubi/core",
+  "version": "0.1.0",
+  "description": "Yubi Design System — framework-agnostic Web Components (Lit).",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "customElements": "custom-elements.json",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "analyze": "cem analyze --litelement --globs \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "lit": "^3.2.0"
+  },
+  "devDependencies": {
+    "@custom-elements-manifest/analyzer": "^0.10.0",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.5.0"
+  }
+}

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "light",
+    "name": "Light",
+    "group": "Theme",
+    "selectedTokenSets": {
+      "primitive/color": "source",
+      "primitive/dimension": "source",
+      "primitive/typography": "source",
+      "semantic/color-light": "enabled",
+      "semantic/color-dark": "disabled",
+      "semantic/typography": "enabled",
+      "semantic/elevation": "enabled",
+      "semantic/layout": "enabled",
+      "component/button": "enabled",
+      "component/input": "enabled",
+      "component/badge": "enabled",
+      "component/card": "enabled",
+      "component/modal": "enabled"
+    }
+  },
+  {
+    "id": "dark",
+    "name": "Dark",
+    "group": "Theme",
+    "selectedTokenSets": {
+      "primitive/color": "source",
+      "primitive/dimension": "source",
+      "primitive/typography": "source",
+      "semantic/color-light": "disabled",
+      "semantic/color-dark": "enabled",
+      "semantic/typography": "enabled",
+      "semantic/elevation": "enabled",
+      "semantic/layout": "enabled",
+      "component/button": "enabled",
+      "component/input": "enabled",
+      "component/badge": "enabled",
+      "component/card": "enabled",
+      "component/modal": "enabled"
+    }
+  }
+]

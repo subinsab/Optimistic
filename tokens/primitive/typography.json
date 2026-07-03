@@ -1,0 +1,64 @@
+{
+  "font": {
+    "family": {
+      "base": { "$value": "Inter, -apple-system, 'Segoe UI', system-ui, sans-serif", "$type": "fontFamily" },
+      "mono": { "$value": "'Fragment Mono', 'JetBrains Mono', monospace", "$type": "fontFamily" }
+    },
+    "weight": {
+      "regular": { "$value": "400", "$type": "fontWeight" },
+      "bold":    { "$value": "700", "$type": "fontWeight" }
+    },
+    "size": {
+      "d1": { "$value": "72px", "$type": "dimension" },
+      "d2": { "$value": "56px", "$type": "dimension" },
+      "d3": { "$value": "40px", "$type": "dimension" },
+      "h1": { "$value": "32px", "$type": "dimension" },
+      "h2": { "$value": "28px", "$type": "dimension" },
+      "h3": { "$value": "24px", "$type": "dimension" },
+      "h4": { "$value": "20px", "$type": "dimension" },
+      "h5": { "$value": "18px", "$type": "dimension" },
+      "h6": { "$value": "16px", "$type": "dimension" },
+      "b1": { "$value": "18px", "$type": "dimension" },
+      "b2": { "$value": "16px", "$type": "dimension" },
+      "b3": { "$value": "14px", "$type": "dimension" },
+      "b4": { "$value": "12px", "$type": "dimension" },
+      "s1": { "$value": "13px", "$type": "dimension" },
+      "s2": { "$value": "12px", "$type": "dimension" },
+      "s3": { "$value": "11px", "$type": "dimension" },
+      "s4": { "$value": "11px", "$type": "dimension" },
+      "s5": { "$value": "10px", "$type": "dimension" },
+      "t1": { "$value": "10px", "$type": "dimension" },
+      "t2": { "$value": "9px",  "$type": "dimension" }
+    },
+    "line-height": {
+      "d1": { "$value": "80px", "$type": "dimension" },
+      "d2": { "$value": "64px", "$type": "dimension" },
+      "d3": { "$value": "48px", "$type": "dimension" },
+      "h1": { "$value": "40px", "$type": "dimension" },
+      "h2": { "$value": "36px", "$type": "dimension" },
+      "h3": { "$value": "32px", "$type": "dimension" },
+      "h4": { "$value": "28px", "$type": "dimension" },
+      "h5": { "$value": "24px", "$type": "dimension" },
+      "h6": { "$value": "22px", "$type": "dimension" },
+      "b1": { "$value": "28px", "$type": "dimension" },
+      "b2": { "$value": "24px", "$type": "dimension" },
+      "b3": { "$value": "22px", "$type": "dimension" },
+      "b4": { "$value": "18px", "$type": "dimension" },
+      "s1": { "$value": "20px", "$type": "dimension" },
+      "s2": { "$value": "18px", "$type": "dimension" },
+      "s3": { "$value": "16px", "$type": "dimension" },
+      "s4": { "$value": "16px", "$type": "dimension" },
+      "s5": { "$value": "14px", "$type": "dimension" },
+      "t1": { "$value": "14px", "$type": "dimension" },
+      "t2": { "$value": "12px", "$type": "dimension" }
+    },
+    "letter-spacing": {
+      "display": { "$value": "-0.03em", "$type": "dimension" },
+      "tight":   { "$value": "-0.02em", "$type": "dimension" },
+      "snug":    { "$value": "-0.01em", "$type": "dimension" },
+      "normal":  { "$value": "0em",     "$type": "dimension" },
+      "wide":    { "$value": "0.04em",  "$type": "dimension", "$description": "Uppercase labels" },
+      "wider":   { "$value": "0.06em",  "$type": "dimension", "$description": "Tiny caps" }
+    }
+  }
+}

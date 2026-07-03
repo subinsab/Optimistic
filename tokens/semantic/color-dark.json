@@ -1,0 +1,87 @@
+{
+  "color": {
+    "action": {
+      "brand": {
+        "default":  { "$value": "{color.brand.500}", "$type": "color" },
+        "hover":    { "$value": "{color.brand.400}", "$type": "color" },
+        "active":   { "$value": "{color.brand.300}", "$type": "color" },
+        "disabled": { "$value": "{color.ink.border-strong}", "$type": "color" },
+        "subtle":   { "$value": "{color.brand.900}", "$type": "color" }
+      },
+      "secondary": {
+        "default": { "$value": "{color.ink.raised}",  "$type": "color" },
+        "hover":   { "$value": "{color.ink.border}",  "$type": "color" }
+      },
+      "danger": {
+        "default": { "$value": "{color.red.600}", "$type": "color" },
+        "hover":   { "$value": "{color.red.500}", "$type": "color" },
+        "subtle":  { "$value": "{color.red.900}", "$type": "color" }
+      },
+      "special": {
+        "default": { "$value": "{color.blue.600}", "$type": "color" },
+        "hover":   { "$value": "{color.blue.500}", "$type": "color" }
+      }
+    },
+    "bg": {
+      "page":          { "$value": "{color.ink.page}",   "$type": "color" },
+      "panel":         { "$value": "{color.ink.panel}",  "$type": "color" },
+      "inset":         { "$value": "{color.ink.code}",   "$type": "color" },
+      "subtle":        { "$value": "{color.ink.raised}", "$type": "color" },
+      "hover":         { "$value": "{color.ink.raised}", "$type": "color" },
+      "brand-subtle":  { "$value": "{color.brand.900}",  "$type": "color" },
+      "brand-bold":    { "$value": "{color.brand.500}",  "$type": "color" },
+      "special-subtle":{ "$value": "{color.blue.900}",   "$type": "color" },
+      "special-bold":  { "$value": "{color.blue.600}",   "$type": "color" },
+      "overlay":       { "$value": "rgba(0,0,0,0.60)",   "$type": "color" }
+    },
+    "text": {
+      "primary":   { "$value": "{color.ink.text-1}", "$type": "color" },
+      "secondary": { "$value": "{color.ink.text-2}", "$type": "color" },
+      "muted":     { "$value": "{color.ink.text-3}", "$type": "color" },
+      "disabled":  { "$value": "{color.ink.text-4}", "$type": "color" },
+      "inverse":   { "$value": "{color.neutral.900}","$type": "color" },
+      "brand":     { "$value": "{color.ink.brand}",  "$type": "color" },
+      "link":      { "$value": "{color.blue.400}",   "$type": "color" },
+      "success":   { "$value": "{color.green.400}",  "$type": "color" },
+      "error":     { "$value": "{color.red.400}",    "$type": "color" },
+      "warning":   { "$value": "{color.yellow.400}", "$type": "color" },
+      "info":      { "$value": "{color.blue.400}",   "$type": "color" }
+    },
+    "border": {
+      "default": { "$value": "{color.ink.border}",        "$type": "color" },
+      "strong":  { "$value": "{color.ink.border-strong}", "$type": "color" },
+      "focus":   { "$value": "{color.sky.400}",           "$type": "color" },
+      "brand":   { "$value": "{color.brand.500}",         "$type": "color" },
+      "success": { "$value": "{color.green.600}",         "$type": "color" },
+      "error":   { "$value": "{color.red.600}",           "$type": "color" },
+      "warning": { "$value": "{color.yellow.500}",        "$type": "color" },
+      "info":    { "$value": "{color.blue.600}",          "$type": "color" }
+    },
+    "feedback": {
+      "success": {
+        "bg":     { "$value": "{color.green.900}", "$type": "color" },
+        "border": { "$value": "{color.green.700}", "$type": "color" },
+        "icon":   { "$value": "{color.green.400}", "$type": "color" },
+        "text":   { "$value": "{color.green.200}", "$type": "color" }
+      },
+      "error": {
+        "bg":     { "$value": "{color.red.900}", "$type": "color" },
+        "border": { "$value": "{color.red.700}", "$type": "color" },
+        "icon":   { "$value": "{color.red.400}", "$type": "color" },
+        "text":   { "$value": "{color.red.200}", "$type": "color" }
+      },
+      "warning": {
+        "bg":     { "$value": "{color.yellow.900}", "$type": "color" },
+        "border": { "$value": "{color.yellow.700}", "$type": "color" },
+        "icon":   { "$value": "{color.yellow.400}", "$type": "color" },
+        "text":   { "$value": "{color.yellow.200}", "$type": "color" }
+      },
+      "info": {
+        "bg":     { "$value": "{color.blue.900}", "$type": "color" },
+        "border": { "$value": "{color.blue.700}", "$type": "color" },
+        "icon":   { "$value": "{color.blue.400}", "$type": "color" },
+        "text":   { "$value": "{color.blue.200}", "$type": "color" }
+      }
+    }
+  }
+}

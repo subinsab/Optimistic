@@ -2,11 +2,22 @@
   "name": "optimistic",
   "version": "0.1.0",
   "private": true,
+  "description": "Optimistic — Next.js marketing site + Yubi Design System monorepo (token-driven, multi-framework).",
+  "workspaces": [
+    "packages/tokens",
+    "packages/core",
+    "packages/react",
+    "packages/angular"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "tokens:build": "npm run build --workspace=@yubi/tokens",
+    "ds:build": "npm run tokens:build && npm run build --workspace=@yubi/core && npm run build --workspace=@yubi/react",
+    "ds:dev": "npm run build --workspace=@yubi/core -- --watch",
+    "site:build": "npm run tokens:build && node scripts/build-site.mjs"
   },
   "dependencies": {
     "@react-three/fiber": "^9.6.1",
