@@ -19,7 +19,7 @@ export default function SandboxStack() {
 
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const N = 58;
+    const N = 46;
     let W = 0, H = 0, raf = 0;
     const mouse = { x: 0, y: 0, on: false };
 
@@ -49,14 +49,14 @@ export default function SandboxStack() {
       raf = requestAnimationFrame(step);
       ctx.clearRect(0, 0, W, H);
       const t = performance.now() * 0.001;
-      const cw = Math.min(168, W * 0.32);
+      const cw = Math.min(168, W * 0.46);
       const ch = cw * 0.6;
       const active = N / 2 + Math.sin(t * 0.22) * N * 0.16;
       const breathe = 1 + Math.sin(t * 0.5) * 0.05;
       const stepX = 10.5 * breathe;
       const stepY = 7.5 * breathe;
-      const cx = W * 0.54 - cw / 2;
-      const cy = H * 0.5 - ch / 2;
+      const cx = W * 0.52 - cw / 2;
+      const cy = H * 0.46 - ch / 2;
 
       // draw farthest first so the active window lands on top
       const order = Array.from({ length: N }, (_, i) => i).sort(
@@ -82,42 +82,70 @@ export default function SandboxStack() {
         const op = isA ? 0.9 : Math.max(0.035, 0.5 - dz * 0.032);
         ctx.lineWidth = 1;
         ctx.fillStyle = `rgba(13,13,14,${Math.min(1, op * 1.7).toFixed(3)})`;
-        ctx.strokeStyle = `rgba(206,210,219,${op.toFixed(3)})`;
+        ctx.strokeStyle = `rgba(228,232,240,${op.toFixed(3)})`;
         rr(x, y, cw, ch, 10);
         ctx.fill();
         ctx.stroke();
         // header divider + traffic dots
-        ctx.strokeStyle = `rgba(206,210,219,${(op * 0.55).toFixed(3)})`;
+        ctx.strokeStyle = `rgba(228,232,240,${(op * 0.55).toFixed(3)})`;
         ctx.beginPath();
         ctx.moveTo(x, y + 15);
         ctx.lineTo(x + cw, y + 15);
         ctx.stroke();
-        ctx.fillStyle = `rgba(206,210,219,${(op * 0.8).toFixed(3)})`;
+        ctx.fillStyle = `rgba(228,232,240,${(op * 0.8).toFixed(3)})`;
         for (let k = 0; k < 3; k++) {
           ctx.beginPath();
           ctx.arc(x + 11 + k * 8, y + 8, 1.6, 0, TWO);
           ctx.fill();
         }
-        if (isA) {
-          // code glyph  [ : : ]
-          const gx = x + cw / 2, gy = y + (ch + 15) / 2 + 4, r = 9;
-          ctx.strokeStyle = "rgba(228,231,238,0.9)";
-          ctx.lineWidth = 1.4;
-          ctx.beginPath();
-          ctx.moveTo(gx - r, gy - r * 0.75);
-          ctx.lineTo(gx - r - 4, gy - r * 0.75);
-          ctx.lineTo(gx - r - 4, gy + r * 0.75);
-          ctx.lineTo(gx - r, gy + r * 0.75);
-          ctx.stroke();
-          ctx.beginPath();
-          ctx.moveTo(gx + r, gy - r * 0.75);
-          ctx.lineTo(gx + r + 4, gy - r * 0.75);
-          ctx.lineTo(gx + r + 4, gy + r * 0.75);
-          ctx.lineTo(gx + r, gy + r * 0.75);
-          ctx.stroke();
-          ctx.fillStyle = "rgba(228,231,238,0.9)";
-          ctx.beginPath(); ctx.arc(gx - 3, gy, 1.7, 0, TWO); ctx.fill();
-          ctx.beginPath(); ctx.arc(gx + 3, gy, 1.7, 0, TWO); ctx.fill();
+        // each window holds a component from the library
+        if (op > 0.12) {
+          const gx = x + cw / 2, gy = y + 15 + (ch - 15) / 2;
+          const a = isA ? 0.92 : op * 0.85;
+          const col = isA ? "rgba(255,122,0,0.95)" : `rgba(228,232,240,${a.toFixed(3)})`;
+          ctx.strokeStyle = col;
+          ctx.fillStyle = col;
+          ctx.lineWidth = isA ? 1.4 : 1;
+          switch (i % 4) {
+            case 0: { // button
+              rr(gx - 24, gy - 7, 48, 14, 7);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(gx - 11, gy);
+              ctx.lineTo(gx + 11, gy);
+              ctx.stroke();
+              break;
+            }
+            case 1: { // card
+              rr(gx - 26, gy - 15, 52, 30, 4);
+              ctx.stroke();
+              ctx.globalAlpha = isA ? 0.45 : a * 0.4;
+              ctx.fillRect(gx - 21, gy - 10, 16, 20);
+              ctx.globalAlpha = 1;
+              ctx.beginPath();
+              ctx.moveTo(gx - 1, gy - 6); ctx.lineTo(gx + 20, gy - 6);
+              ctx.moveTo(gx - 1, gy + 1); ctx.lineTo(gx + 14, gy + 1);
+              ctx.stroke();
+              break;
+            }
+            case 2: { // toggle
+              rr(gx - 14, gy - 7, 28, 14, 7);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.arc(gx + 6, gy, 4.4, 0, TWO);
+              ctx.fill();
+              break;
+            }
+            default: { // input
+              rr(gx - 26, gy - 8, 52, 16, 4);
+              ctx.stroke();
+              ctx.beginPath();
+              ctx.moveTo(gx - 18, gy - 4);
+              ctx.lineTo(gx - 18, gy + 4);
+              ctx.stroke();
+              break;
+            }
+          }
         }
       }
     };

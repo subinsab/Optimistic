@@ -6,13 +6,13 @@ import s from "./WorkflowTimeline.module.css";
 /**
  * Card 2 — an execution timeline (waterfall). Bars fill left→right on an
  * endless loop with cascading starts and random delays; finished bars glow.
- * Hover accelerates and lifts a bar; click expands its detail.
+ * Hover accelerates and lifts a bar.
  */
 const BARS = [
-  { label: "workflow()", ms: 420 },
-  { label: "gen()", ms: 252 },
-  { label: "eval()", ms: 168 },
-  { label: "pub()", ms: 168 },
+  { label: "variables()", ms: 420 },
+  { label: "tokens()", ms: 252 },
+  { label: "codegen()", ms: 168 },
+  { label: "publish()", ms: 168 },
 ];
 const LEFT = [0, 0, 30, 44]; // indent (% of wrap)
 const WIDTH = [100, 62, 46, 46]; // bar length (% of wrap)
@@ -22,7 +22,7 @@ const TOTAL = Math.max(...START.map((v, i) => v + DUR[i])) + 900;
 
 export default function WorkflowTimeline() {
   const [hover, setHover] = useState<number | null>(null);
-  const [open, setOpen] = useState<number | null>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
   const fills = useRef<(HTMLDivElement | null)[]>([]);
   const inds = useRef<(HTMLDivElement | null)[]>([]);
   const rows = useRef<(HTMLDivElement | null)[]>([]);
@@ -34,27 +34,28 @@ export default function WorkflowTimeline() {
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) {
+    const finish = () => {
       fills.current.forEach((f) => f && (f.style.width = "100%"));
+      rows.current.forEach((r) => r && r.classList.add(s.done));
+    };
+    if (reduce) {
+      finish();
       return;
     }
+    // plays ONCE, starting when the card first scrolls into view,
+    // then freezes in the completed state
     let clock = 0,
-      last = performance.now(),
-      raf = 0,
-      delay = 0;
+      last = 0,
+      raf = 0;
     const frame = () => {
-      raf = requestAnimationFrame(frame);
       const now = performance.now();
       let dt = now - last;
       last = now;
       if (dt > 60) dt = 60;
       clock += dt * speed.current;
-      if (clock > TOTAL + delay) {
-        clock = 0;
-        delay = Math.random() * 500;
-      }
+      const t = Math.min(clock, TOTAL);
       for (let i = 0; i < BARS.length; i++) {
-        const p = Math.min(1, Math.max(0, (clock - delay - START[i]) / DUR[i]));
+        const p = Math.min(1, Math.max(0, (t - START[i]) / DUR[i]));
         const fl = fills.current[i];
         if (fl) fl.style.width = (p * 100).toFixed(2) + "%";
         const ind = inds.current[i];
@@ -65,24 +66,40 @@ export default function WorkflowTimeline() {
         const row = rows.current[i];
         if (row) row.classList.toggle(s.done, p >= 1);
       }
+      if (clock < TOTAL) raf = requestAnimationFrame(frame);
     };
-    raf = requestAnimationFrame(frame);
-    return () => cancelAnimationFrame(raf);
+    const el = wrapRef.current;
+    let started = false;
+    const io = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting && !started) {
+          started = true;
+          last = performance.now();
+          raf = requestAnimationFrame(frame);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "-60px" }
+    );
+    if (el) io.observe(el);
+    return () => {
+      cancelAnimationFrame(raf);
+      io.disconnect();
+    };
   }, []);
 
   return (
-    <div className={s.wrap}>
+    <div className={s.wrap} ref={wrapRef}>
       {BARS.map((b, i) => (
         <div
           key={b.label}
           ref={(el) => {
             rows.current[i] = el;
           }}
-          className={`${s.row} ${hover === i ? s.hot : ""} ${open === i ? s.open : ""}`}
+          className={`${s.row} ${hover === i ? s.hot : ""}`}
           style={{ marginLeft: `${LEFT[i]}%`, width: `${WIDTH[i]}%` }}
           onMouseEnter={() => setHover(i)}
           onMouseLeave={() => setHover(null)}
-          onClick={() => setOpen(open === i ? null : i)}
         >
           <div
             ref={(el) => {
@@ -98,7 +115,6 @@ export default function WorkflowTimeline() {
             }}
             className={s.ind}
           />
-          <span className={s.detail}>completed · {b.ms}ms · 1 retry</span>
         </div>
       ))}
     </div>

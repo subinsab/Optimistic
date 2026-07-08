@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Illustration — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.comp-hero { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 48px 56px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center; }
+.dl-card { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon { width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: background .15s, transform .1s; cursor: pointer; border: none; }
+.dl-btn:hover { background: #E84800; transform: translateY(-1px); }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+
+/* ── Illustration Library ── */
+.icon-library-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+
+/* Toolbar */
+.icon-toolbar {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.icon-search-wrap { position: relative; flex: 1; min-width: 180px; max-width: 320px; }
+.icon-search-wrap svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+#illSearch {
+  width: 100%; height: 36px; padding: 0 12px 0 34px;
+  font-size: 13px; border: 1px solid var(--border); border-radius: 8px;
+  background: var(--bg-panel); color: var(--text-1); outline: none;
+}
+#illSearch:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+
+.icon-size-control {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0 12px; height: 36px;
+}
+.icon-size-control label { font-size: 12px; font-weight: 500; color: var(--text-2); white-space: nowrap; }
+
+.size-presets {
+  display: flex; gap: 2px; align-items: center;
+  padding-right: 8px; border-right: 1px solid var(--border); margin-right: 2px;
+}
+.size-preset {
+  padding: 2px 7px; font-size: 10px; font-weight: 600;
+  color: var(--text-3); background: transparent;
+  border: 1px solid transparent; border-radius: 5px;
+  cursor: pointer; transition: color 100ms, background 100ms, border-color 100ms;
+  font-family: var(--mono); line-height: 1.6;
+}
+.size-preset:hover { color: var(--accent); background: var(--accent-dim); }
+.size-preset.active { color: var(--accent); background: var(--accent-dim); border-color: var(--accent); }
+
+#illSizeSlider { width: 72px; accent-color: var(--accent); cursor: pointer; }
+#illSizeVal { font-size: 11px; color: var(--accent); font-family: var(--mono); min-width: 28px; font-weight: 600; }
+
+.icon-color-control {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: 8px; padding: 0 12px; height: 36px;
+}
+.icon-color-control label { font-size: 12px; font-weight: 500; color: var(--text-2); white-space: nowrap; }
+.color-swatches { display: flex; gap: 4px; align-items: center; }
+.color-swatch {
+  width: 16px; height: 16px; border-radius: 50%;
+  cursor: pointer; border: 2px solid transparent;
+  padding: 0; outline: none; flex-shrink: 0;
+  transition: border-color 120ms, transform 120ms;
+}
+.color-swatch:hover { transform: scale(1.25); }
+.color-swatch.active { border-color: var(--text-1); }
+
+.icon-total { font-size: 12px; color: var(--text-3); font-family: var(--mono); margin-left: auto; white-space: nowrap; }
+
+/* Category tabs */
+.icon-cat-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 20px; }
+.icon-cat-tab {
+  padding: 4px 12px; font-size: 12px; font-weight: 500;
+  color: var(--text-2); background: var(--bg-panel);
+  border: 1px solid var(--border); border-radius: 20px;
+  cursor: pointer; transition: background 120ms, color 120ms, border-color 120ms;
+}
+.icon-cat-tab:hover { background: var(--bg-hover); color: var(--text-1); }
+.icon-cat-tab.active { background: var(--accent-dim); color: var(--accent-text); border-color: var(--accent); }
+
+/* Category header row */
+.icon-lib-header {
+  grid-column: 1 / -1;
+  font-size: 10px; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--text-3);
+  padding: 24px 0 10px; display: flex; align-items: center; gap: 8px;
+}
+.icon-lib-header::after {
+  content: ''; flex: 1; height: 1px; background: var(--border);
+}
+
+/* Illustration grid */
+.icon-library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 6px;
+}
+
+/* Illustration card */
+.icon-lib-cell {
+  display: flex; flex-direction: column; align-items: center;
+  border-radius: 12px; cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg-panel);
+  position: relative; overflow: hidden;
+  transition: border-color 150ms, box-shadow 150ms, background 150ms;
+  user-select: none;
+}
+.icon-lib-cell:hover {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 4px 16px rgba(254,81,4,.1);
+  z-index: 1;
+}
+.icon-lib-cell:active { transform: scale(.97); }
+.icon-lib-cell.selected {
+  border-color: var(--accent) !important;
+  background: var(--accent-dim) !important;
+  box-shadow: 0 0 0 3px rgba(254,81,4,.18) !important;
+}
+.icon-lib-cell.selected .icon-lib-name { color: var(--accent-text) !important; }
+.icon-lib-cell.selected .icon-lib-copy { transform: translateY(0); background: var(--accent); }
+.icon-lib-cell.copied {
+  border-color: #3F902B !important;
+  background: rgba(63,144,43,.07) !important;
+  box-shadow: 0 0 0 3px rgba(63,144,43,.12) !important;
+  transition: none;
+}
+
+/* SVG preview area */
+.icon-lib-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 100%; padding: 18px 10px 8px;
+  color: var(--text-2);
+  transition: color 150ms;
+}
+.icon-lib-cell:hover .icon-lib-icon { color: var(--accent); }
+.icon-lib-icon svg { display: block; }
+
+/* Name label */
+.icon-lib-name {
+  font-size: 10px; color: var(--text-3); text-align: center;
+  font-family: var(--mono); line-height: 1.3;
+  max-width: 148px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  padding: 0 6px 10px;
+  transition: color 150ms;
+}
+.icon-lib-cell:hover .icon-lib-name { color: var(--accent-text); }
+.icon-lib-cell.copied .icon-lib-name { color: #3F902B !important; }
+
+/* Copy strip — slides up on hover */
+.icon-lib-copy {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--accent);
+  color: #fff;
+  font-size: 9px; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 6px 4px;
+  transform: translateY(calc(100% + 2px));
+  transition: transform 160ms cubic-bezier(.4,0,.2,1);
+  pointer-events: none;
+}
+.icon-lib-cell:hover .icon-lib-copy { transform: translateY(0); }
+.icon-lib-cell.copied .icon-lib-copy {
+  background: #3F902B;
+  transform: translateY(0);
+}
+
+.icon-lib-empty { grid-column: 1/-1; text-align: center; padding: 60px 0; color: var(--text-3); font-size: 14px; }
+
+/* Dark mode: remap hardcoded ellipse background */
+[data-theme="dark"] .icon-lib-icon [fill="#EDEEF0"] { fill: #2c2c32; }
+[data-theme="dark"] .icon-lib-cell.selected .icon-lib-icon [fill="#EDEEF0"] { fill: #2c2c32; }
+
+/* Toast */
+.copy-toast {
+  position: fixed; bottom: 28px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #111; color: #fff;
+  padding: 8px 18px; border-radius: 8px;
+  font-size: 13px; font-weight: 500;
+  display: flex; align-items: center; gap: 7px;
+  opacity: 0; transition: opacity 180ms, transform 180ms;
+  pointer-events: none; z-index: 9999;
+}
+.copy-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+[data-theme="dark"] .copy-toast { background: #eee; color: #111; }
+
+@media (max-width: 1099px) {
+  .comp-hero { grid-template-columns: 1fr; }
+  .icon-library-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+}
+@media (max-width: 809px) {
+  .comp-hero, .icon-library-section { padding: 32px 20px; }
+  .icon-library-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 5px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Illustration</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="combobox.html">Combobox</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub active" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub" href="form-layout.html">Forms</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Hero -->
+  <section class="comp-hero">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);">Layout · 51/54</span>
+        <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(63,144,43,.1);color:#3F902B;border:1px solid rgba(63,144,43,.25);">Stable</span>
+      </div>
+      <h1 style="font-size:32px;font-weight:800;color:var(--text-1);margin:0 0 12px;letter-spacing:-.02em;">Illustration</h1>
+      <p style="font-size:15px;color:var(--text-2);line-height:1.6;max-width:560px;margin:0 0 20px;">Scene illustrations for empty states, onboarding flows, feature callouts, and marketing surfaces. Each illustration uses a neutral ellipse base with semantic currentColor accents — swap the accent colour to match any product theme.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--text-3);">
+        <span>Count: <strong style="color:var(--text-1);">80 illustrations</strong></span>
+        <span>ViewBox: <strong style="color:var(--text-1);">200 × 200px</strong></span>
+        <span>Categories: <strong style="color:var(--text-1);">16</strong></span>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M7 7h6M7 10h6M7 13h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">illustration-library.svg</div>
+          <div class="dl-file-meta">SVG Sprite · 80 scenes</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">80 scene illustrations across 16 categories. All use currentColor for the accent so they adapt to any colour theme.</p>
+      <button class="dl-btn" onclick="downloadAllSVGs()">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download All SVGs
+      </button>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" href="downloads/illustration.md" download="illustration.md" class="dl-btn" style="background:var(--bg-inset);color:var(--text-1);border:1px solid var(--border);text-decoration:none;">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="1" width="10" height="12" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M4 5h6M4 7.5h6M4 10h4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Download .md
+      </a>
+    </div>
+  </section>
+
+  <!-- Illustration Library -->
+  <section class="icon-library-section">
+    <div class="section-label">Illustration Library · <span id="illTotal">80 illustrations</span></div>
+
+    <!-- Toolbar -->
+    <div class="icon-toolbar">
+      <div class="icon-search-wrap">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5.5" cy="5.5" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M9 9l3 3" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input id="illSearch" type="text" placeholder="Search illustrations…" autocomplete="off">
+      </div>
+      <div class="icon-size-control">
+        <label>Size</label>
+        <div class="size-presets">
+          <button class="size-preset" data-size="80">80</button>
+          <button class="size-preset active" data-size="120">120</button>
+          <button class="size-preset" data-size="160">160</button>
+        </div>
+        <input id="illSizeSlider" type="range" min="80" max="200" value="120" step="4">
+        <span id="illSizeVal">120px</span>
+      </div>
+      <div class="icon-color-control">
+        <label>Accent</label>
+        <div class="color-swatches" id="colorSwatches">
+          <button class="color-swatch active" data-color="currentColor" title="Default" style="background:var(--text-2);"></button>
+          <button class="color-swatch" data-color="#1A1A2E" title="Primary" style="background:#1A1A2E;"></button>
+          <button class="color-swatch" data-color="#FE5104" title="Accent" style="background:#FE5104;"></button>
+          <button class="color-swatch" data-color="#4065C5" title="Brand" style="background:#4065C5;"></button>
+          <button class="color-swatch" data-color="#3F902B" title="Success" style="background:#3F902B;"></button>
+          <button class="color-swatch" data-color="#D98F00" title="Warning" style="background:#D98F00;"></button>
+          <button class="color-swatch" data-color="#CD3546" title="Danger" style="background:#CD3546;"></button>
+        </div>
+      </div>
+      <span class="icon-total" id="illTotalCount">80 total</span>
+    </div>
+
+    <!-- Category tabs -->
+    <div class="icon-cat-tabs" id="illCatTabs">
+      <button class="icon-cat-tab active" data-cat="all">All</button>
+      <button class="icon-cat-tab" data-cat="Artificial Intelligence">Artificial Intelligence</button>
+      <button class="icon-cat-tab" data-cat="Astronomy">Astronomy</button>
+      <button class="icon-cat-tab" data-cat="Blockchain Crypto">Blockchain Crypto</button>
+      <button class="icon-cat-tab" data-cat="Communication">Communication</button>
+      <button class="icon-cat-tab" data-cat="Documents">Documents</button>
+      <button class="icon-cat-tab" data-cat="Electronics">Electronics</button>
+      <button class="icon-cat-tab" data-cat="Finance">Finance</button>
+      <button class="icon-cat-tab" data-cat="Gaming">Gaming</button>
+      <button class="icon-cat-tab" data-cat="Gym">Gym</button>
+      <button class="icon-cat-tab" data-cat="Insurance">Insurance</button>
+      <button class="icon-cat-tab" data-cat="Law">Law</button>
+      <button class="icon-cat-tab" data-cat="Money">Money</button>
+      <button class="icon-cat-tab" data-cat="Sci-Fi">Sci-Fi</button>
+      <button class="icon-cat-tab" data-cat="Shopping">Shopping</button>
+      <button class="icon-cat-tab" data-cat="Sports">Sports</button>
+      <button class="icon-cat-tab" data-cat="Transport">Transport</button>
+    </div>
+
+    <!-- Grid -->
+    <div class="icon-library-grid" id="illGrid"></div>
+  </section>
+
+  <!-- Copy toast -->
+  <div class="copy-toast" id="copyToast">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7l4 4 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <span id="toastName">SVG copied</span>
+  </div>
+
+</main>
+
+<script>
+// ── Sidebar / theme helpers (same pattern as icon.html) ──
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('ym-theme', next);
+  document.getElementById('icon-moon').style.display = isDark ? '' : 'none';
+  document.getElementById('icon-sun').style.display  = isDark ? 'none' : '';
+}
+(function(){
+  const s = localStorage.getItem('ym-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', s);
+  if (s === 'dark') { document.getElementById('icon-moon').style.display = 'none'; document.getElementById('icon-sun').style.display = ''; }
+})();
+
+// ── Illustration data ──
+const ILLUSTRATIONS = {
+  'ai-brain': { cat: 'Artificial Intelligence', name: 'Brain', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><ellipse cx="78" cy="95" rx="28" ry="34" fill="#C8CDD5"/><ellipse cx="122" cy="95" rx="28" ry="34" fill="#C8CDD5"/><rect x="98" y="58" width="4" height="74" rx="2" fill="#aaa"/><line x1="68" y1="84" x2="98" y2="84" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="102" y1="84" x2="132" y2="84" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="68" y1="106" x2="98" y2="106" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="102" y1="106" x2="132" y2="106" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><circle cx="66" cy="84" r="7" fill="#444"/><circle cx="134" cy="84" r="7" fill="#444"/><circle cx="66" cy="106" r="7" fill="#444"/><circle cx="134" cy="106" r="7" fill="#444"/><circle cx="100" cy="95" r="16" fill="currentColor"/><text x="100" y="100" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">AI</text></svg>` },
+  'ai-chip': { cat: 'Artificial Intelligence', name: 'Chip', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="62" y="62" width="76" height="76" rx="8" fill="#444"/><rect x="70" y="70" width="60" height="60" rx="5" fill="#333"/><rect x="82" y="82" width="36" height="36" rx="4" fill="currentColor"/><text x="100" y="104" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">AI</text><rect x="78" y="52" width="5" height="12" rx="2" fill="currentColor"/><rect x="92" y="52" width="5" height="12" rx="2" fill="currentColor"/><rect x="106" y="52" width="5" height="12" rx="2" fill="currentColor"/><rect x="120" y="52" width="5" height="12" rx="2" fill="currentColor"/><rect x="78" y="136" width="5" height="12" rx="2" fill="currentColor"/><rect x="92" y="136" width="5" height="12" rx="2" fill="currentColor"/><rect x="106" y="136" width="5" height="12" rx="2" fill="currentColor"/><rect x="120" y="136" width="5" height="12" rx="2" fill="currentColor"/><rect x="52" y="80" width="12" height="5" rx="2" fill="currentColor"/><rect x="52" y="95" width="12" height="5" rx="2" fill="currentColor"/><rect x="52" y="110" width="12" height="5" rx="2" fill="currentColor"/><rect x="136" y="80" width="12" height="5" rx="2" fill="currentColor"/><rect x="136" y="95" width="12" height="5" rx="2" fill="currentColor"/><rect x="136" y="110" width="12" height="5" rx="2" fill="currentColor"/></svg>` },
+  'ai-robot': { cat: 'Artificial Intelligence', name: 'Robot', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="72" y="60" width="56" height="52" rx="10" fill="#555"/><rect x="80" y="68" width="18" height="14" rx="4" fill="currentColor"/><rect x="102" y="68" width="18" height="14" rx="4" fill="currentColor"/><circle cx="89" cy="75" r="5" fill="#fff"/><circle cx="111" cy="75" r="5" fill="#fff"/><rect x="85" y="95" width="30" height="5" rx="2" fill="#888"/><rect x="88" y="57" width="24" height="6" rx="2" fill="#555"/><circle cx="100" cy="53" r="5" fill="currentColor"/><rect x="80" y="112" width="40" height="30" rx="6" fill="#555"/><rect x="86" y="118" width="12" height="8" rx="2" fill="currentColor"/><rect x="102" y="118" width="12" height="8" rx="2" fill="#888"/><rect x="65" y="115" width="12" height="20" rx="4" fill="#555"/><rect x="123" y="115" width="12" height="20" rx="4" fill="#555"/></svg>` },
+  'ai-neural': { cat: 'Artificial Intelligence', name: 'Neural', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="75" r="12" fill="currentColor"/><circle cx="60" cy="110" r="12" fill="#666"/><circle cx="140" cy="110" r="12" fill="#666"/><circle cx="80" cy="145" r="9" fill="#888"/><circle cx="120" cy="145" r="9" fill="#888"/><line x1="100" y1="87" x2="72" y2="101" stroke="currentColor" stroke-width="3" opacity="0.7"/><line x1="100" y1="87" x2="128" y2="101" stroke="currentColor" stroke-width="3" opacity="0.7"/><line x1="72" y1="120" x2="83" y2="136" stroke="#888" stroke-width="2.5" opacity="0.6"/><line x1="128" y1="120" x2="117" y2="136" stroke="#888" stroke-width="2.5" opacity="0.6"/><line x1="60" y1="79" x2="60" y2="98" stroke="#888" stroke-width="1.5" opacity="0.5"/><line x1="140" y1="79" x2="140" y2="98" stroke="#888" stroke-width="1.5" opacity="0.5"/></svg>` },
+  'ai-data': { cat: 'Artificial Intelligence', name: 'Data', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="55" y="140" width="16" height="30" rx="3" fill="#C8CDD5"/><rect x="76" y="120" width="16" height="50" rx="3" fill="#888"/><rect x="97" y="100" width="16" height="70" rx="3" fill="#666"/><rect x="118" y="110" width="16" height="60" rx="3" fill="#888"/><rect x="139" y="85" width="16" height="85" rx="3" fill="currentColor"/><line x1="50" y1="170" x2="160" y2="170" stroke="#aaa" stroke-width="2" stroke-linecap="round"/><polyline points="55,130 76,110 97,90 118,100 139,75" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="139" cy="75" r="5" fill="currentColor"/></svg>` },
+  'astro-planet': { cat: 'Astronomy', name: 'Planet', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="95" r="42" fill="currentColor"/><ellipse cx="86" cy="82" rx="12" ry="8" fill="rgba(255,255,255,0.2)" transform="rotate(-20,86,82)"/><ellipse cx="100" cy="95" rx="70" ry="18" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="5"/></svg>` },
+  'astro-rocket': { cat: 'Astronomy', name: 'Rocket', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M100 45 L88 90 L100 100 L112 90 Z" fill="currentColor"/><rect x="88" y="80" width="24" height="35" rx="3" fill="#C8CDD5"/><rect x="91" y="85" width="18" height="20" rx="2" fill="currentColor" opacity="0.4"/><circle cx="100" cy="92" r="6" fill="#fff"/><path d="M84 100 L76 118 L88 112 Z" fill="#888"/><path d="M116 100 L124 118 L112 112 Z" fill="#888"/><ellipse cx="100" cy="120" rx="8" ry="5" fill="currentColor" opacity="0.5"/></svg>` },
+  'astro-telescope': { cat: 'Astronomy', name: 'Telescope', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="97" y="120" width="6" height="28" rx="3" fill="#666"/><rect x="75" y="146" width="50" height="6" rx="3" fill="#555"/><rect x="88" y="128" width="5" height="18" rx="2" fill="#666" transform="rotate(20,90,137)"/><rect x="107" y="128" width="5" height="18" rx="2" fill="#666" transform="rotate(-20,109,137)"/><rect x="65" y="72" width="70" height="28" rx="10" fill="currentColor" transform="rotate(-25,100,86)"/><rect x="126" y="60" width="18" height="14" rx="4" fill="#555" transform="rotate(-25,135,67)"/><rect x="56" y="88" width="18" height="14" rx="4" fill="#888" transform="rotate(-25,65,95)"/></svg>` },
+  'astro-moon': { cat: 'Astronomy', name: 'Moon', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="95" cy="90" r="42" fill="currentColor"/><circle cx="110" cy="78" r="35" fill="#EDEEF0"/><circle cx="158" cy="58" r="4" fill="#888"/><circle cx="145" cy="48" r="3" fill="#888"/><circle cx="165" cy="72" r="3" fill="#888"/><circle cx="152" cy="76" r="2" fill="#888"/><circle cx="140" cy="130" r="3" fill="#888"/></svg>` },
+  'astro-satellite': { cat: 'Astronomy', name: 'Satellite', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="82" y="82" width="36" height="26" rx="5" fill="#666"/><rect x="86" y="86" width="28" height="18" rx="3" fill="#444"/><rect x="118" y="88" width="34" height="14" rx="3" fill="#888"/><rect x="48" y="88" width="34" height="14" rx="3" fill="#888"/><rect x="118" y="82" width="34" height="5" rx="2" fill="currentColor"/><rect x="118" y="95" width="34" height="5" rx="2" fill="currentColor"/><rect x="48" y="82" width="34" height="5" rx="2" fill="currentColor"/><rect x="48" y="95" width="34" height="5" rx="2" fill="currentColor"/><circle cx="100" cy="70" r="5" fill="currentColor"/><line x1="100" y1="75" x2="100" y2="82" stroke="currentColor" stroke-width="3"/><circle cx="100" cy="95" r="4" fill="#fff"/></svg>` },
+  'bc-bitcoin': { cat: 'Blockchain Crypto', name: 'Bitcoin', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="95" r="48" fill="currentColor"/><circle cx="100" cy="95" r="38" fill="rgba(255,255,255,0.12)"/><text x="100" y="78" text-anchor="middle" font-size="38" font-weight="900" fill="#fff" font-family="system-ui,sans-serif">&#8383;</text><text x="100" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="rgba(255,255,255,0.85)" font-family="system-ui,sans-serif">BITCOIN</text></svg>` },
+  'bc-wallet': { cat: 'Blockchain Crypto', name: 'Wallet', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="52" y="72" width="96" height="66" rx="10" fill="#555"/><rect x="52" y="84" width="96" height="54" rx="8" fill="#666"/><rect x="110" y="90" width="32" height="22" rx="6" fill="currentColor"/><circle cx="126" cy="101" r="6" fill="rgba(255,255,255,0.6)"/><rect x="62" y="78" width="20" height="4" rx="2" fill="#888"/><rect x="62" y="98" width="36" height="3" rx="1" fill="#888"/><rect x="62" y="104" width="28" height="3" rx="1" fill="#888"/></svg>` },
+  'bc-chain': { cat: 'Blockchain Crypto', name: 'Chain', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="48" y="84" width="32" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="7"/><rect x="68" y="76" width="18" height="32" rx="9" fill="none" stroke="#666" stroke-width="7"/><rect x="80" y="84" width="32" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="7"/><rect x="100" y="76" width="18" height="32" rx="9" fill="none" stroke="#666" stroke-width="7"/><rect x="112" y="84" width="32" height="18" rx="9" fill="none" stroke="currentColor" stroke-width="7"/></svg>` },
+  'bc-node': { cat: 'Blockchain Crypto', name: 'Node', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="70" r="14" fill="currentColor"/><circle cx="60" cy="112" r="12" fill="#666"/><circle cx="140" cy="112" r="12" fill="#666"/><circle cx="78" cy="148" r="9" fill="#888"/><circle cx="122" cy="148" r="9" fill="#888"/><line x1="100" y1="84" x2="70" y2="103" stroke="currentColor" stroke-width="3" opacity="0.7"/><line x1="100" y1="84" x2="130" y2="103" stroke="currentColor" stroke-width="3" opacity="0.7"/><line x1="68" y1="122" x2="78" y2="139" stroke="#888" stroke-width="2.5" opacity="0.6"/><line x1="132" y1="122" x2="122" y2="139" stroke="#888" stroke-width="2.5" opacity="0.6"/></svg>` },
+  'bc-ethereum': { cat: 'Blockchain Crypto', name: 'Ethereum', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><polygon points="100,48 142,100 100,118 58,100" fill="currentColor"/><polygon points="100,48 142,100 100,85" fill="rgba(255,255,255,0.25)"/><polygon points="100,124 58,100 100,118" fill="rgba(0,0,0,0.2)"/><polygon points="100,124 142,100 100,118" fill="rgba(255,255,255,0.15)"/><polygon points="100,124 100,148 58,112" fill="currentColor" opacity="0.6"/><polygon points="100,124 100,148 142,112" fill="currentColor" opacity="0.8"/></svg>` },
+  'comm-chat': { cat: 'Communication', name: 'Chat', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="52" y="60" width="72" height="52" rx="12" fill="currentColor"/><polygon points="64,112 52,128 80,112" fill="currentColor"/><rect x="60" y="72" width="40" height="5" rx="2" fill="rgba(255,255,255,0.7)"/><rect x="60" y="83" width="30" height="5" rx="2" fill="rgba(255,255,255,0.5)"/><rect x="82" y="96" width="66" height="44" rx="12" fill="#666"/><polygon points="126,140 148,155 140,140" fill="#666"/><rect x="91" y="108" width="38" height="4" rx="2" fill="#888"/><rect x="91" y="117" width="28" height="4" rx="2" fill="#888"/><rect x="91" y="126" width="32" height="4" rx="2" fill="#888"/></svg>` },
+  'comm-email': { cat: 'Communication', name: 'Email', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="42" y="65" width="116" height="80" rx="10" fill="#666"/><rect x="42" y="65" width="116" height="80" rx="10" fill="none" stroke="currentColor" stroke-width="3"/><polyline points="42,70 100,115 158,70" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><line x1="42" y1="145" x2="75" y2="110" stroke="currentColor" stroke-width="3" opacity="0.5"/><line x1="158" y1="145" x2="125" y2="110" stroke="currentColor" stroke-width="3" opacity="0.5"/></svg>` },
+  'comm-phone': { cat: 'Communication', name: 'Phone', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="68" y="52" width="64" height="96" rx="12" fill="#555"/><rect x="74" y="60" width="52" height="72" rx="6" fill="#444"/><circle cx="100" cy="140" r="5" fill="#888"/><rect x="92" y="56" width="16" height="3" rx="1" fill="#888"/><path d="M82 80 Q88 74 96 78 Q100 80 98 86 Q96 90 100 94 Q104 98 108 96 Q114 94 116 100 Q118 106 112 112 Q106 116 100 110 Q90 102 84 92 Q78 84 82 80Z" fill="currentColor"/></svg>` },
+  'comm-video': { cat: 'Communication', name: 'Video', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="42" y="72" width="88" height="56" rx="10" fill="#555"/><rect x="50" y="80" width="72" height="40" rx="5" fill="#444"/><polygon points="130,80 158,68 158,132 130,120" fill="#666"/><polygon points="136,88 155,78 155,122 136,112" fill="currentColor" opacity="0.8"/><circle cx="86" cy="100" r="12" fill="currentColor"/><circle cx="86" cy="100" r="6" fill="#fff"/></svg>` },
+  'comm-bell': { cat: 'Communication', name: 'Bell', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M100 55 A42 42 0 0 1 142 97 L142 118 L58 118 L58 97 A42 42 0 0 1 100 55Z" fill="currentColor"/><path d="M100 55 A42 42 0 0 1 142 97 L142 118" fill="rgba(255,255,255,0.12)"/><ellipse cx="100" cy="120" rx="22" ry="5" fill="#555"/><circle cx="100" cy="132" r="11" fill="currentColor"/><rect x="96" y="48" width="8" height="14" rx="4" fill="#555"/><circle cx="100" cy="46" r="7" fill="#888"/><circle cx="125" cy="63" r="8" fill="#E74C3C"/><text x="125" y="67" text-anchor="middle" font-size="8" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">3</text></svg>` },
+  'doc-file': { cat: 'Documents', name: 'File', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M68 48 L128 48 L148 68 L148 152 L68 152 Z" fill="currentColor"/><path d="M128 48 L148 68 L128 68 Z" fill="rgba(0,0,0,0.2)"/><rect x="80" y="82" width="56" height="5" rx="2" fill="rgba(255,255,255,0.8)"/><rect x="80" y="94" width="56" height="5" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="80" y="106" width="44" height="5" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="80" y="118" width="50" height="5" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="80" y="130" width="38" height="5" rx="2" fill="rgba(255,255,255,0.4)"/></svg>` },
+  'doc-folder': { cat: 'Documents', name: 'Folder', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M48 80 L48 148 L152 148 L152 90 L100 90 L88 80 Z" fill="currentColor"/><rect x="62" y="104" width="76" height="5" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="62" y="116" width="60" height="5" rx="2" fill="rgba(255,255,255,0.4)"/><rect x="62" y="128" width="68" height="5" rx="2" fill="rgba(255,255,255,0.4)"/></svg>` },
+  'doc-contract': { cat: 'Documents', name: 'Contract', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="65" y="48" width="80" height="104" rx="6" fill="#666"/><rect x="72" y="60" width="66" height="4" rx="2" fill="#888"/><rect x="72" y="70" width="55" height="4" rx="2" fill="#888"/><rect x="72" y="80" width="60" height="4" rx="2" fill="#888"/><rect x="72" y="90" width="50" height="4" rx="2" fill="#888"/><rect x="72" y="100" width="58" height="4" rx="2" fill="#888"/><rect x="72" y="118" width="66" height="2" rx="1" fill="#aaa"/><path d="M72 130 Q82 122 86 128 Q90 132 95 125" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="130" cy="128" r="12" fill="currentColor"/><text x="130" y="133" text-anchor="middle" font-size="12" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">&#10003;</text></svg>` },
+  'doc-report': { cat: 'Documents', name: 'Report', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="55" y="48" width="90" height="104" rx="6" fill="#666"/><rect x="65" y="62" width="70" height="5" rx="2" fill="#888"/><rect x="65" y="76" width="20" height="36" rx="3" fill="#888"/><rect x="91" y="84" width="20" height="28" rx="3" fill="#999"/><rect x="117" y="68" width="20" height="44" rx="3" fill="currentColor"/><line x1="63" y1="112" x2="140" y2="112" stroke="#aaa" stroke-width="2"/><rect x="65" y="120" width="70" height="4" rx="2" fill="#888"/><rect x="65" y="129" width="50" height="4" rx="2" fill="#888"/></svg>` },
+  'doc-clipboard': { cat: 'Documents', name: 'Clipboard', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="62" y="60" width="76" height="92" rx="6" fill="#666"/><rect x="75" y="52" width="50" height="20" rx="6" fill="#555"/><rect x="85" y="54" width="30" height="8" rx="3" fill="#888"/><rect x="72" y="80" width="56" height="5" rx="2" fill="#888"/><rect x="72" y="92" width="44" height="5" rx="2" fill="#888"/><rect x="72" y="104" width="50" height="5" rx="2" fill="#888"/><rect x="72" y="116" width="36" height="5" rx="2" fill="#888"/><rect x="72" y="128" width="20" height="8" rx="3" fill="currentColor"/><text x="82" y="136" text-anchor="middle" font-size="7" font-weight="700" fill="#fff" font-family="system-ui,sans-serif">DONE</text></svg>` },
+  'elec-laptop': { cat: 'Electronics', name: 'Laptop', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="52" y="62" width="96" height="66" rx="6" fill="#555"/><rect x="58" y="68" width="84" height="54" rx="3" fill="#333"/><rect x="62" y="72" width="76" height="46" rx="2" fill="#222"/><rect x="72" y="80" width="56" height="30" rx="3" fill="currentColor" opacity="0.35"/><rect x="40" y="128" width="120" height="10" rx="3" fill="#666"/><rect x="82" y="128" width="36" height="4" rx="2" fill="#888"/></svg>` },
+  'elec-phone': { cat: 'Electronics', name: 'Phone', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="72" y="48" width="56" height="104" rx="12" fill="#444"/><rect x="78" y="58" width="44" height="78" rx="5" fill="#222"/><rect x="78" y="58" width="44" height="78" rx="5" fill="currentColor" opacity="0.2"/><circle cx="100" cy="146" r="6" fill="#666"/><rect x="92" y="52" width="16" height="4" rx="2" fill="#666"/><rect x="85" y="70" width="30" height="20" rx="4" fill="currentColor" opacity="0.6"/><rect x="85" y="96" width="12" height="12" rx="3" fill="currentColor" opacity="0.4"/><rect x="103" y="96" width="12" height="12" rx="3" fill="currentColor" opacity="0.4"/></svg>` },
+  'elec-headphones': { cat: 'Electronics', name: 'Headphones', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M55 100 A45 48 0 0 1 145 100" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><rect x="46" y="94" width="18" height="28" rx="9" fill="currentColor"/><rect x="136" y="94" width="18" height="28" rx="9" fill="currentColor"/><rect x="48" y="98" width="14" height="20" rx="7" fill="#444"/><rect x="138" y="98" width="14" height="20" rx="7" fill="#444"/><circle cx="55" cy="104" r="6" fill="#555"/><circle cx="145" cy="104" r="6" fill="#555"/></svg>` },
+  'elec-monitor': { cat: 'Electronics', name: 'Monitor', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="42" y="58" width="116" height="80" rx="8" fill="#555"/><rect x="50" y="66" width="100" height="60" rx="4" fill="#222"/><rect x="58" y="74" width="84" height="44" rx="2" fill="currentColor" opacity="0.3"/><rect x="90" y="138" width="20" height="14" rx="2" fill="#666"/><rect x="72" y="150" width="56" height="6" rx="3" fill="#555"/><circle cx="100" cy="96" r="18" fill="currentColor" opacity="0.6"/><path d="M94 96 L106 90 L106 102 Z" fill="#fff"/></svg>` },
+  'elec-battery': { cat: 'Electronics', name: 'Battery', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="48" y="74" width="96" height="52" rx="8" fill="#555"/><rect x="54" y="80" width="84" height="40" rx="5" fill="#333"/><rect x="54" y="80" width="62" height="40" rx="5" fill="currentColor"/><rect x="144" y="86" width="12" height="28" rx="4" fill="#555"/><text x="84" y="106" text-anchor="middle" font-size="14" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">74%</text><path d="M100 62 L108 74 L104 74 L108 88 L96 74 L100 74 Z" fill="currentColor"/></svg>` },
+  'fin-coins': { cat: 'Finance', name: 'Coins', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><ellipse cx="80" cy="130" rx="30" ry="9" fill="currentColor" opacity="0.4"/><ellipse cx="80" cy="120" rx="30" ry="9" fill="currentColor" opacity="0.6"/><ellipse cx="80" cy="110" rx="30" ry="9" fill="currentColor" opacity="0.8"/><ellipse cx="80" cy="100" rx="30" ry="9" fill="currentColor"/><ellipse cx="80" cy="92" rx="30" ry="9" fill="rgba(255,255,255,0.3)"/><ellipse cx="130" cy="118" rx="22" ry="7" fill="#888" opacity="0.5"/><ellipse cx="130" cy="110" rx="22" ry="7" fill="#888" opacity="0.7"/><ellipse cx="130" cy="102" rx="22" ry="7" fill="#888"/><ellipse cx="130" cy="96" rx="22" ry="7" fill="rgba(255,255,255,0.25)"/><text x="80" y="96" text-anchor="middle" font-size="10" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">$</text></svg>` },
+  'fin-chart': { cat: 'Finance', name: 'Chart', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><line x1="55" y1="145" x2="155" y2="145" stroke="#aaa" stroke-width="2"/><line x1="55" y1="55" x2="55" y2="145" stroke="#aaa" stroke-width="2"/><polyline points="55,135 75,115 95,120 115,90 135,80 155,58" stroke="currentColor" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M55,135 75,115 95,120 115,90 135,80 155,58 155,145 55,145 Z" fill="currentColor" opacity="0.15"/><circle cx="155" cy="58" r="6" fill="currentColor"/><circle cx="115" cy="90" r="5" fill="currentColor"/><circle cx="75" cy="115" r="5" fill="currentColor"/></svg>` },
+  'fin-bank': { cat: 'Finance', name: 'Bank', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><polygon points="100,48 158,78 42,78" fill="currentColor"/><rect x="42" y="78" width="116" height="8" rx="2" fill="#555"/><rect x="52" y="86" width="14" height="50" rx="3" fill="#666"/><rect x="72" y="86" width="14" height="50" rx="3" fill="#666"/><rect x="92" y="86" width="14" height="50" rx="3" fill="#666"/><rect x="112" y="86" width="14" height="50" rx="3" fill="#666"/><rect x="132" y="86" width="14" height="50" rx="3" fill="#666"/><rect x="42" y="136" width="116" height="8" rx="2" fill="currentColor"/><rect x="42" y="144" width="116" height="10" rx="2" fill="#555"/></svg>` },
+  'fin-card': { cat: 'Finance', name: 'Card', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="42" y="68" width="116" height="72" rx="12" fill="#444"/><rect x="52" y="82" width="32" height="24" rx="4" fill="currentColor"/><rect x="52" y="112" width="40" height="5" rx="2" fill="#888"/><rect x="98" y="112" width="50" height="5" rx="2" fill="#888"/><rect x="52" y="121" width="20" height="4" rx="2" fill="#888"/><rect x="78" y="121" width="20" height="4" rx="2" fill="#888"/><rect x="104" y="121" width="20" height="4" rx="2" fill="#888"/><circle cx="140" cy="80" r="10" fill="currentColor" opacity="0.5"/><circle cx="148" cy="80" r="10" fill="currentColor" opacity="0.7"/></svg>` },
+  'fin-piggy': { cat: 'Finance', name: 'Piggy Bank', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><ellipse cx="96" cy="100" rx="44" ry="40" fill="currentColor"/><circle cx="142" cy="82" r="16" fill="currentColor"/><circle cx="118" cy="85" r="6" fill="rgba(255,255,255,0.7)"/><circle cx="130" cy="85" r="6" fill="rgba(255,255,255,0.7)"/><circle cx="118" cy="87" r="3" fill="#333"/><circle cx="130" cy="87" r="3" fill="#333"/><path d="M90 62 Q96 55 102 62" stroke="#555" stroke-width="3" fill="none" stroke-linecap="round"/><rect x="82" y="134" width="10" height="16" rx="4" fill="#555"/><rect x="100" y="134" width="10" height="16" rx="4" fill="#555"/><rect x="148" y="78" width="22" height="10" rx="4" fill="#555"/><rect x="90" y="60" width="12" height="6" rx="3" fill="#555"/></svg>` },
+  'game-controller': { cat: 'Gaming', name: 'Controller', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M52 90 Q52 70 72 68 L128 68 Q148 70 148 90 L140 128 Q136 142 124 140 L118 136 Q110 130 100 130 Q90 130 82 136 L76 140 Q64 142 60 128 Z" fill="currentColor"/><rect x="77" y="84" width="5" height="16" rx="2" fill="#fff"/><rect x="70" y="91" width="16" height="5" rx="2" fill="#fff"/><circle cx="120" cy="88" r="5" fill="#E74C3C"/><circle cx="132" cy="88" r="5" fill="#3498DB"/><circle cx="126" cy="96" r="5" fill="#27AE60"/><circle cx="114" cy="96" r="5" fill="#F1C40F"/><rect x="92" y="86" width="16" height="8" rx="4" fill="#555"/></svg>` },
+  'game-trophy': { cat: 'Gaming', name: 'Trophy', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="82" y="130" width="36" height="22" rx="4" fill="#666"/><rect x="72" y="148" width="56" height="8" rx="4" fill="currentColor"/><path d="M70 58 L130 58 L126 110 Q122 128 100 128 Q78 128 74 110 Z" fill="currentColor"/><path d="M70 58 L56 58 Q50 58 50 70 Q50 88 70 88 L70 72" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><path d="M130 58 L144 58 Q150 58 150 70 Q150 88 130 88 L130 72" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round"/><polygon points="100,68 106,84 122,84 110,94 114,110 100,100 86,110 90,94 78,84 94,84" fill="rgba(255,255,255,0.4)"/></svg>` },
+  'game-dice': { cat: 'Gaming', name: 'Dice', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="58" y="58" width="84" height="84" rx="16" fill="currentColor"/><rect x="62" y="62" width="76" height="76" rx="13" fill="rgba(255,255,255,0.1)"/><circle cx="78" cy="78" r="8" fill="#fff"/><circle cx="122" cy="78" r="8" fill="#fff"/><circle cx="100" cy="100" r="8" fill="#fff"/><circle cx="78" cy="122" r="8" fill="#fff"/><circle cx="122" cy="122" r="8" fill="#fff"/></svg>` },
+  'game-medal': { cat: 'Gaming', name: 'Medal', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="88" y="48" width="24" height="28" rx="4" fill="#888"/><rect x="80" y="50" width="40" height="6" rx="2" fill="currentColor" opacity="0.7"/><path d="M88 52 L78 80 L100 72 L122 80 L112 52 Z" fill="#888"/><circle cx="100" cy="112" r="40" fill="currentColor"/><circle cx="100" cy="112" r="32" fill="rgba(255,255,255,0.2)"/><polygon points="100,84 108,104 128,104 112,118 118,138 100,126 82,138 88,118 72,104 92,104" fill="rgba(255,255,255,0.6)"/></svg>` },
+  'game-coin': { cat: 'Gaming', name: 'Coin', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="95" r="48" fill="currentColor" opacity="0.3"/><circle cx="100" cy="95" r="42" fill="currentColor"/><circle cx="100" cy="95" r="36" fill="rgba(255,255,255,0.15)"/><polygon points="100,72 107,88 124,88 111,98 116,114 100,104 84,114 89,98 76,88 93,88" fill="rgba(255,255,255,0.7)"/></svg>` },
+  'gym-dumbbell': { cat: 'Gym', name: 'Dumbbell', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="42" y="88" width="116" height="24" rx="5" fill="#555"/><rect x="42" y="72" width="24" height="56" rx="8" fill="currentColor"/><rect x="50" y="80" width="16" height="40" rx="4" fill="rgba(255,255,255,0.15)"/><rect x="134" y="72" width="24" height="56" rx="8" fill="currentColor"/><rect x="134" y="80" width="16" height="40" rx="4" fill="rgba(255,255,255,0.15)"/><rect x="94" y="94" width="12" height="12" rx="3" fill="#888"/></svg>` },
+  'gym-barbell': { cat: 'Gym', name: 'Barbell', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="52" y="94" width="96" height="12" rx="3" fill="#666"/><rect x="42" y="76" width="16" height="48" rx="4" fill="currentColor"/><rect x="58" y="82" width="12" height="36" rx="3" fill="currentColor" opacity="0.7"/><rect x="130" y="76" width="16" height="48" rx="4" fill="currentColor"/><rect x="118" y="82" width="12" height="36" rx="3" fill="currentColor" opacity="0.7"/><rect x="94" y="96" width="12" height="8" rx="2" fill="#888"/></svg>` },
+  'gym-yoga': { cat: 'Gym', name: 'Yoga', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="55" r="13" fill="currentColor"/><path d="M100 68 L100 105" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M100 85 L68 98 L58 88" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M100 85 L132 98 L142 88" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M100 105 L80 140 M100 105 L120 140" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round"/></svg>` },
+  'gym-running': { cat: 'Gym', name: 'Running', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="115" cy="55" r="12" fill="currentColor"/><path d="M115 67 L105 95" stroke="currentColor" stroke-width="7" stroke-linecap="round"/><path d="M105 95 L78 88 M105 95 L112 120" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M78 88 L62 78" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M112 120 L95 148 M112 120 L136 138" stroke="currentColor" stroke-width="7" fill="none" stroke-linecap="round"/></svg>` },
+  'gym-kettlebell': { cat: 'Gym', name: 'Kettlebell', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="85" r="42" fill="currentColor"/><circle cx="100" cy="85" r="34" fill="#444"/><circle cx="100" cy="85" r="24" fill="currentColor" opacity="0.6"/><path d="M72 62 A32 22 0 0 1 128 62" fill="none" stroke="currentColor" stroke-width="12" stroke-linecap="round"/><path d="M78 60 A22 14 0 0 1 122 60" fill="none" stroke="#333" stroke-width="4" stroke-linecap="round"/><rect x="82" y="127" width="36" height="16" rx="6" fill="currentColor"/></svg>` },
+  'ins-shield': { cat: 'Insurance', name: 'Shield', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M100 48 L148 68 L148 108 Q148 138 100 152 Q52 138 52 108 L52 68 Z" fill="currentColor"/><path d="M100 58 L140 74 L140 108 Q140 132 100 144 Q60 132 60 108 L60 74 Z" fill="rgba(255,255,255,0.15)"/><path d="M78 96 L92 112 L122 78" stroke="#fff" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>` },
+  'ins-umbrella': { cat: 'Insurance', name: 'Umbrella', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M35 100 A65 65 0 0 1 165 100 Z" fill="currentColor"/><path d="M55 100 A45 45 0 0 1 100 62" fill="rgba(255,255,255,0.2)"/><line x1="100" y1="100" x2="100" y2="145" stroke="#555" stroke-width="6" stroke-linecap="round"/><path d="M100 145 Q100 158 92 158 Q84 158 84 148" fill="none" stroke="#555" stroke-width="6" stroke-linecap="round"/><line x1="62" y1="80" x2="62" y2="65" stroke="#aaa" stroke-width="2" stroke-dasharray="2,3"/><line x1="75" y1="67" x2="75" y2="54" stroke="#aaa" stroke-width="2" stroke-dasharray="2,3"/><line x1="140" y1="72" x2="140" y2="58" stroke="#aaa" stroke-width="2" stroke-dasharray="2,3"/><line x1="152" y1="84" x2="152" y2="72" stroke="#aaa" stroke-width="2" stroke-dasharray="2,3"/></svg>` },
+  'ins-health': { cat: 'Insurance', name: 'Health', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M100 148 Q60 128 45 100 Q38 76 55 62 Q72 48 90 60 Q96 64 100 70 Q104 64 110 60 Q128 48 145 62 Q162 76 155 100 Q140 128 100 148Z" fill="currentColor"/><path d="M88 95 L88 82 L112 82 L112 95 L125 95 L125 105 L112 105 L112 118 L88 118 L88 105 L75 105 L75 95 Z" fill="#fff"/></svg>` },
+  'ins-home': { cat: 'Insurance', name: 'Home', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><polygon points="100,48 158,90 42,90" fill="currentColor"/><rect x="60" y="90" width="80" height="62" rx="2" fill="#666"/><rect x="76" y="112" width="20" height="40" rx="3" fill="#555"/><rect x="104" y="104" width="24" height="24" rx="3" fill="currentColor" opacity="0.6"/><line x1="116" y1="104" x2="116" y2="128" stroke="#aaa" stroke-width="1.5"/><line x1="104" y1="116" x2="128" y2="116" stroke="#aaa" stroke-width="1.5"/><circle cx="148" cy="108" r="24" fill="currentColor"/><path d="M140 105 L146 111 L158 99" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>` },
+  'ins-car': { cat: 'Insurance', name: 'Car', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M42 108 Q42 92 60 90 L80 80 L120 80 L140 90 Q158 92 158 108 L158 122 Q158 130 150 130 L50 130 Q42 130 42 122 Z" fill="currentColor"/><rect x="58" y="82" width="50" height="26" rx="6" fill="rgba(255,255,255,0.25)"/><circle cx="70" cy="132" r="14" fill="#555"/><circle cx="70" cy="132" r="9" fill="#888"/><circle cx="70" cy="132" r="4" fill="currentColor"/><circle cx="130" cy="132" r="14" fill="#555"/><circle cx="130" cy="132" r="9" fill="#888"/><circle cx="130" cy="132" r="4" fill="currentColor"/><rect x="44" y="104" width="20" height="10" rx="2" fill="rgba(255,255,255,0.6)"/></svg>` },
+  'law-scales': { cat: 'Law', name: 'Scales', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="97" y="52" width="6" height="96" rx="3" fill="#666"/><rect x="60" y="80" width="76" height="6" rx="3" fill="currentColor"/><line x1="70" y1="86" x2="70" y2="110" stroke="#888" stroke-width="2.5"/><line x1="130" y1="86" x2="130" y2="110" stroke="#888" stroke-width="2.5"/><path d="M55 110 A15 10 0 0 0 85 110 Z" fill="currentColor"/><path d="M115 110 A15 10 0 0 0 145 110 Z" fill="currentColor"/><rect x="85" y="144" width="30" height="6" rx="3" fill="#555"/><rect x="78" y="148" width="44" height="6" rx="3" fill="#555"/></svg>` },
+  'law-gavel': { cat: 'Law', name: 'Gavel', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="90" y="48" width="60" height="28" rx="10" fill="currentColor"/><rect x="96" y="54" width="48" height="16" rx="6" fill="rgba(255,255,255,0.2)"/><rect x="108" y="72" width="10" height="48" rx="4" fill="currentColor" transform="rotate(45,113,96)"/><rect x="52" y="110" width="68" height="16" rx="8" fill="#666"/><rect x="42" y="146" width="116" height="8" rx="4" fill="#555"/></svg>` },
+  'law-books': { cat: 'Law', name: 'Books', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="48" y="58" width="22" height="92" rx="4" fill="currentColor"/><rect x="48" y="58" width="4" height="92" rx="2" fill="rgba(255,255,255,0.3)"/><rect x="74" y="62" width="22" height="88" rx="4" fill="currentColor" opacity="0.7"/><rect x="74" y="62" width="4" height="88" rx="2" fill="rgba(255,255,255,0.2)"/><rect x="100" y="55" width="24" height="95" rx="4" fill="currentColor"/><rect x="100" y="55" width="5" height="95" rx="2" fill="rgba(255,255,255,0.25)"/><rect x="128" y="65" width="20" height="85" rx="4" fill="currentColor" opacity="0.6"/><rect x="48" y="148" width="100" height="6" rx="3" fill="#444"/></svg>` },
+  'law-badge': { cat: 'Law', name: 'Badge', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M100 48 L118 58 L138 52 L145 72 L158 85 L148 104 L152 124 L134 132 L124 148 L104 142 L100 152 L96 142 L76 148 L66 132 L48 124 L52 104 L42 85 L55 72 L62 52 L82 58 Z" fill="currentColor"/><circle cx="100" cy="100" r="38" fill="rgba(255,255,255,0.15)"/><polygon points="100,72 107,90 126,90 112,102 117,120 100,108 83,120 88,102 74,90 93,90" fill="rgba(255,255,255,0.7)"/></svg>` },
+  'law-document': { cat: 'Law', name: 'Document', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M68 48 L128 48 L148 68 L148 152 L68 152 Z" fill="#666"/><path d="M128 48 L148 68 L128 68 Z" fill="rgba(0,0,0,0.2)"/><rect x="80" y="82" width="56" height="4" rx="2" fill="#888"/><rect x="80" y="93" width="56" height="4" rx="2" fill="#888"/><rect x="80" y="104" width="40" height="4" rx="2" fill="#888"/><rect x="80" y="120" width="56" height="2" rx="1" fill="#aaa"/><rect x="80" y="130" width="56" height="2" rx="1" fill="#aaa"/><circle cx="132" cy="140" r="12" fill="currentColor"/><text x="132" y="145" text-anchor="middle" font-size="12" font-weight="900" fill="#fff" font-family="system-ui,sans-serif">&#10003;</text></svg>` },
+  'mon-coins': { cat: 'Money', name: 'Coins', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><ellipse cx="100" cy="136" rx="38" ry="10" fill="currentColor" opacity="0.4"/><ellipse cx="100" cy="126" rx="38" ry="10" fill="currentColor" opacity="0.55"/><ellipse cx="100" cy="116" rx="38" ry="10" fill="currentColor" opacity="0.7"/><ellipse cx="100" cy="106" rx="38" ry="10" fill="currentColor" opacity="0.85"/><ellipse cx="100" cy="96" rx="38" ry="10" fill="currentColor"/><ellipse cx="100" cy="90" rx="38" ry="10" fill="rgba(255,255,255,0.3)"/><text x="100" y="94" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" font-family="system-ui,sans-serif">$</text></svg>` },
+  'mon-bill': { cat: 'Money', name: 'Bill', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="38" y="72" width="124" height="72" rx="8" fill="#555"/><rect x="44" y="78" width="112" height="60" rx="5" fill="#666"/><circle cx="100" cy="108" r="22" fill="currentColor" opacity="0.6"/><circle cx="100" cy="108" r="16" fill="currentColor"/><text x="100" y="115" text-anchor="middle" font-size="18" font-weight="900" fill="#fff" font-family="system-ui,sans-serif">$</text><rect x="50" y="84" width="20" height="12" rx="3" fill="currentColor" opacity="0.5"/><rect x="130" y="84" width="20" height="12" rx="3" fill="currentColor" opacity="0.5"/></svg>` },
+  'mon-safe': { cat: 'Money', name: 'Safe', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="50" y="55" width="100" height="100" rx="10" fill="#555"/><rect x="60" y="65" width="80" height="80" rx="6" fill="#444"/><circle cx="95" cy="105" r="28" fill="#555"/><circle cx="95" cy="105" r="22" fill="#666"/><circle cx="95" cy="105" r="14" fill="currentColor"/><circle cx="95" cy="105" r="7" fill="#444"/><line x1="95" y1="91" x2="95" y2="105" stroke="currentColor" stroke-width="3"/><rect x="128" y="98" width="16" height="14" rx="4" fill="currentColor"/></svg>` },
+  'mon-wallet': { cat: 'Money', name: 'Wallet', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="48" y="68" width="104" height="74" rx="10" fill="#555"/><rect x="48" y="82" width="104" height="60" rx="8" fill="#666"/><rect x="108" y="88" width="36" height="24" rx="7" fill="currentColor"/><circle cx="126" cy="100" r="8" fill="rgba(255,255,255,0.4)"/><rect x="58" y="75" width="20" height="4" rx="2" fill="#888"/><rect x="58" y="96" width="38" height="4" rx="2" fill="#888"/><rect x="58" y="106" width="28" height="4" rx="2" fill="#888"/></svg>` },
+  'mon-exchange': { cat: 'Money', name: 'Exchange', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M55 78 L120 78 L120 65 L150 90 L120 115 L120 102 L55 102 Z" fill="currentColor"/><path d="M145 118 L80 118 L80 131 L50 106 L80 81 L80 94 L145 94 Z" fill="#666"/></svg>` },
+  'scifi-ship': { cat: 'Sci-Fi', name: 'Ship', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M100 45 L148 115 L130 108 L100 120 L70 108 L52 115 Z" fill="currentColor"/><path d="M100 45 L148 115 L100 105 Z" fill="rgba(255,255,255,0.2)"/><ellipse cx="100" cy="108" rx="30" ry="10" fill="#444"/><rect x="90" y="72" width="20" height="30" rx="8" fill="rgba(255,255,255,0.3)"/><circle cx="100" cy="68" r="6" fill="rgba(255,255,255,0.5)"/><ellipse cx="70" cy="118" rx="12" ry="5" fill="currentColor" opacity="0.5"/><ellipse cx="130" cy="118" rx="12" ry="5" fill="currentColor" opacity="0.5"/><circle cx="148" cy="60" r="5" fill="#888"/><circle cx="158" cy="72" r="3" fill="#888"/></svg>` },
+  'scifi-alien': { cat: 'Sci-Fi', name: 'Alien', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><ellipse cx="100" cy="90" rx="48" ry="54" fill="currentColor"/><ellipse cx="78" cy="82" rx="16" ry="12" fill="#1A1A2E"/><ellipse cx="122" cy="82" rx="16" ry="12" fill="#1A1A2E"/><ellipse cx="78" cy="82" rx="8" ry="8" fill="rgba(255,255,255,0.8)"/><ellipse cx="122" cy="82" rx="8" ry="8" fill="rgba(255,255,255,0.8)"/><circle cx="78" cy="82" r="4" fill="#1A1A2E"/><circle cx="122" cy="82" r="4" fill="#1A1A2E"/><path d="M85 106 Q100 116 115 106" stroke="#1A1A2E" stroke-width="3" fill="none" stroke-linecap="round"/><line x1="100" y1="56" x2="80" y2="42" stroke="currentColor" stroke-width="3" opacity="0.6"/><line x1="100" y1="56" x2="120" y2="42" stroke="currentColor" stroke-width="3" opacity="0.6"/></svg>` },
+  'scifi-portal': { cat: 'Sci-Fi', name: 'Portal', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="95" r="56" fill="currentColor" opacity="0.12"/><circle cx="100" cy="95" r="44" fill="currentColor" opacity="0.2"/><circle cx="100" cy="95" r="32" fill="currentColor" opacity="0.38"/><circle cx="100" cy="95" r="22" fill="currentColor" opacity="0.58"/><circle cx="100" cy="95" r="14" fill="currentColor" opacity="0.8"/><circle cx="100" cy="95" r="7" fill="currentColor"/><circle cx="100" cy="95" r="3" fill="#fff"/></svg>` },
+  'scifi-robot': { cat: 'Sci-Fi', name: 'Robot', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="72" y="56" width="56" height="48" rx="10" fill="#555"/><rect x="80" y="64" width="16" height="14" rx="4" fill="currentColor"/><rect x="104" y="64" width="16" height="14" rx="4" fill="currentColor"/><circle cx="88" cy="71" r="5" fill="#fff"/><circle cx="112" cy="71" r="5" fill="#fff"/><rect x="82" y="90" width="36" height="6" rx="3" fill="#888"/><rect x="88" y="54" width="24" height="6" rx="2" fill="#555"/><circle cx="100" cy="50" r="5" fill="currentColor"/><rect x="75" y="104" width="50" height="36" rx="6" fill="#444"/><rect x="82" y="112" width="14" height="10" rx="3" fill="currentColor"/><circle cx="107" cy="117" r="7" fill="currentColor" opacity="0.6"/><rect x="60" y="108" width="14" height="24" rx="4" fill="#555"/><rect x="126" y="108" width="14" height="24" rx="4" fill="#555"/></svg>` },
+  'scifi-laser': { cat: 'Sci-Fi', name: 'Laser', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="42" y="86" width="76" height="28" rx="6" fill="#555"/><rect x="42" y="92" width="76" height="16" rx="4" fill="#444"/><rect x="118" y="95" width="50" height="10" rx="3" fill="currentColor"/><path d="M168 100 L180 94 L180 106 Z" fill="currentColor" opacity="0.6"/><rect x="54" y="80" width="8" height="8" rx="2" fill="currentColor"/><rect x="68" y="78" width="8" height="10" rx="2" fill="currentColor" opacity="0.7"/><circle cx="56" cy="100" r="5" fill="#888"/></svg>` },
+  'shop-cart': { cat: 'Shopping', name: 'Cart', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M42 58 L60 58 L76 120 L148 120 L158 80 L66 80" stroke="currentColor" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="88" cy="136" r="12" fill="currentColor"/><circle cx="134" cy="136" r="12" fill="currentColor"/><circle cx="88" cy="136" r="6" fill="#fff"/><circle cx="134" cy="136" r="6" fill="#fff"/><rect x="90" y="88" width="10" height="22" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="108" y="88" width="10" height="22" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="126" y="88" width="10" height="22" rx="2" fill="rgba(255,255,255,0.6)"/></svg>` },
+  'shop-bag': { cat: 'Shopping', name: 'Bag', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="58" y="78" width="84" height="72" rx="10" fill="currentColor"/><path d="M80 78 Q80 55 100 55 Q120 55 120 78" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="6" stroke-linecap="round"/><rect x="68" y="96" width="64" height="5" rx="2" fill="rgba(255,255,255,0.4)"/><rect x="68" y="108" width="48" height="5" rx="2" fill="rgba(255,255,255,0.3)"/></svg>` },
+  'shop-store': { cat: 'Shopping', name: 'Store', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="42" y="90" width="116" height="62" rx="4" fill="#666"/><rect x="50" y="98" width="36" height="28" rx="3" fill="currentColor" opacity="0.6"/><rect x="92" y="98" width="30" height="28" rx="3" fill="#555"/><line x1="107" y1="98" x2="107" y2="126" stroke="#888" stroke-width="1.5"/><line x1="92" y1="112" x2="122" y2="112" stroke="#888" stroke-width="1.5"/><rect x="128" y="108" width="22" height="44" rx="3" fill="#555"/><path d="M42 90 L42 78 L72 60 L100 72 L128 60 L158 78 L158 90 Z" fill="currentColor"/><rect x="42" y="86" width="116" height="6" rx="2" fill="rgba(0,0,0,0.2)"/></svg>` },
+  'shop-tag': { cat: 'Shopping', name: 'Tag', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M68 48 L148 48 L148 108 L100 152 L68 120 Z" fill="currentColor"/><circle cx="118" cy="68" r="10" fill="rgba(255,255,255,0.4)"/><circle cx="118" cy="68" r="5" fill="rgba(255,255,255,0.7)"/><rect x="80" y="85" width="52" height="5" rx="2" fill="rgba(255,255,255,0.6)"/><rect x="80" y="96" width="38" height="5" rx="2" fill="rgba(255,255,255,0.45)"/><rect x="80" y="107" width="44" height="5" rx="2" fill="rgba(255,255,255,0.45)"/></svg>` },
+  'shop-gift': { cat: 'Shopping', name: 'Gift', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="55" y="88" width="90" height="64" rx="6" fill="currentColor"/><rect x="55" y="78" width="90" height="14" rx="5" fill="#555"/><rect x="94" y="78" width="12" height="74" rx="3" fill="rgba(255,255,255,0.5)"/><rect x="55" y="85" width="90" height="8" rx="3" fill="rgba(255,255,255,0.15)"/><path d="M100 78 Q82 66 76 60 Q70 54 78 52 Q86 50 100 64" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="4" stroke-linecap="round"/><path d="M100 78 Q118 66 124 60 Q130 54 122 52 Q114 50 100 64" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="4" stroke-linecap="round"/></svg>` },
+  'sport-ball': { cat: 'Sports', name: 'Ball', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="95" r="48" fill="#fff" stroke="#555" stroke-width="3"/><path d="M100 47 L100 143 M70 55 L130 135 M70 135 L130 55" stroke="#555" stroke-width="2.5"/><path d="M57 72 Q78 90 100 95 Q122 100 143 118" stroke="currentColor" stroke-width="4" fill="none"/><path d="M57 118 Q78 100 100 95 Q122 90 143 72" stroke="currentColor" stroke-width="4" fill="none"/></svg>` },
+  'sport-trophy': { cat: 'Sports', name: 'Trophy', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="82" y="130" width="36" height="22" rx="4" fill="#666"/><rect x="72" y="148" width="56" height="8" rx="4" fill="currentColor"/><path d="M68 52 L132 52 L128 104 Q124 128 100 128 Q76 128 72 104 Z" fill="currentColor"/><path d="M68 52 L55 52 Q48 52 48 65 Q48 85 68 88 L68 70" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/><path d="M132 52 L145 52 Q152 52 152 65 Q152 85 132 88 L132 70" fill="none" stroke="currentColor" stroke-width="9" stroke-linecap="round"/><polygon points="100,65 107,82 125,82 111,93 116,110 100,99 84,110 89,93 75,82 93,82" fill="rgba(255,255,255,0.5)"/></svg>` },
+  'sport-medal': { cat: 'Sports', name: 'Medal', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="88" y="48" width="24" height="28" rx="4" fill="#888"/><rect x="80" y="50" width="40" height="6" rx="2" fill="currentColor" opacity="0.7"/><path d="M88 52 L78 80 L100 72 L122 80 L112 52 Z" fill="#888"/><circle cx="100" cy="116" r="42" fill="currentColor"/><circle cx="100" cy="116" r="34" fill="rgba(255,255,255,0.2)"/><polygon points="100,88 108,108 130,108 114,122 120,144 100,130 80,144 86,122 70,108 92,108" fill="rgba(255,255,255,0.7)"/></svg>` },
+  'sport-shoe': { cat: 'Sports', name: 'Shoe', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M40 120 Q40 100 65 95 L80 72 Q90 62 104 68 Q118 74 112 88 L96 88 Q88 88 86 96 L130 96 Q158 96 158 112 Q158 128 140 128 L48 128 Q40 128 40 120Z" fill="currentColor"/><rect x="90" y="96" width="60" height="6" rx="2" fill="rgba(255,255,255,0.4)"/><rect x="48" y="120" width="90" height="6" rx="3" fill="#555"/></svg>` },
+  'sport-stopwatch': { cat: 'Sports', name: 'Stopwatch', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="100" cy="102" r="46" fill="#555"/><circle cx="100" cy="102" r="40" fill="#444"/><line x1="100" y1="62" x2="100" y2="102" stroke="currentColor" stroke-width="4" stroke-linecap="round"/><line x1="100" y1="102" x2="124" y2="90" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><circle cx="100" cy="102" r="5" fill="currentColor"/><line x1="100" y1="65" x2="100" y2="70" stroke="#888" stroke-width="2" stroke-linecap="round"/><line x1="67" y1="102" x2="72" y2="102" stroke="#888" stroke-width="2" stroke-linecap="round"/><line x1="128" y1="102" x2="133" y2="102" stroke="#888" stroke-width="2" stroke-linecap="round"/><rect x="88" y="48" width="24" height="12" rx="4" fill="#555"/><circle cx="100" cy="48" r="5" fill="currentColor"/></svg>` },
+  'trans-car': { cat: 'Transport', name: 'Car', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M38 110 Q38 92 58 90 L80 76 L120 76 L142 90 Q162 92 162 110 L162 126 Q162 134 154 134 L46 134 Q38 134 38 126 Z" fill="currentColor"/><rect x="62" y="62" width="46" height="26" rx="5" fill="rgba(255,255,255,0.25)"/><rect x="112" y="62" width="28" height="26" rx="5" fill="rgba(255,255,255,0.2)"/><circle cx="72" cy="136" r="16" fill="#444"/><circle cx="72" cy="136" r="10" fill="#777"/><circle cx="72" cy="136" r="5" fill="currentColor"/><circle cx="128" cy="136" r="16" fill="#444"/><circle cx="128" cy="136" r="10" fill="#777"/><circle cx="128" cy="136" r="5" fill="currentColor"/><rect x="38" y="104" width="24" height="12" rx="3" fill="rgba(255,255,255,0.7)"/></svg>` },
+  'trans-plane': { cat: 'Transport', name: 'Plane', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><path d="M48 100 L100 60 L152 100 L130 100 L120 80 L100 88 L80 80 L70 100 Z" fill="currentColor"/><rect x="88" y="100" width="24" height="52" rx="6" fill="currentColor"/><path d="M88 138 L68 152 L88 145 Z" fill="currentColor" opacity="0.7"/><path d="M112 138 L132 152 L112 145 Z" fill="currentColor" opacity="0.7"/><circle cx="100" cy="78" r="6" fill="rgba(255,255,255,0.5)"/></svg>` },
+  'trans-bus': { cat: 'Transport', name: 'Bus', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="42" y="58" width="116" height="88" rx="8" fill="currentColor"/><rect x="55" y="70" width="36" height="34" rx="3" fill="rgba(255,255,255,0.4)"/><rect x="97" y="70" width="24" height="34" rx="3" fill="rgba(255,255,255,0.35)"/><rect x="127" y="70" width="18" height="34" rx="3" fill="rgba(255,255,255,0.35)"/><rect x="42" y="110" width="116" height="6" rx="2" fill="rgba(0,0,0,0.2)"/><circle cx="72" cy="152" r="14" fill="#555"/><circle cx="72" cy="152" r="8" fill="#888"/><circle cx="72" cy="152" r="4" fill="currentColor"/><circle cx="128" cy="152" r="14" fill="#555"/><circle cx="128" cy="152" r="8" fill="#888"/><circle cx="128" cy="152" r="4" fill="currentColor"/></svg>` },
+  'trans-train': { cat: 'Transport', name: 'Train', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><rect x="48" y="52" width="104" height="88" rx="12" fill="#555"/><rect x="58" y="62" width="38" height="40" rx="4" fill="rgba(255,255,255,0.3)"/><rect x="104" y="62" width="36" height="40" rx="4" fill="rgba(255,255,255,0.3)"/><rect x="56" y="112" width="88" height="20" rx="4" fill="currentColor" opacity="0.7"/><circle cx="72" cy="148" r="14" fill="#555"/><circle cx="72" cy="148" r="9" fill="#888"/><circle cx="72" cy="148" r="4" fill="currentColor"/><circle cx="128" cy="148" r="14" fill="#555"/><circle cx="128" cy="148" r="9" fill="#888"/><circle cx="128" cy="148" r="4" fill="currentColor"/><rect x="38" y="142" width="124" height="8" rx="3" fill="#444"/></svg>` },
+  'trans-bike': { cat: 'Transport', name: 'Bike', svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><ellipse cx="100" cy="108" rx="76" ry="66" fill="#EDEEF0"/><circle cx="68" cy="112" r="34" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="68" cy="112" r="22" fill="none" stroke="#888" stroke-width="3"/><circle cx="68" cy="112" r="6" fill="currentColor"/><circle cx="132" cy="112" r="34" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="132" cy="112" r="22" fill="none" stroke="#888" stroke-width="3"/><circle cx="132" cy="112" r="6" fill="currentColor"/><path d="M68 112 L100 75 L132 112" stroke="#666" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>` },
+};
+
+// ── State ──
+let illSize = 120;
+let illSearch = '';
+let illCat = 'all';
+let illColor = 'currentColor';
+let selectedKey = null;
+
+// ── Render grid ──
+function renderGrid() {
+  const grid = document.getElementById('illGrid');
+  grid.innerHTML = '';
+  let shown = 0;
+  const q = illSearch.toLowerCase();
+
+  // Group by category
+  const groups = {};
+  for (const [key, data] of Object.entries(ILLUSTRATIONS)) {
+    if (illCat !== 'all' && data.cat !== illCat) continue;
+    const nameMatch = data.name.toLowerCase().includes(q);
+    const keyMatch  = key.toLowerCase().includes(q);
+    if (q && !nameMatch && !keyMatch) continue;
+    if (!groups[data.cat]) groups[data.cat] = [];
+    groups[data.cat].push({ key, ...data });
+  }
+
+  for (const [cat, items] of Object.entries(groups)) {
+    if (illCat === 'all') {
+      const h = document.createElement('div');
+      h.className = 'icon-lib-header';
+      h.textContent = cat + ' · ' + items.length;
+      grid.appendChild(h);
+    }
+
+    items.forEach(item => {
+      const cell = document.createElement('div');
+      cell.className = 'icon-lib-cell' + (selectedKey === item.key ? ' selected' : '');
+      cell.dataset.key = item.key;
+      cell.title = 'Click to select & copy SVG';
+
+      // Replace currentColor with selected hex in the preview SVG
+      const colorStyle = illColor !== 'currentColor' ? 'color:' + illColor + ';' : '';
+      const previewSvg = item.svg.replace(
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">',
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="' + illSize + '" height="' + illSize + '">'
+      );
+
+      cell.innerHTML =
+        '<div class="icon-lib-icon" style="' + colorStyle + '">' + previewSvg + '</div>' +
+        '<span class="icon-lib-name">' + item.name + '</span>' +
+        '<div class="icon-lib-copy">' + (selectedKey === item.key ? 'SELECTED' : 'COPY SVG') + '</div>';
+
+      cell.addEventListener('click', () => {
+        // Clear previous selection
+        document.querySelectorAll('.icon-lib-cell.selected').forEach(c => {
+          c.classList.remove('selected');
+          const s = c.querySelector('.icon-lib-copy');
+          if (s) s.textContent = 'COPY SVG';
+        });
+        // Select this cell
+        selectedKey = item.key;
+        cell.classList.add('selected');
+        const strip = cell.querySelector('.icon-lib-copy');
+        if (strip) strip.textContent = 'SELECTED';
+        copyIllustration(cell, item);
+      });
+      grid.appendChild(cell);
+      shown++;
+    });
+  }
+
+  if (!shown) {
+    const empty = document.createElement('div');
+    empty.className = 'icon-lib-empty';
+    empty.textContent = q ? 'No illustrations match "' + illSearch + '"' : 'No illustrations in this category.';
+    grid.appendChild(empty);
+  }
+
+  document.getElementById('illTotal').textContent = shown + ' illustrations';
+  document.getElementById('illTotalCount').textContent = shown + ' total';
+}
+
+// ── Copy illustration SVG ──
+function copyIllustration(cell, item) {
+  // Build copy SVG: replace currentColor with selected hex if needed
+  let svgStr = item.svg;
+  if (illColor !== 'currentColor') {
+    svgStr = svgStr.replace(/currentColor/g, illColor);
+  }
+  // Add width/height to the opening tag
+  svgStr = svgStr.replace(
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">',
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">'
+  );
+
+  navigator.clipboard.writeText(svgStr).then(() => {
+    cell.classList.add('copied');
+    const strip = cell.querySelector('.icon-lib-copy');
+    if (strip) strip.textContent = 'Copied!';
+    clearTimeout(cell._copyTimer);
+    cell._copyTimer = setTimeout(() => {
+      cell.classList.remove('copied');
+      const isSelected = selectedKey === item.key;
+      if (strip) strip.textContent = isSelected ? 'SELECTED' : 'COPY SVG';
+    }, 1400);
+    showCopyToast(item.name);
+  });
+}
+
+// ── Toast ──
+function showCopyToast(name) {
+  const t = document.getElementById('copyToast');
+  document.getElementById('toastName').textContent = '"' + name + '" copied';
+  t.classList.add('show');
+  clearTimeout(window._toast);
+  window._toast = setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Download all SVGs as a zip-like HTML bundle (downloads individual file) ──
+function downloadAllSVGs() {
+  // Create a combined SVG sprite file
+  let sprite = '<svg xmlns="http://www.w3.org/2000/svg">\n';
+  for (const [key, data] of Object.entries(ILLUSTRATIONS)) {
+    const inner = data.svg
+      .replace('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">', '')
+      .replace('</svg>', '');
+    sprite += '  <symbol id="' + key + '" viewBox="0 0 200 200">' + inner + '</symbol>\n';
+  }
+  sprite += '</svg>';
+  const blob = new Blob([sprite], { type: 'image/svg+xml' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'illustration-library.svg';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── Event listeners ──
+document.getElementById('illSearch').addEventListener('input', function() {
+  illSearch = this.value.trim();
+  renderGrid();
+});
+
+function updateSizePresets(val) {
+  document.querySelectorAll('.size-preset').forEach(btn => {
+    btn.classList.toggle('active', +btn.dataset.size === val);
+  });
+}
+
+document.getElementById('illSizeSlider').addEventListener('input', function() {
+  illSize = +this.value;
+  document.getElementById('illSizeVal').textContent = illSize + 'px';
+  updateSizePresets(illSize);
+  renderGrid();
+});
+
+document.querySelectorAll('.size-preset').forEach(btn => {
+  btn.addEventListener('click', function() {
+    illSize = +this.dataset.size;
+    document.getElementById('illSizeSlider').value = illSize;
+    document.getElementById('illSizeVal').textContent = illSize + 'px';
+    updateSizePresets(illSize);
+    renderGrid();
+  });
+});
+
+document.querySelectorAll('.color-swatch').forEach(swatch => {
+  swatch.addEventListener('click', function() {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    this.classList.add('active');
+    illColor = this.dataset.color;
+    renderGrid();
+  });
+});
+
+document.querySelectorAll('.icon-cat-tab').forEach(tab => {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.icon-cat-tab').forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    illCat = this.dataset.cat;
+    renderGrid();
+  });
+});
+
+// Initial render
+renderGrid();
+</script>
+<script src="download.js"></script>
+<script>
+var __mdContent  = "# Illustration \u2014 Yubi Market Design System\n\n> **Version:** 1.0.0 | **Category:** Layout (51/54) | **Status:** Stable\n\n---\n\n## Overview\n\nScene illustrations for empty states, onboarding flows, feature callouts, and marketing surfaces. Each illustration uses a neutral ellipse base with semantic `currentColor` accents \u2014 swap the accent colour to match any product theme.\n\n- **80 illustrations** across **16 categories**\n- All use `viewBox=\"0 0 200 200\"` \u2014 scalable to any size\n- Background ellipse: neutral `#EDEEF0` base\n- Accent areas: `currentColor` \u2014 inherits from parent CSS `color`\n\n---\n\n## Categories\n\n| Category               | Count |\n|------------------------|-------|\n| Artificial Intelligence | 5    |\n| Astronomy              | 5     |\n| Blockchain Crypto      | 5     |\n| Communication          | 5     |\n| Documents              | 5     |\n| Electronics            | 5     |\n| Finance                | 5     |\n| Gaming                 | 5     |\n| Gym                    | 5     |\n| Insurance              | 5     |\n| Law                    | 5     |\n| Money                  | 5     |\n| Sci-Fi                 | 5     |\n| Shopping               | 5     |\n| Sports                 | 5     |\n| Transport              | 5     |\n\n---\n\n## Usage\n\n### Inline SVG (recommended)\n\nPaste the raw SVG directly and control the accent via CSS `color`:\n\n```html\n<!-- Default accent (inherits text colour) -->\n<div style=\"color: var(--accent); width: 120px; height: 120px;\">\n  <!-- paste illustration SVG here -->\n</div>\n\n<!-- Brand accent -->\n<div style=\"color: #4065C5; width: 120px; height: 120px;\">\n  <!-- paste illustration SVG here -->\n</div>\n```\n\n### SVG sprite (via symbol/use)\n\nUse the downloaded `illustration-library.svg` sprite:\n\n```html\n<!-- Link the sprite (once, hidden) -->\n<div style=\"display:none\">\n  <object data=\"illustration-library.svg\" type=\"image/svg+xml\"></object>\n</div>\n\n<!-- Reference by symbol ID -->\n<svg width=\"120\" height=\"120\" style=\"color: var(--accent);\">\n  <use href=\"illustration-library.svg#ai-brain\" />\n</svg>\n```\n\n### React component\n\n```tsx\ninterface IllustrationProps {\n  src: string;           // raw SVG string or imported SVG component\n  size?: number;         // default 120\n  color?: string;        // CSS color, defaults to currentColor\n  className?: string;\n}\n\nexport const Illustration = ({\n  src,\n  size = 120,\n  color = 'currentColor',\n  className,\n}: IllustrationProps) => (\n  <div\n    className={className}\n    style={{ width: size, height: size, color }}\n    dangerouslySetInnerHTML={{ __html: src }}\n    aria-hidden=\"true\"\n  />\n);\n```\n\n---\n\n## Colour theming\n\nIllustration accents respond to CSS `color`. Use any system colour token:\n\n| Token / Value          | Usage                        |\n|------------------------|------------------------------|\n| `var(--accent)`        | Orange \u2014 primary calls-to-action |\n| `#4065C5`              | Brand blue \u2014 Yubi brand surfaces |\n| `#1A1A2E`              | Primary dark \u2014 neutral/default   |\n| `#3F902B`              | Success \u2014 confirmation states    |\n| `#D98F00`              | Warning \u2014 cautionary states      |\n| `#CD3546`              | Danger \u2014 error / destructive     |\n\n---\n\n## Size guidelines\n\n| Context            | Recommended size |\n|--------------------|-----------------|\n| Empty state (page) | 160\u2013200px       |\n| Empty state (card) | 120px           |\n| Onboarding slide   | 200\u2013240px       |\n| Feature callout    | 80\u2013120px        |\n| Marketing hero     | 240\u2013320px       |\n\n---\n\n## Accessibility\n\n- Illustrations are decorative \u2014 always wrap with `aria-hidden=\"true\"`\n- Never use illustrations to convey information that is not also present in text\n- Ensure sufficient contrast between illustration accent colour and surrounding background\n- Do not use illustrations as the sole indicator of status or state\n\n```html\n<!-- Correct \u2014 decorative, hidden from screen readers -->\n<div aria-hidden=\"true\" style=\"color: var(--accent); width: 120px;\">\n  <!-- SVG -->\n</div>\n\n<!-- If illustration has semantic meaning, provide a text alternative -->\n<figure>\n  <div aria-hidden=\"true\" style=\"color: var(--accent); width: 120px;\">\n    <!-- SVG -->\n  </div>\n  <figcaption class=\"sr-only\">Empty state: no transactions found</figcaption>\n</figure>\n```\n\n---\n\n## Illustration IDs\n\n### Artificial Intelligence\n`ai-brain` \u00b7 `ai-chip` \u00b7 `ai-robot` \u00b7 `ai-neural` \u00b7 `ai-data`\n\n### Astronomy\n`astro-planet` \u00b7 `astro-rocket` \u00b7 `astro-telescope` \u00b7 `astro-moon` \u00b7 `astro-satellite`\n\n### Blockchain Crypto\n`bc-bitcoin` \u00b7 `bc-wallet` \u00b7 `bc-chain` \u00b7 `bc-node` \u00b7 `bc-ethereum`\n\n### Communication\n`comm-chat` \u00b7 `comm-email` \u00b7 `comm-phone` \u00b7 `comm-video` \u00b7 `comm-bell`\n\n### Documents\n`doc-file` \u00b7 `doc-folder` \u00b7 `doc-contract` \u00b7 `doc-report` \u00b7 `doc-clipboard`\n\n### Electronics\n`elec-laptop` \u00b7 `elec-phone` \u00b7 `elec-headphones` \u00b7 `elec-monitor` \u00b7 `elec-battery`\n\n### Finance\n`fin-coins` \u00b7 `fin-chart` \u00b7 `fin-bank` \u00b7 `fin-card` \u00b7 `fin-piggy`\n\n### Gaming\n`game-controller` \u00b7 `game-trophy` \u00b7 `game-dice` \u00b7 `game-medal` \u00b7 `game-coin`\n\n### Gym\n`gym-dumbbell` \u00b7 `gym-barbell` \u00b7 `gym-yoga` \u00b7 `gym-running` \u00b7 `gym-kettlebell`\n\n### Insurance\n`ins-shield` \u00b7 `ins-umbrella` \u00b7 `ins-health` \u00b7 `ins-home` \u00b7 `ins-car`\n\n### Law\n`law-scales` \u00b7 `law-gavel` \u00b7 `law-books` \u00b7 `law-badge` \u00b7 `law-document`\n\n### Money\n`mon-coins` \u00b7 `mon-bill` \u00b7 `mon-safe` \u00b7 `mon-wallet` \u00b7 `mon-exchange`\n\n### Sci-Fi\n`scifi-ship` \u00b7 `scifi-alien` \u00b7 `scifi-portal` \u00b7 `scifi-robot` \u00b7 `scifi-laser`\n\n### Shopping\n`shop-cart` \u00b7 `shop-bag` \u00b7 `shop-store` \u00b7 `shop-tag` \u00b7 `shop-gift`\n\n### Sports\n`sport-ball` \u00b7 `sport-trophy` \u00b7 `sport-medal` \u00b7 `sport-shoe` \u00b7 `sport-stopwatch`\n\n### Transport\n`trans-car` \u00b7 `trans-plane` \u00b7 `trans-bus` \u00b7 `trans-train` \u00b7 `trans-bike`\n\n---\n\n## Related Components\n\n- **Icon** (`icon.html`) \u2014 inline SVG icon system with size/colour tokens\n- **Empty State** \u2014 combine an illustration with a heading + CTA button\n- **Onboarding** \u2014 full-screen slides using large (200px+) illustrations\n\n---\n\n*Yubi Market Design System \u00b7 Illustration v1.0.0 \u00b7 Internal Use*\n";
+var __mdFilename = "illustration.md";
+</script>
+</body>
+</html>

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toggle — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.comp-hero { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 48px 56px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center; }
+.dl-card { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon { width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-card-desc strong { color: var(--text-1); font-weight: 600; }
+.dl-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: background .15s, transform .1s; }
+.dl-btn:hover { background: #E84800; transform: translateY(-1px); }
+.demo-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.spec-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.code-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.related-section { padding: 40px 56px 60px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+.demo-stage { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 32px; }
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.spec-table { width: 100%; border-collapse: collapse; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 12.5px; }
+.spec-table th { text-align: left; padding: 9px 14px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+.spec-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table td:first-child { color: var(--text-1); font-weight: 500; }
+.sv { font-family: var(--mono); font-size: 11px; color: var(--accent-text); background: var(--accent-dim); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--accent); display: inline-block; }
+.color-swatches { display: flex; flex-direction: column; gap: 6px; }
+.color-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; }
+.swatch { width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(0,0,0,.1); flex-shrink: 0; }
+.color-name { font-size: 12px; font-weight: 600; color: var(--text-1); flex: 1; }
+.color-use { font-size: 11px; color: var(--text-3); }
+.anatomy-wrap { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.anatomy-header { padding: 10px 14px; background: var(--bg-inset); border-bottom: 1px solid var(--border); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.anatomy-body { padding: 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+.anatomy-item { display: flex; align-items: flex-start; gap: 10px; }
+.anatomy-num { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.anatomy-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.anatomy-text strong { color: var(--text-1); }
+.related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.related-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; display: block; transition: border-color .15s, background .15s; }
+.related-card:hover { border-color: var(--accent); background: var(--accent-dim); }
+.related-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.related-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #111; color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 12.5px; font-family: var(--mono); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 9999; white-space: nowrap; }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+@media (max-width: 1099px) { .comp-hero { grid-template-columns: 1fr; } .spec-grid { grid-template-columns: 1fr; } .related-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 809px) { .comp-hero, .demo-section, .spec-section, .code-section, .related-section { padding: 32px 20px; } .related-grid { grid-template-columns: 1fr; } }
+
+/* ── Toggle component styles ── */
+.toggle-demo-grid { display: flex; flex-direction: column; gap: 32px; }
+.toggle-section-title { font-size: 11px; color: var(--text-3); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-family: var(--mono); margin-bottom: 16px; }
+.toggle-row { display: flex; flex-wrap: wrap; gap: 24px; align-items: center; }
+.demo-divider { height: 1px; background: var(--border); margin: 4px 0; }
+
+/* Toggle switch */
+.ym-toggle {
+  display: inline-flex; align-items: center; gap: 10px;
+  cursor: pointer; user-select: none;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+.ym-toggle.toggle-disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+.ym-toggle-input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+/* The track */
+.ym-toggle-track {
+  position: relative;
+  width: 40px; height: 22px;
+  background: var(--border);
+  border-radius: 100px;
+  transition: background 200ms;
+  flex-shrink: 0;
+}
+.ym-toggle:hover:not(.toggle-disabled) .ym-toggle-track { background: var(--text-3); }
+.ym-toggle-input:checked ~ .ym-toggle-track { background: #4065C5; }
+.ym-toggle-input:focus-visible ~ .ym-toggle-track {
+  outline: 2px solid #4065C5; outline-offset: 2px;
+}
+
+/* The thumb */
+.ym-toggle-thumb {
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 16px; height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0,0,0,.2);
+  transition: left 200ms;
+}
+.ym-toggle-input:checked ~ .ym-toggle-track .ym-toggle-thumb { left: 21px; }
+
+/* Label text */
+.ym-toggle-label { font-size: 14px; font-weight: 500; color: var(--text-1); line-height: 1; }
+.ym-toggle-desc { font-size: 12px; color: var(--text-3); }
+
+/* Sizes */
+.ym-toggle.toggle-l .ym-toggle-track { width: 52px; height: 28px; }
+.ym-toggle.toggle-l .ym-toggle-thumb { width: 22px; height: 22px; top: 3px; left: 3px; }
+.ym-toggle.toggle-l .ym-toggle-input:checked ~ .ym-toggle-track .ym-toggle-thumb { left: 27px; }
+.ym-toggle.toggle-s .ym-toggle-track { width: 32px; height: 18px; }
+.ym-toggle.toggle-s .ym-toggle-thumb { width: 12px; height: 12px; top: 3px; left: 3px; }
+.ym-toggle.toggle-s .ym-toggle-input:checked ~ .ym-toggle-track .ym-toggle-thumb { left: 17px; }
+
+/* Row style (label on both sides) */
+.toggle-setting-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 16px; background: var(--bg-panel); border: 1px solid var(--border);
+  border-radius: 10px; gap: 16px;
+}
+.toggle-setting-info { display: flex; flex-direction: column; gap: 2px; }
+.toggle-setting-title { font-size: 14px; font-weight: 500; color: var(--text-1); font-family: 'Inter', -apple-system, sans-serif; }
+.toggle-setting-desc { font-size: 12px; color: var(--text-3); font-family: 'Inter', -apple-system, sans-serif; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Toggle</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub active" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="combobox.html">Combobox</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub" href="form-layout.html">Forms</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="comp-hero">
+    <div>
+      <span class="page-eyebrow">21 / Forms</span>
+      <h1 class="page-title">Toggle</h1>
+      <p class="page-desc" style="margin-bottom:20px">Binary on/off switch for settings and preferences. Has immediate effect — use for settings that apply instantly, unlike checkboxes in forms that require submission. Three sizes: L, M (default), S.</p>
+      <div class="page-meta">
+        <span class="meta-chip">On / Off</span>
+        <span class="meta-chip">L / M / S sizes</span>
+        <span class="meta-chip">Disabled state</span>
+        <span class="meta-chip">Settings row variant</span>
+        <span class="meta-chip">200ms transition</span>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14,2 14,8 20,8"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">toggle.md</div>
+          <div class="dl-file-meta">Markdown · All specs · Interactions</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">Upload to <strong>Claude</strong> for exact toggle tokens and production-ready code.</p>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" class="dl-btn" href="downloads/toggle.md" download="toggle.md">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 10v1a1 1 0 001 1h8a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download toggle.md
+      </a>
+    </div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="demo-section" id="demo">
+    <div class="section-label">Live Demo — Fully Interactive</div>
+    <div class="demo-stage">
+      <div class="toggle-demo-grid">
+
+        <!-- States -->
+        <div>
+          <div class="toggle-section-title">States</div>
+          <div class="toggle-row">
+            <label class="ym-toggle">
+              <input class="ym-toggle-input" type="checkbox">
+              <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              <span class="ym-toggle-label">Off</span>
+            </label>
+            <label class="ym-toggle">
+              <input class="ym-toggle-input" type="checkbox" checked>
+              <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              <span class="ym-toggle-label">On</span>
+            </label>
+            <label class="ym-toggle toggle-disabled">
+              <input class="ym-toggle-input" type="checkbox" disabled>
+              <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              <span class="ym-toggle-label">Disabled Off</span>
+            </label>
+            <label class="ym-toggle toggle-disabled">
+              <input class="ym-toggle-input" type="checkbox" checked disabled>
+              <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              <span class="ym-toggle-label">Disabled On</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="demo-divider"></div>
+
+        <!-- Sizes -->
+        <div>
+          <div class="toggle-section-title">Sizes</div>
+          <div class="toggle-row">
+            <label class="ym-toggle toggle-l">
+              <input class="ym-toggle-input" type="checkbox" checked>
+              <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              <span class="ym-toggle-label">Large · 52×28px</span>
+            </label>
+            <label class="ym-toggle">
+              <input class="ym-toggle-input" type="checkbox" checked>
+              <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              <span class="ym-toggle-label">Medium · 40×22px</span>
+            </label>
+            <label class="ym-toggle toggle-s">
+              <input class="ym-toggle-input" type="checkbox" checked>
+              <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              <span class="ym-toggle-label">Small · 32×18px</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="demo-divider"></div>
+
+        <!-- Settings rows -->
+        <div>
+          <div class="toggle-section-title">Settings Row Pattern</div>
+          <div style="display:flex;flex-direction:column;gap:8px;max-width:520px">
+            <div class="toggle-setting-row">
+              <div class="toggle-setting-info">
+                <div class="toggle-setting-title">Email Notifications</div>
+                <div class="toggle-setting-desc">Receive updates on loan applications</div>
+              </div>
+              <label class="ym-toggle" style="gap:0">
+                <input class="ym-toggle-input" type="checkbox" checked>
+                <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              </label>
+            </div>
+            <div class="toggle-setting-row">
+              <div class="toggle-setting-info">
+                <div class="toggle-setting-title">Two-Factor Authentication</div>
+                <div class="toggle-setting-desc">Add extra security to your account</div>
+              </div>
+              <label class="ym-toggle" style="gap:0">
+                <input class="ym-toggle-input" type="checkbox">
+                <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              </label>
+            </div>
+            <div class="toggle-setting-row">
+              <div class="toggle-setting-info">
+                <div class="toggle-setting-title">Auto-approve Limit</div>
+                <div class="toggle-setting-desc">Not available for this account type</div>
+              </div>
+              <label class="ym-toggle toggle-disabled" style="gap:0">
+                <input class="ym-toggle-input" type="checkbox" disabled>
+                <div class="ym-toggle-track"><div class="ym-toggle-thumb"></div></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ANATOMY + SPECS -->
+  <div class="spec-section" id="anatomy">
+    <div class="section-label">Anatomy & Measurements</div>
+    <div class="spec-grid">
+      <div>
+        <div class="anatomy-wrap">
+          <div class="anatomy-header">Anatomy</div>
+          <div class="anatomy-body">
+            <div class="anatomy-item">
+              <div class="anatomy-num">1</div>
+              <div class="anatomy-text"><strong>Track</strong> — pill shape, 40×22px (M). Gray off, blue (#4065C5) on.</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">2</div>
+              <div class="anatomy-text"><strong>Thumb</strong> — 16×16px white circle, 3px inset from edge. Slides left→right on toggle.</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">3</div>
+              <div class="anatomy-text"><strong>Label</strong> (optional) — 14px/500 text to the right. Can also be placed before (label — toggle).</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">4</div>
+              <div class="anatomy-text"><strong>Settings Row</strong> — full-width row with title/description on left, toggle on right.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="specs">
+        <table class="spec-table">
+          <thead><tr><th>Property</th><th>L / M / S</th></tr></thead>
+          <tbody>
+            <tr><td>Track width</td><td><span class="sv">52 / 40 / 32px</span></td></tr>
+            <tr><td>Track height</td><td><span class="sv">28 / 22 / 18px</span></td></tr>
+            <tr><td>Thumb size</td><td><span class="sv">22 / 16 / 12px</span></td></tr>
+            <tr><td>Thumb inset</td><td><span class="sv">3px all sizes</span></td></tr>
+            <tr><td>Track radius</td><td><span class="sv">100px (pill)</span></td></tr>
+            <tr><td>Off track color</td><td><span class="sv">--border</span></td></tr>
+            <tr><td>On track color</td><td><span class="sv">#4065C5</span></td></tr>
+            <tr><td>Thumb color</td><td><span class="sv">#ffffff</span></td></tr>
+            <tr><td>Transition</td><td><span class="sv">200ms ease</span></td></tr>
+            <tr><td>Disabled opacity</td><td><span class="sv">0.4</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOR TOKENS -->
+  <div class="spec-section" id="colors">
+    <div class="section-label">Color Tokens</div>
+    <div class="color-swatches" style="max-width:520px">
+      <div class="color-row"><div class="swatch" style="background:#4065C5"></div><div class="color-name">--checked · #4065C5</div><div class="color-use">On-state track color</div></div>
+      <div class="color-row"><div class="swatch" style="background:var(--border);border:1px solid var(--text-3)"></div><div class="color-name">--border</div><div class="color-use">Off-state track color</div></div>
+      <div class="color-row"><div class="swatch" style="background:#fff;border:1px solid rgba(0,0,0,.15)"></div><div class="color-name">#ffffff</div><div class="color-use">Thumb fill</div></div>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="code-section" id="code">
+    <div class="section-label">Code</div>
+    <div class="code-tabs">
+      <div class="code-tab active" onclick="switchTab(this,'tab-html')">HTML</div>
+      <div class="code-tab" onclick="switchTab(this,'tab-css')">CSS</div>
+      <div class="code-tab" onclick="switchTab(this,'tab-react')">React</div>
+    </div>
+    <div class="code-panel active" id="tab-html">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <div class="code-block"><span class="cmt">&lt;!-- Basic toggle --&gt;</span>
+<span class="tag">&lt;label</span> <span class="attr">class</span>=<span class="str">"ym-toggle"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">class</span>=<span class="str">"ym-toggle-input"</span> <span class="attr">type</span>=<span class="str">"checkbox"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-toggle-track"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-toggle-thumb"</span><span class="tag">&gt;&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"ym-toggle-label"</span><span class="tag">&gt;</span>Email Notifications<span class="tag">&lt;/span&gt;</span>
+<span class="tag">&lt;/label&gt;</span>
+
+<span class="cmt">&lt;!-- Settings row --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"toggle-setting-row"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"toggle-setting-info"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"toggle-setting-title"</span><span class="tag">&gt;</span>Auto-approve<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"toggle-setting-desc"</span><span class="tag">&gt;</span>Apply rules automatically<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;label</span> <span class="attr">class</span>=<span class="str">"ym-toggle"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;input</span> <span class="attr">class</span>=<span class="str">"ym-toggle-input"</span> <span class="attr">type</span>=<span class="str">"checkbox"</span> <span class="attr">checked</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-toggle-track"</span><span class="tag">&gt;&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-toggle-thumb"</span><span class="tag">&gt;&lt;/div&gt;&lt;/div&gt;</span>
+  <span class="tag">&lt;/label&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+    </div>
+    <div class="code-panel" id="tab-css">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <div class="code-block"><span class="fn">.ym-toggle</span> { <span class="kw">display</span>: inline-flex; <span class="kw">align-items</span>: center; <span class="kw">gap</span>: <span class="num">10px</span>; <span class="kw">cursor</span>: pointer; }
+<span class="fn">.ym-toggle-input</span> { <span class="kw">position</span>: absolute; <span class="kw">opacity</span>: <span class="num">0</span>; <span class="kw">width</span>: <span class="num">0</span>; <span class="kw">height</span>: <span class="num">0</span>; }
+<span class="fn">.ym-toggle-track</span> {
+  <span class="kw">position</span>: relative; <span class="kw">width</span>: <span class="num">40px</span>; <span class="kw">height</span>: <span class="num">22px</span>;
+  <span class="kw">background</span>: <span class="kw">var</span>(--border); <span class="kw">border-radius</span>: <span class="num">100px</span>;
+  <span class="kw">transition</span>: background <span class="num">200ms</span>;
+}
+<span class="fn">.ym-toggle-input:checked ~ .ym-toggle-track</span> { <span class="kw">background</span>: <span class="num">#4065C5</span>; }
+<span class="fn">.ym-toggle-thumb</span> {
+  <span class="kw">position</span>: absolute; <span class="kw">top</span>: <span class="num">3px</span>; <span class="kw">left</span>: <span class="num">3px</span>;
+  <span class="kw">width</span>: <span class="num">16px</span>; <span class="kw">height</span>: <span class="num">16px</span>;
+  <span class="kw">background</span>: <span class="num">#fff</span>; <span class="kw">border-radius</span>: <span class="num">50%</span>;
+  <span class="kw">box-shadow</span>: <span class="num">0 1px 3px</span> rgba(<span class="num">0,0,0,.2</span>);
+  <span class="kw">transition</span>: left <span class="num">200ms</span>;
+}
+<span class="fn">.ym-toggle-input:checked ~ .ym-toggle-track .ym-toggle-thumb</span> { <span class="kw">left</span>: <span class="num">21px</span>; }
+<span class="fn">.ym-toggle.toggle-disabled</span> { <span class="kw">opacity</span>: <span class="num">0.4</span>; <span class="kw">pointer-events</span>: none; }</div>
+    </div>
+    <div class="code-panel" id="tab-react">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <div class="code-block"><span class="kw">import</span> React <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">interface</span> ToggleProps {
+  label?: <span class="kw">string</span>;
+  checked?: <span class="kw">boolean</span>;
+  disabled?: <span class="kw">boolean</span>;
+  size?: <span class="str">'l'</span> | <span class="str">'m'</span> | <span class="str">'s'</span>;
+  onChange?: (checked: <span class="kw">boolean</span>) =&gt; <span class="kw">void</span>;
+}
+
+<span class="kw">export const</span> <span class="fn">Toggle</span>: React.FC&lt;ToggleProps&gt; = ({ label, checked, disabled, size = <span class="str">'m'</span>, onChange }) =&gt; (
+  &lt;<span class="tag">label</span> <span class="attr">className</span>={`ym-toggle ${size !== <span class="str">'m'</span> ? `toggle-${size}` : <span class="str">''</span>} ${disabled ? <span class="str">'toggle-disabled'</span> : <span class="str">''</span>}`}&gt;
+    &lt;<span class="tag">input</span> <span class="attr">className</span>=<span class="str">"ym-toggle-input"</span> <span class="attr">type</span>=<span class="str">"checkbox"</span>
+      <span class="attr">checked</span>={checked} <span class="attr">disabled</span>={disabled}
+      <span class="attr">onChange</span>={e =&gt; onChange?.(e.target.checked)} /&gt;
+    &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-toggle-track"</span>&gt;&lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-toggle-thumb"</span>/&gt;&lt;/<span class="tag">div</span>&gt;
+    {label &amp;&amp; &lt;<span class="tag">span</span> <span class="attr">className</span>=<span class="str">"ym-toggle-label"</span>&gt;{label}&lt;/<span class="tag">span</span>&gt;}
+  &lt;/<span class="tag">label</span>&gt;
+);
+
+<span class="cmt">// Usage</span>
+<span class="cmt">// &lt;Toggle label="Email Notifications" checked={enabled} onChange={setEnabled} /&gt;</span>
+<span class="cmt">// &lt;Toggle size="s" checked={val} onChange={setVal} /&gt;</span></div>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="related-section">
+    <div class="section-label">Related Components</div>
+    <div class="related-grid">
+      <a class="related-card" href="checkbox.html">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Checkbox</div>
+      </a>
+      <a class="related-card" href="radio.html">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Radio</div>
+      </a>
+      <a class="related-card" href="button.html">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Button</div>
+      </a>
+    </div>
+  </div>
+
+  <footer style="padding:20px 56px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:11.5px;color:var(--text-3)">Yubi Market Design System · Toggle v1.0.0 · Internal Use</span>
+    <span style="font-size:11.5px;color:var(--text-3)">2026-04-02</span>
+  </footer>
+
+</main>
+
+<div id="toast">Copied!</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('ym-theme', next);
+  document.getElementById('icon-moon').style.display = isDark ? 'block' : 'none';
+  document.getElementById('icon-sun').style.display  = isDark ? 'none'  : 'block';
+}
+(function() {
+  const saved = localStorage.getItem('ym-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', saved);
+  if (saved === 'dark') {
+    document.getElementById('icon-moon').style.display = 'none';
+    document.getElementById('icon-sun').style.display  = 'block';
+  }
+})();
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function switchTab(el, panelId) {
+  document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+function copyCode(btn) {
+  const panel = btn.closest('.code-panel');
+  const text = panel.querySelector('.code-block').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    showToast();
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+<script src="download.js"></script>
+<script id="__dl_data">
+var __mdContent  = "# Toggle \u2014 Yubi Market Design System\n\n> **Version:** 1.0.0 | **Category:** Forms (21/54) | **Status:** Stable\n\n---\n\n## Overview\n\nBinary on/off switch for settings and feature flags. Unlike checkboxes, toggles have immediate effect \u2014 no form submission required. Use for settings that apply instantly (notifications, dark mode, feature flags).\n\n---\n\n## Sizes\n\n| Size | Track        | Thumb    | Left (off) | Left (on) |\n|------|-------------|----------|------------|-----------|\n| L    | 52 \u00d7 28px   | 22 \u00d7 22px | 3px       | 27px      |\n| M    | 40 \u00d7 22px   | 16 \u00d7 16px | 3px       | 21px      |\n| S    | 32 \u00d7 18px   | 12 \u00d7 12px | 3px       | 17px      |\n\n---\n\n## States\n\n| State          | Track color  | Thumb    |\n|----------------|-------------|----------|\n| Off            | `--border`  | white, left |\n| On             | `#4065C5`   | white, right |\n| Off Disabled   | `--border`  | white, left \u2014 opacity 0.4 |\n| On Disabled    | `#4065C5`   | white, right \u2014 opacity 0.4 |\n\n---\n\n## Measurements\n\n| Property         | Value      |\n|------------------|------------|\n| Track radius     | 100px (pill) |\n| Thumb radius     | 50%        |\n| Thumb inset      | 3px all sizes |\n| Off track color  | `--border` |\n| On track color   | `#4065C5`  |\n| Thumb color      | `#ffffff`  |\n| Transition       | 200ms ease |\n| Disabled opacity | 0.4        |\n\n---\n\n## HTML\n\n```html\n<!-- Basic toggle (medium, default) -->\n<label class=\"ym-toggle\">\n  <input class=\"ym-toggle-input\" type=\"checkbox\">\n  <div class=\"ym-toggle-track\">\n    <div class=\"ym-toggle-thumb\"></div>\n  </div>\n  <span class=\"ym-toggle-label\">Email Notifications</span>\n</label>\n\n<!-- Large -->\n<label class=\"ym-toggle toggle-l\">\n  <input class=\"ym-toggle-input\" type=\"checkbox\" checked>\n  <div class=\"ym-toggle-track\"><div class=\"ym-toggle-thumb\"></div></div>\n  <span class=\"ym-toggle-label\">Large toggle</span>\n</label>\n\n<!-- Disabled -->\n<label class=\"ym-toggle toggle-disabled\">\n  <input class=\"ym-toggle-input\" type=\"checkbox\" disabled>\n  <div class=\"ym-toggle-track\"><div class=\"ym-toggle-thumb\"></div></div>\n</label>\n\n<!-- Settings row -->\n<div class=\"toggle-setting-row\">\n  <div class=\"toggle-setting-info\">\n    <div class=\"toggle-setting-title\">Auto-approve</div>\n    <div class=\"toggle-setting-desc\">Apply rules automatically</div>\n  </div>\n  <label class=\"ym-toggle\">\n    <input class=\"ym-toggle-input\" type=\"checkbox\" checked>\n    <div class=\"ym-toggle-track\"><div class=\"ym-toggle-thumb\"></div></div>\n  </label>\n</div>\n```\n\n---\n\n## CSS\n\n```css\n.ym-toggle { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }\n.ym-toggle-input { position: absolute; opacity: 0; width: 0; height: 0; }\n\n.ym-toggle-track {\n  position: relative; width: 40px; height: 22px;\n  background: var(--border); border-radius: 100px;\n  transition: background 200ms; flex-shrink: 0;\n}\n.ym-toggle-input:checked ~ .ym-toggle-track { background: #4065C5; }\n\n.ym-toggle-thumb {\n  position: absolute; top: 3px; left: 3px;\n  width: 16px; height: 16px; background: #fff;\n  border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,.2);\n  transition: left 200ms;\n}\n.ym-toggle-input:checked ~ .ym-toggle-track .ym-toggle-thumb { left: 21px; }\n\n/* Sizes */\n.ym-toggle.toggle-l .ym-toggle-track { width: 52px; height: 28px; }\n.ym-toggle.toggle-l .ym-toggle-thumb { width: 22px; height: 22px; }\n.ym-toggle.toggle-l .ym-toggle-input:checked ~ .ym-toggle-track .ym-toggle-thumb { left: 27px; }\n\n.ym-toggle.toggle-s .ym-toggle-track { width: 32px; height: 18px; }\n.ym-toggle.toggle-s .ym-toggle-thumb { width: 12px; height: 12px; }\n.ym-toggle.toggle-s .ym-toggle-input:checked ~ .ym-toggle-track .ym-toggle-thumb { left: 17px; }\n\n.ym-toggle.toggle-disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }\n\n/* Settings row */\n.toggle-setting-row {\n  display: flex; justify-content: space-between; align-items: center;\n  padding: 12px 16px; background: var(--bg-panel);\n  border: 1px solid var(--border); border-radius: 10px;\n}\n.toggle-setting-title { font-size: 14px; font-weight: 500; color: var(--text-1); }\n.toggle-setting-desc { font-size: 12px; color: var(--text-3); }\n```\n\n---\n\n## Accessibility\n\n- Use `role=\"switch\"` and `aria-checked` for screen reader support\n- Always associate a visible label (or `aria-label`) with the toggle\n- Toggle should respond to Space key to toggle, Enter is optional\n- Settings row: the entire row is not clickable \u2014 only the toggle itself\n\n---\n\n## When to use Toggle vs Checkbox\n\n| Toggle | Checkbox |\n|--------|----------|\n| Immediate effect (settings) | Requires form submit |\n| Single on/off | Can be part of multi-select group |\n| Does not need Submit button | Usually has a Submit/Save button |\n\n---\n\n## Related Components\n\n- **Checkbox** (`checkbox.html`) \u2014 multi-select, requires form submit\n- **Radio** (`radio.html`) \u2014 single from group\n- **Button** (`button.html`) \u2014 explicit action trigger\n\n---\n\n*Yubi Market Design System \u00b7 Toggle v1.0.0 \u00b7 Internal Use*\n";
+var __mdFilename = "toggle.md";
+</script>
+</body>
+</html>

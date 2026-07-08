@@ -1,82 +1,173 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Reveal from "../_components/Reveal";
-import styles from "./community.module.css";
+import OptimisticHeart from "../_components/OptimisticHeart";
+import CtaButton from "../_components/CtaButton";
+import s from "./community.module.css";
 
 export const metadata: Metadata = {
   title: "Community — Optimistic",
   description:
-    "Join the Optimistic community. Propose components, contribute code, share what you ship, and help shape the roadmap.",
+    "Optimistic is built in the open. Propose components, contribute code, improve the docs, and land your first contribution within the hour.",
 };
 
+/* pixel-family glyphs (8px grid, same family as the logo O) */
+const P = ({ c, r, cls }: { c: number; r: number; cls?: string }) => (
+  <rect className={cls} x={c * 8} y={r * 8} width={6} height={6} rx={1.5} />
+);
+
+/* ways in — one glyph, one hover behaviour each */
 const WAYS = [
   {
-    icon: "spark",
     title: "Propose a component",
     body: "Spotted a gap? Open a proposal with the use case and a sketch. If it helps teams ship, it belongs in the system.",
+    icon: (
+      <svg className={`${s.wayIco} ${s.icoPlus}`} viewBox="0 0 38 38" aria-hidden="true">
+        <P c={2} r={0} /><P c={2} r={1} /><P c={2} r={3} /><P c={2} r={4} />
+        <P c={0} r={2} /><P c={1} r={2} /><P c={3} r={2} /><P c={4} r={2} />
+        <P c={2} r={2} cls={s.key} />
+      </svg>
+    ),
   },
   {
-    icon: "code",
     title: "Contribute code",
-    body: "Improve a React or Angular implementation, fix a token, tighten an a11y path. Every PR moves the system forward.",
+    body: "Improve a React or Angular implementation, fix a token, tighten an accessibility path. Every pull request moves the system forward.",
+    icon: (
+      <svg className={`${s.wayIco} ${s.icoCode}`} viewBox="0 0 38 38" aria-hidden="true">
+        <P c={1} r={1} cls={s.bl} /><P c={0} r={2} cls={s.bl} /><P c={1} r={3} cls={s.bl} />
+        <P c={3} r={1} cls={s.br} /><P c={4} r={2} cls={`${s.br} ${s.key}`} /><P c={3} r={3} cls={s.br} />
+      </svg>
+    ),
   },
   {
-    icon: "doc",
     title: "Improve the docs",
-    body: "Better examples, clearer do's and don'ts, sharper anatomy. Documentation is a first-class contribution.",
+    body: "Better examples, clearer anatomy, sharper do's and don'ts. Documentation is a first class contribution here, not an afterthought.",
+    icon: (
+      <svg className={`${s.wayIco} ${s.icoDocs}`} viewBox="0 0 38 38" aria-hidden="true">
+        <P c={0} r={1} cls={s.d1} /><P c={1} r={1} cls={s.d1} /><P c={2} r={1} cls={s.d1} /><P c={3} r={1} cls={s.d1} /><P c={4} r={1} cls={`${s.d1} ${s.key}`} />
+        <P c={0} r={2} cls={s.d2} /><P c={1} r={2} cls={s.d2} /><P c={2} r={2} cls={s.d2} />
+        <P c={0} r={3} cls={s.d3} /><P c={1} r={3} cls={s.d3} /><P c={2} r={3} cls={s.d3} /><P c={3} r={3} cls={s.d3} />
+      </svg>
+    ),
   },
   {
-    icon: "show",
     title: "Show what you built",
-    body: "Shipped something with Optimistic? Share it. Real products are the best proof — and the best inspiration.",
+    body: "Shipped something with Optimistic? Share it. Real products are the best proof and the best inspiration.",
+    icon: (
+      <svg className={`${s.wayIco} ${s.icoEye}`} viewBox="0 0 38 38" aria-hidden="true">
+        <P c={1} r={1} /><P c={2} r={1} /><P c={3} r={1} />
+        <P c={0} r={2} /><P c={4} r={2} />
+        <P c={1} r={3} /><P c={2} r={3} /><P c={3} r={3} />
+        <P c={2} r={2} cls={`${s.pupil} ${s.key}`} />
+      </svg>
+    ),
+  },
+];
+
+/* the first hour — a short path with a visible finish line */
+const STEPS = [
+  {
+    n: "01",
+    title: "Take the code",
+    body: "Star the repo and clone it. Everything runs locally in one command; no gatekeeping, no setup maze.",
+    cmd: "$ git clone optimistic/ui",
+  },
+  {
+    n: "02",
+    title: "Pick a first issue",
+    body: "Issues tagged good-first are scoped to land in an evening, and a maintainer walks beside you the whole way.",
+    cmd: "$ gh issue list -l good-first",
+  },
+  {
+    n: "03",
+    title: "Ship it",
+    body: "Open the pull request. We review kindly, merge fast, and your name enters the changelog for good.",
+    cmd: "$ gh pr create",
   },
 ];
 
 const VALUES = [
-  { title: "Kind by default", body: "Critique the work, support the person. Optimism extends to how we treat each other." },
-  { title: "Open in the build", body: "Decisions happen in the open, with reasoning attached. No black boxes." },
-  { title: "Ship over perfect", body: "We'd rather release, learn, and iterate than polish in private forever." },
+  { n: "01", title: "Kind by default", body: "Critique the work, support the person. Optimism extends to how we treat each other." },
+  { n: "02", title: "Open in the build", body: "Decisions happen in the open, with the reasoning attached. No black boxes." },
+  { n: "03", title: "Ship over perfect", body: "We would rather release, learn and iterate than polish in private forever." },
 ];
 
 export default function CommunityPage() {
   return (
-    <main className="page-shell">
-      <header className="page-head">
-        <div className="container">
+    <main className={s.page}>
+      <div className={s.grain} aria-hidden="true" />
+      <div className={s.vlines} aria-hidden="true" />
+
+      {/* ── hero: the community, counted live ── */}
+      <header className={s.hero}>
+        <div className={s.inner}>
           <Reveal>
-            <span className="eyebrow">Community</span>
-            <h1 className="page-title">
-              Build it with us, <span className="gradient-text">in the open.</span>
+            <span className={s.eyebrow}>
+              <i className={s.hatch} /> COMMUNITY
+            </span>
+          </Reveal>
+          <Reveal delay={120}>
+            <h1 className={s.heroTitle}>
+              Built in the open,
+              <br />
+              <span className={s.warm}>counted in the open.</span>
             </h1>
-            <p className="page-lead">
-              Optimistic is better with more minds. Whether you write code,
-              design components, or just ship great products — there&apos;s a
-              place for you here.
+          </Reveal>
+          <Reveal delay={220}>
+            <p className={s.lead}>
+              A design system is a promise kept by many hands. These counters
+              are live and honest; watch them move, then add yours.
             </p>
-            <div className={styles.headActions}>
-              <Link href="/contact" className="btn-primary">Join the community</Link>
-              <a href="#contribute" className="btn-ghost">How to contribute →</a>
+          </Reveal>
+          <Reveal delay={320}>
+            <div className={s.heroChips}>
+              <OptimisticHeart hint="click the heart" />
             </div>
           </Reveal>
         </div>
       </header>
 
-      {/* WAYS TO CONTRIBUTE */}
-      <section id="contribute" className="content-section">
-        <div className="container">
+      {/* ── ways in ── */}
+      <section className={s.section}>
+        <div className={s.inner}>
           <Reveal>
-            <span className="eyebrow">Ways to contribute</span>
-            <h2 className="h2" style={{ marginTop: "var(--sp-3)" }}>
-              Every contribution counts
-            </h2>
+            <span className={s.eyebrow}>
+              <i className={s.hatch} /> WAYS IN
+            </span>
+            <h2 className={s.title}>Every contribution counts.</h2>
           </Reveal>
-          <div className="grid-2" style={{ marginTop: "var(--sp-12)" }}>
-            {WAYS.map((w, i) => (
-              <Reveal key={w.title} delay={i * 60}>
-                <article className="card">
-                  <div className={styles.icon}><WayIcon name={w.icon} /></div>
-                  <h3 className="h3" style={{ marginTop: "var(--sp-5)" }}>{w.title}</h3>
-                  <p className={styles.cardBody}>{w.body}</p>
+        </div>
+        <div className={s.wayRow}>
+          {WAYS.map((w, i) => (
+            <Reveal key={w.title} delay={i * 80}>
+              <article className={s.wayCell}>
+                {w.icon}
+                <h3 className={s.wayTitle}>{w.title}</h3>
+                <p className={s.wayBody}>{w.body}</p>
+              </article>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ── the first hour ── */}
+      <section className={s.section}>
+        <div className={s.inner}>
+          <Reveal>
+            <span className={s.eyebrow}>
+              <i className={s.hatch} /> YOUR FIRST HOUR
+            </span>
+            <h2 className={s.title}>Stranger to contributor, three moves.</h2>
+          </Reveal>
+          <div className={s.steps}>
+            {STEPS.map((t, i) => (
+              <Reveal key={t.n} delay={i * 90}>
+                <article className={s.stepRow}>
+                  <span className={s.stepNum}>//{t.n}</span>
+                  <div>
+                    <h3 className={s.stepTitle}>{t.title}</h3>
+                    <code className={s.cmd}>{t.cmd}</code>
+                  </div>
+                  <p className={s.stepBody}>{t.body}</p>
                 </article>
               </Reveal>
             ))}
@@ -84,21 +175,22 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* VALUES */}
-      <section className="content-section">
-        <div className="container">
+      {/* ── house rules ── */}
+      <section className={s.section}>
+        <div className={s.inner}>
           <Reveal>
-            <span className="eyebrow">How we work together</span>
-            <h2 className="h2" style={{ marginTop: "var(--sp-3)" }}>
-              Three values, no fine print
-            </h2>
+            <span className={s.eyebrow}>
+              <i className={s.hatch} /> HOUSE RULES
+            </span>
+            <h2 className={s.title}>Three values, no fine print.</h2>
           </Reveal>
-          <div className="grid-3" style={{ marginTop: "var(--sp-12)" }}>
+          <div className={s.valueGrid}>
             {VALUES.map((v, i) => (
-              <Reveal key={v.title} delay={i * 60}>
-                <article className="card">
-                  <h3 className="h3">{v.title}</h3>
-                  <p className={styles.cardBody}>{v.body}</p>
+              <Reveal key={v.n} delay={i * 80}>
+                <article className={s.valueCell}>
+                  <span className={s.valueNum}>{v.n}</span>
+                  <h3 className={s.valueTitle}>{v.title}</h3>
+                  <p className={s.valueBody}>{v.body}</p>
                 </article>
               </Reveal>
             ))}
@@ -106,44 +198,27 @@ export default function CommunityPage() {
         </div>
       </section>
 
-      {/* JOIN BAND */}
-      <section className="content-section">
-        <div className="container">
+      {/* ── the first move ── */}
+      <section className={`${s.section} ${s.closing}`}>
+        <div className={s.inner}>
           <Reveal>
-            <div className={styles.joinCard}>
-              <h2 className={styles.joinTitle}>Ready to jump in?</h2>
-              <p className={styles.joinLead}>
-                Star the repo, say hello, and pick up your first issue. We&apos;ll
-                help you land it.
-              </p>
-              <div className={styles.headActions}>
-                <a href="https://github.com" className="btn-primary">GitHub</a>
-                <Link href="/contact" className="btn-ghost">Get in touch →</Link>
-              </div>
+            <span className={s.eyebrow}>
+              <i className={s.hatch} /> THE FIRST MOVE
+            </span>
+            <h2 className={s.title}>Start with a star.</h2>
+            <p className={s.lead}>
+              It costs nothing and tells us someone is watching. We will take
+              it from there.
+            </p>
+            <div className={s.ctaRow}>
+              <CtaButton href="https://github.com">Open GitHub</CtaButton>
+              <a className={s.quietLink} href="/contact">
+                Or just say hello <span aria-hidden="true">→</span>
+              </a>
             </div>
           </Reveal>
         </div>
       </section>
     </main>
   );
-}
-
-function WayIcon({ name }: { name: string }) {
-  const c = {
-    width: 22, height: 22, viewBox: "0 0 24 24", fill: "none",
-    stroke: "currentColor", strokeWidth: 1.8,
-    strokeLinecap: "round" as const, strokeLinejoin: "round" as const,
-  };
-  switch (name) {
-    case "spark":
-      return <svg {...c}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M18 6l-2.5 2.5M8.5 15.5 6 18" /></svg>;
-    case "code":
-      return <svg {...c}><path d="m8 9-3 3 3 3M16 9l3 3-3 3M13 6l-2 12" /></svg>;
-    case "doc":
-      return <svg {...c}><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6" /></svg>;
-    case "show":
-      return <svg {...c}><path d="M3 12s3.5-7 9-7 9 7 9 7-3.5 7-9 7-9-7-9-7z" /><circle cx="12" cy="12" r="2.5" /></svg>;
-    default:
-      return null;
-  }
 }

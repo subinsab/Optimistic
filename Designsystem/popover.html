@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popover — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.comp-hero { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 48px 56px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center; }
+.dl-card { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon { width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-card-desc strong { color: var(--text-1); font-weight: 600; }
+.dl-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: background .15s, transform .1s; }
+.dl-btn:hover { background: #E84800; transform: translateY(-1px); }
+.demo-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.spec-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.code-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.related-section { padding: 40px 56px 60px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+.demo-stage { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 48px 40px; min-height: 280px; }
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.spec-table { width: 100%; border-collapse: collapse; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 12.5px; }
+.spec-table th { text-align: left; padding: 9px 14px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+.spec-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table td:first-child { color: var(--text-1); font-weight: 500; }
+.sv { font-family: var(--mono); font-size: 11px; color: var(--accent-text); background: var(--accent-dim); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--accent); display: inline-block; }
+.color-swatches { display: flex; flex-direction: column; gap: 6px; }
+.color-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; }
+.swatch { width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(0,0,0,.1); flex-shrink: 0; }
+.color-name { font-size: 12px; font-weight: 600; color: var(--text-1); flex: 1; }
+.color-use { font-size: 11px; color: var(--text-3); }
+.anatomy-wrap { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.anatomy-header { padding: 10px 14px; background: var(--bg-inset); border-bottom: 1px solid var(--border); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.anatomy-body { padding: 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+.anatomy-item { display: flex; align-items: flex-start; gap: 10px; }
+.anatomy-num { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.anatomy-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.anatomy-text strong { color: var(--text-1); }
+.related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.related-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; display: block; transition: border-color .15s, background .15s; }
+.related-card:hover { border-color: var(--accent); background: var(--accent-dim); }
+.related-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.related-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #111; color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 12.5px; font-family: var(--mono); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 9999; white-space: nowrap; }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+@media (max-width: 1099px) { .comp-hero { grid-template-columns: 1fr; } .spec-grid { grid-template-columns: 1fr; } .related-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 809px) { .comp-hero, .demo-section, .spec-section, .code-section, .related-section { padding: 32px 20px; } .related-grid { grid-template-columns: 1fr; } }
+
+/* ── Popover ── */
+.ym-popover-anchor {
+  position: relative;
+  display: inline-block;
+}
+.ym-popover {
+  position: absolute;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,.14);
+  z-index: 800;
+  min-width: 220px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-6px) scale(.97);
+  transition: opacity 180ms ease, transform 180ms ease;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+.ym-popover.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0) scale(1);
+}
+/* Default: bottom-left aligned */
+.ym-popover { top: calc(100% + 8px); left: 0; }
+/* Bottom-right */
+.ym-popover.pop-right { left: auto; right: 0; }
+/* Top */
+.ym-popover.pop-top { top: auto; bottom: calc(100% + 8px); transform: translateY(6px) scale(.97); }
+.ym-popover.pop-top.open { transform: translateY(0) scale(1); }
+
+/* Arrow (optional, add to popover) */
+.ym-popover::before {
+  content: '';
+  position: absolute;
+  width: 10px; height: 10px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-right: none; border-bottom: none;
+  transform: rotate(45deg);
+  top: -6px; left: 18px;
+}
+.ym-popover.pop-right::before { left: auto; right: 18px; }
+
+.ym-popover-header {
+  padding: 14px 16px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ym-popover-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+.ym-popover-close {
+  width: 24px; height: 24px; border-radius: 6px; border: none;
+  background: transparent; color: var(--text-3); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s, color .15s;
+}
+.ym-popover-close:hover { background: var(--bg-inset); color: var(--text-1); }
+.ym-popover-body { padding: 14px 16px; }
+.ym-popover-footer {
+  padding: 10px 16px 14px;
+  display: flex; align-items: center; justify-content: flex-end; gap: 8px;
+  border-top: 1px solid var(--border);
+}
+
+/* Demo helpers */
+.demo-row { display: flex; flex-wrap: wrap; gap: 48px; align-items: flex-start; justify-content: center; padding: 20px 0; }
+.pop-demo-col { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.pop-demo-label { font-size: 11px; color: var(--text-3); font-family: var(--mono); }
+.pop-trigger-btn { font-family: 'Inter', -apple-system, sans-serif; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg-panel); color: var(--text-1); cursor: pointer; transition: background .15s, border-color .15s; }
+.pop-trigger-btn:hover { background: var(--bg-inset); }
+.pop-trigger-btn.primary { background: #FE5104; border-color: #FE5104; color: #fff; }
+.pop-trigger-btn.primary:hover { background: #E84800; }
+
+/* Popover body content helpers */
+.pop-menu-item { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 7px; font-size: 13px; color: var(--text-1); cursor: pointer; transition: background .12s; }
+.pop-menu-item:hover { background: var(--bg-inset); }
+.pop-menu-item.danger { color: #CD3546; }
+.pop-menu-item svg { flex-shrink: 0; color: var(--text-3); }
+.pop-menu-item.danger svg { color: #CD3546; }
+.pop-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.pop-field { margin-bottom: 12px; }
+.pop-field label { display: block; font-size: 11px; font-weight: 700; color: var(--text-3); margin-bottom: 5px; letter-spacing: .04em; text-transform: uppercase; }
+.pop-input { width: 100%; box-sizing: border-box; background: var(--bg-inset); border: 1px solid var(--border); border-radius: 7px; padding: 7px 10px; font-size: 13px; color: var(--text-1); font-family: 'Inter', -apple-system, sans-serif; outline: none; }
+.pop-input:focus { border-color: #4065C5; box-shadow: 0 0 0 3px rgba(64,101,197,.12); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Popover</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="combobox.html">Combobox</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub active" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub" href="form-layout.html">Forms</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="comp-hero">
+    <div>
+      <span class="page-eyebrow">43 / Overlays</span>
+      <h1 class="page-title">Popover</h1>
+      <p class="page-desc" style="margin-bottom:20px">Click-triggered floating panel anchored to a trigger element. Richer than a tooltip — can contain menus, forms, and interactive content. Closes on outside click or Escape.</p>
+      <div class="page-meta">
+        <span class="meta-chip">Click-triggered</span>
+        <span class="meta-chip">Bottom-left / bottom-right / top</span>
+        <span class="meta-chip">Rich content</span>
+        <span class="meta-chip">Outside-click close</span>
+        <span class="meta-chip">Escape key close</span>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">popover.md</div>
+          <div class="dl-file-meta">Markdown · All specs · Interactions</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">Upload to <strong>Claude</strong> for exact popover tokens, variants, and production-ready code.</p>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" class="dl-btn" href="downloads/popover.md" download="popover.md">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 10v1a1 1 0 001 1h8a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download popover.md
+      </a>
+    </div>
+  </div>
+
+  <!-- LIVE DEMO -->
+  <div class="demo-section" id="demo">
+    <p class="section-label">Live Demo</p>
+    <div class="demo-stage">
+      <div class="demo-row">
+
+        <!-- Context menu -->
+        <div class="pop-demo-col">
+          <span class="pop-demo-label">context menu</span>
+          <div class="ym-popover-anchor" style="position:relative;">
+            <button class="pop-trigger-btn" onclick="togglePop('pop-menu')">
+              Actions
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-left:4px;vertical-align:middle"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="ym-popover" id="pop-menu" style="min-width:180px;">
+              <div class="ym-popover-body" style="padding:8px;">
+                <div class="pop-menu-item" onclick="closePop('pop-menu')">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  View details
+                </div>
+                <div class="pop-menu-item" onclick="closePop('pop-menu')">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M9.5 2.5l2 2L4 12H2v-2L9.5 2.5z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Edit loan
+                </div>
+                <div class="pop-menu-item" onclick="closePop('pop-menu')">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v4M4 2.5A5 5 0 1 0 10 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Export PDF
+                </div>
+                <div class="pop-divider"></div>
+                <div class="pop-menu-item danger" onclick="closePop('pop-menu')">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 3.5h10M5 3.5V2.5h4v1M3 3.5l.7 8h6.6l.7-8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  Delete
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Info panel -->
+        <div class="pop-demo-col">
+          <span class="pop-demo-label">info panel</span>
+          <div class="ym-popover-anchor" style="position:relative;">
+            <button class="pop-trigger-btn" onclick="togglePop('pop-info')">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="margin-right:4px;vertical-align:middle"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.4"/><path d="M7 6.5v3.5M7 5v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+              Eligibility
+            </button>
+            <div class="ym-popover" id="pop-info" style="min-width:240px;">
+              <div class="ym-popover-header">
+                <span class="ym-popover-title">Eligibility Criteria</span>
+                <button class="ym-popover-close" onclick="closePop('pop-info')">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+              <div class="ym-popover-body" style="font-size:13px;color:var(--text-2);line-height:1.6;">
+                <p style="margin:0 0 8px">Borrower must meet <strong style="color:var(--text-1)">all three</strong> criteria:</p>
+                <ul style="margin:0;padding-left:16px;display:flex;flex-direction:column;gap:4px;">
+                  <li>CIBIL score ≥ 720</li>
+                  <li>Annual turnover ≥ ₹1Cr</li>
+                  <li>Business age ≥ 3 years</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick form -->
+        <div class="pop-demo-col">
+          <span class="pop-demo-label">quick form</span>
+          <div class="ym-popover-anchor" style="position:relative;">
+            <button class="pop-trigger-btn primary" onclick="togglePop('pop-form')">Add Note</button>
+            <div class="ym-popover pop-right" id="pop-form" style="min-width:260px;right:0;left:auto;">
+              <div class="ym-popover-header">
+                <span class="ym-popover-title">Add a Note</span>
+                <button class="ym-popover-close" onclick="closePop('pop-form')">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                </button>
+              </div>
+              <div class="ym-popover-body">
+                <div class="pop-field">
+                  <label>Note</label>
+                  <textarea class="pop-input" rows="3" placeholder="Add internal note…" style="resize:vertical;"></textarea>
+                </div>
+              </div>
+              <div class="ym-popover-footer">
+                <button class="pop-trigger-btn" onclick="closePop('pop-form')" style="padding:6px 12px;font-size:12px;">Cancel</button>
+                <button class="pop-trigger-btn primary" onclick="closePop('pop-form')" style="padding:6px 12px;font-size:12px;">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ANATOMY -->
+  <div class="spec-section" id="anatomy">
+    <p class="section-label">Anatomy</p>
+    <div class="spec-grid">
+      <div class="anatomy-wrap">
+        <div class="anatomy-header">Popover structure</div>
+        <div class="anatomy-body">
+          <div class="anatomy-item"><div class="anatomy-num">1</div><div class="anatomy-text"><strong>Anchor</strong> — <code>.ym-popover-anchor</code>, <code>position:relative</code></div></div>
+          <div class="anatomy-item"><div class="anatomy-num">2</div><div class="anatomy-text"><strong>Trigger</strong> — any button or element inside the anchor that calls <code>togglePop(id)</code></div></div>
+          <div class="anatomy-item"><div class="anatomy-num">3</div><div class="anatomy-text"><strong>Panel</strong> — <code>.ym-popover</code>, shows on <code>.open</code> class, hidden via opacity + scale</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">4</div><div class="anatomy-text"><strong>Arrow</strong> — CSS <code>::before</code> rotated square, positioned top-left or top-right</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">5</div><div class="anatomy-text"><strong>Header</strong> (optional) — <code>.ym-popover-header</code> with title and close button</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">6</div><div class="anatomy-text"><strong>Body</strong> — <code>.ym-popover-body</code>, free-form content area</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">7</div><div class="anatomy-text"><strong>Footer</strong> (optional) — <code>.ym-popover-footer</code>, right-aligned action buttons</div></div>
+        </div>
+      </div>
+      <div class="anatomy-wrap">
+        <div class="anatomy-header">Placement modifiers</div>
+        <div class="anatomy-body">
+          <div class="anatomy-item"><div class="anatomy-num">A</div><div class="anatomy-text"><strong>Bottom-left</strong> — default, <code>top:calc(100%+8px); left:0</code></div></div>
+          <div class="anatomy-item"><div class="anatomy-num">B</div><div class="anatomy-text"><strong>Bottom-right</strong> — <code>.pop-right</code>, arrow shifts right</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">C</div><div class="anatomy-text"><strong>Top</strong> — <code>.pop-top</code>, slides up from below anchor</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MEASUREMENTS -->
+  <div class="spec-section" id="specs">
+    <p class="section-label">Measurements</p>
+    <div class="spec-grid">
+      <table class="spec-table">
+        <thead><tr><th>Property</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Background</td><td><span class="sv">var(--bg-panel)</span></td></tr>
+          <tr><td>Border</td><td><span class="sv">1px solid var(--border)</span></td></tr>
+          <tr><td>Border radius</td><td><span class="sv">10px</span></td></tr>
+          <tr><td>Box shadow</td><td><span class="sv">0 8px 32px rgba(0,0,0,.14)</span></td></tr>
+          <tr><td>Min width</td><td><span class="sv">220px</span></td></tr>
+          <tr><td>Offset from trigger</td><td><span class="sv">8px</span></td></tr>
+          <tr><td>Header padding</td><td><span class="sv">14px 16px 12px</span></td></tr>
+          <tr><td>Body padding</td><td><span class="sv">14px 16px</span></td></tr>
+          <tr><td>Footer padding</td><td><span class="sv">10px 16px 14px</span></td></tr>
+          <tr><td>Enter animation</td><td><span class="sv">180ms ease</span></td></tr>
+          <tr><td>Enter scale</td><td><span class="sv">scale(.97) → scale(1)</span></td></tr>
+          <tr><td>Title font</td><td><span class="sv">13px / 700</span></td></tr>
+          <tr><td>Arrow size</td><td><span class="sv">10 × 10px, rotated 45°</span></td></tr>
+          <tr><td>z-index</td><td><span class="sv">800</span></td></tr>
+        </tbody>
+      </table>
+      <div class="anatomy-wrap" style="height:fit-content;">
+        <div class="anatomy-header">When to use</div>
+        <div class="anatomy-body">
+          <div class="anatomy-item"><div class="anatomy-num">✓</div><div class="anatomy-text">Context menus with multiple actions</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">✓</div><div class="anatomy-text">Quick-add forms (notes, tags, labels)</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">✓</div><div class="anatomy-text">Rich help text with links</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">✓</div><div class="anatomy-text">Inline filters or date ranges</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">✗</div><div class="anatomy-text">Simple one-line labels → use Tooltip</div></div>
+          <div class="anatomy-item"><div class="anatomy-num">✗</div><div class="anatomy-text">Full-size forms or critical confirmations → use Modal</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLORS -->
+  <div class="spec-section" id="colors">
+    <p class="section-label">Color Tokens</p>
+    <div class="color-swatches">
+      <div class="color-row"><div class="swatch" style="background:var(--bg-panel)"></div><div class="color-name">--bg-panel</div><div class="color-use">Panel background — adapts to light/dark theme</div></div>
+      <div class="color-row"><div class="swatch" style="background:var(--border)"></div><div class="color-name">--border</div><div class="color-use">Panel border and arrow border</div></div>
+      <div class="color-row"><div class="swatch" style="background:var(--bg-inset)"></div><div class="color-name">--bg-inset</div><div class="color-use">Menu item hover state background</div></div>
+      <div class="color-row"><div class="swatch" style="background:#CD3546"></div><div class="color-name">#CD3546</div><div class="color-use">Danger menu item text and icon</div></div>
+      <div class="color-row"><div class="swatch" style="background:rgba(0,0,0,.14);border-color:rgba(0,0,0,.1)"></div><div class="color-name">rgba(0,0,0,.14)</div><div class="color-use">Box shadow — elevation over page content</div></div>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="code-section" id="code">
+    <p class="section-label">Code</p>
+    <div class="code-tabs">
+      <div class="code-tab active" onclick="switchTab(this,'tab-html')">HTML</div>
+      <div class="code-tab" onclick="switchTab(this,'tab-css')">CSS</div>
+      <div class="code-tab" onclick="switchTab(this,'tab-react')">React</div>
+    </div>
+
+    <div class="code-panel active" id="tab-html">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="cmt">&lt;!-- Context menu popover --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-popover-anchor"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"ym-btn secondary btn-m"</span>
+          <span class="attr">onclick</span>=<span class="str">"togglePop('my-popover')"</span>
+          <span class="attr">aria-haspopup</span>=<span class="str">"true"</span>
+          <span class="attr">aria-expanded</span>=<span class="str">"false"</span>
+          <span class="attr">aria-controls</span>=<span class="str">"my-popover"</span><span class="tag">&gt;</span>
+    Actions
+  <span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-popover"</span> <span class="attr">id</span>=<span class="str">"my-popover"</span>
+       <span class="attr">role</span>=<span class="str">"menu"</span> <span class="attr">aria-label</span>=<span class="str">"Actions"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-popover-body"</span> <span class="attr">style</span>=<span class="str">"padding:8px;"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"pop-menu-item"</span> <span class="attr">role</span>=<span class="str">"menuitem"</span><span class="tag">&gt;</span>View details<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"pop-menu-item"</span> <span class="attr">role</span>=<span class="str">"menuitem"</span><span class="tag">&gt;</span>Edit loan<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"pop-divider"</span><span class="tag">&gt;&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"pop-menu-item danger"</span> <span class="attr">role</span>=<span class="str">"menuitem"</span><span class="tag">&gt;</span>Delete<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Bottom-right: add pop-right --&gt;</span>
+<span class="cmt">&lt;!-- Top: add pop-top --&gt;</span>
+
+<span class="cmt">&lt;!-- Popover with header + footer --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-popover"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-popover-header"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"ym-popover-title"</span><span class="tag">&gt;</span>Title<span class="tag">&lt;/span&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"ym-popover-close"</span> <span class="attr">aria-label</span>=<span class="str">"Close"</span><span class="tag">&gt;</span>×<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-popover-body"</span><span class="tag">&gt;</span>Content here<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-popover-footer"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"ym-btn secondary btn-s"</span><span class="tag">&gt;</span>Cancel<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"ym-btn primary btn-s"</span><span class="tag">&gt;</span>Save<span class="tag">&lt;/button&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+    </div>
+
+    <div class="code-panel" id="tab-css">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="tag">.ym-popover-anchor</span> { <span class="attr">position</span>: <span class="str">relative</span>; <span class="attr">display</span>: <span class="str">inline-block</span>; }
+
+<span class="tag">.ym-popover</span> {
+  <span class="attr">position</span>: <span class="str">absolute</span>;
+  <span class="attr">top</span>: <span class="num">calc(100% + 8px)</span>; <span class="attr">left</span>: <span class="num">0</span>;
+  <span class="attr">background</span>: <span class="str">var(--bg-panel)</span>;
+  <span class="attr">border</span>: <span class="num">1px solid</span> <span class="str">var(--border)</span>;
+  <span class="attr">border-radius</span>: <span class="num">10px</span>;
+  <span class="attr">box-shadow</span>: <span class="num">0 8px 32px rgba(0,0,0,.14)</span>;
+  <span class="attr">min-width</span>: <span class="num">220px</span>;
+  <span class="attr">z-index</span>: <span class="num">800</span>;
+  <span class="attr">opacity</span>: <span class="num">0</span>;
+  <span class="attr">pointer-events</span>: <span class="str">none</span>;
+  <span class="attr">transform</span>: <span class="str">translateY(-6px) scale(.97)</span>;
+  <span class="attr">transition</span>: <span class="str">opacity 180ms ease, transform 180ms ease</span>;
+}
+<span class="tag">.ym-popover.open</span> {
+  <span class="attr">opacity</span>: <span class="num">1</span>; <span class="attr">pointer-events</span>: <span class="str">all</span>;
+  <span class="attr">transform</span>: <span class="str">translateY(0) scale(1)</span>;
+}
+
+<span class="cmt">/* Arrow */</span>
+<span class="tag">.ym-popover::before</span> {
+  <span class="attr">content</span>: <span class="str">''</span>;
+  <span class="attr">position</span>: <span class="str">absolute</span>;
+  <span class="attr">width</span>: <span class="num">10px</span>; <span class="attr">height</span>: <span class="num">10px</span>;
+  <span class="attr">background</span>: <span class="str">var(--bg-panel)</span>;
+  <span class="attr">border</span>: <span class="num">1px solid</span> <span class="str">var(--border)</span>;
+  <span class="attr">border-right</span>: <span class="str">none</span>; <span class="attr">border-bottom</span>: <span class="str">none</span>;
+  <span class="attr">transform</span>: <span class="str">rotate(45deg)</span>;
+  <span class="attr">top</span>: <span class="num">-6px</span>; <span class="attr">left</span>: <span class="num">18px</span>;
+}
+<span class="tag">.ym-popover.pop-right</span> { <span class="attr">left</span>: <span class="str">auto</span>; <span class="attr">right</span>: <span class="num">0</span>; }
+<span class="tag">.ym-popover.pop-right::before</span> { <span class="attr">left</span>: <span class="str">auto</span>; <span class="attr">right</span>: <span class="num">18px</span>; }
+
+<span class="tag">.ym-popover-header</span> {
+  <span class="attr">padding</span>: <span class="num">14px 16px 12px</span>;
+  <span class="attr">border-bottom</span>: <span class="num">1px solid</span> <span class="str">var(--border)</span>;
+  <span class="attr">display</span>: <span class="str">flex</span>; <span class="attr">align-items</span>: <span class="str">center</span>; <span class="attr">justify-content</span>: <span class="str">space-between</span>;
+}
+<span class="tag">.ym-popover-title</span> { <span class="attr">font-size</span>: <span class="num">13px</span>; <span class="attr">font-weight</span>: <span class="num">700</span>; <span class="attr">color</span>: <span class="str">var(--text-1)</span>; }
+<span class="tag">.ym-popover-body</span> { <span class="attr">padding</span>: <span class="num">14px 16px</span>; }
+<span class="tag">.ym-popover-footer</span> {
+  <span class="attr">padding</span>: <span class="num">10px 16px 14px</span>;
+  <span class="attr">display</span>: <span class="str">flex</span>; <span class="attr">justify-content</span>: <span class="str">flex-end</span>; <span class="attr">gap</span>: <span class="num">8px</span>;
+  <span class="attr">border-top</span>: <span class="num">1px solid</span> <span class="str">var(--border)</span>;
+}
+
+<span class="tag">.pop-menu-item</span> {
+  <span class="attr">display</span>: <span class="str">flex</span>; <span class="attr">align-items</span>: <span class="str">center</span>; <span class="attr">gap</span>: <span class="num">10px</span>;
+  <span class="attr">padding</span>: <span class="num">8px 10px</span>; <span class="attr">border-radius</span>: <span class="num">7px</span>;
+  <span class="attr">font-size</span>: <span class="num">13px</span>; <span class="attr">cursor</span>: <span class="str">pointer</span>;
+  <span class="attr">transition</span>: <span class="str">background .12s</span>;
+}
+<span class="tag">.pop-menu-item:hover</span> { <span class="attr">background</span>: <span class="str">var(--bg-inset)</span>; }
+<span class="tag">.pop-menu-item.danger</span> { <span class="attr">color</span>: <span class="num">#CD3546</span>; }</pre>
+    </div>
+
+    <div class="code-panel" id="tab-react">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="kw">import</span> { useState, useRef, useEffect } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">function</span> <span class="fn">Popover</span>({ trigger, children, placement = <span class="str">'bottom-left'</span> }) {
+  <span class="kw">const</span> [open, setOpen] = useState(<span class="kw">false</span>);
+  <span class="kw">const</span> ref = useRef(<span class="kw">null</span>);
+
+  useEffect(() => {
+    <span class="kw">function</span> <span class="fn">handleClickOutside</span>(e) {
+      <span class="kw">if</span> (ref.current && !ref.current.contains(e.target)) setOpen(<span class="kw">false</span>);
+    }
+    <span class="kw">function</span> <span class="fn">handleEscape</span>(e) {
+      <span class="kw">if</span> (e.key === <span class="str">'Escape'</span>) setOpen(<span class="kw">false</span>);
+    }
+    document.addEventListener(<span class="str">'mousedown'</span>, handleClickOutside);
+    document.addEventListener(<span class="str">'keydown'</span>, handleEscape);
+    <span class="kw">return</span> () => {
+      document.removeEventListener(<span class="str">'mousedown'</span>, handleClickOutside);
+      document.removeEventListener(<span class="str">'keydown'</span>, handleEscape);
+    };
+  }, []);
+
+  <span class="kw">const</span> popClass = [
+    <span class="str">'ym-popover'</span>,
+    open ? <span class="str">'open'</span> : <span class="str">''</span>,
+    placement === <span class="str">'bottom-right'</span> ? <span class="str">'pop-right'</span> : <span class="str">''</span>,
+    placement === <span class="str">'top'</span> ? <span class="str">'pop-top'</span> : <span class="str">''</span>,
+  ].filter(Boolean).join(<span class="str">' '</span>);
+
+  <span class="kw">return</span> (
+    <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"ym-popover-anchor"</span> <span class="attr">ref</span>={ref}<span class="tag">&gt;</span>
+      {<span class="fn">React</span>.cloneElement(trigger, {
+        onClick: () => setOpen(v => !v),
+        'aria-expanded': open,
+        'aria-haspopup': <span class="str">'true'</span>,
+      })}
+      <span class="tag">&lt;div</span> <span class="attr">className</span>={popClass}<span class="tag">&gt;</span>
+        {children}
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  );
+}
+
+<span class="cmt">// Usage</span>
+<span class="tag">&lt;Popover</span>
+  <span class="attr">trigger</span>=<span class="tag">{&lt;</span><span class="fn">button</span> <span class="attr">className</span>=<span class="str">"ym-btn secondary btn-m"</span><span class="tag">&gt;</span>Actions<span class="tag">&lt;/button&gt;</span>}
+  <span class="attr">placement</span>=<span class="str">"bottom-left"</span>
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"ym-popover-body"</span> <span class="attr">style</span>=<span class="str">{{padding:'8px'}}</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">className</span>=<span class="str">"pop-menu-item"</span><span class="tag">&gt;</span>View details<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/Popover&gt;</span></pre>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="related-section">
+    <p class="section-label">Related Components</p>
+    <div class="related-grid">
+      <a class="related-card" href="tooltip.html">
+        <div class="related-eyebrow">Overlays · 44</div>
+        <div class="related-title">Tooltip</div>
+      </a>
+      <a class="related-card" href="modal.html">
+        <div class="related-eyebrow">Overlays · 41</div>
+        <div class="related-title">Modal</div>
+      </a>
+      <a class="related-card" href="drawer.html">
+        <div class="related-eyebrow">Overlays · 42</div>
+        <div class="related-title">Drawer</div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<div id="toast">Copied to clipboard</div>
+
+<script>
+// Theme
+(function(){
+  const t = localStorage.getItem('ym-theme') || 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  if(t === 'dark'){
+    document.getElementById('icon-moon').style.display = 'none';
+    document.getElementById('icon-sun').style.display = '';
+  }
+})();
+function toggleTheme(){
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  localStorage.setItem('ym-theme', isDark ? 'light' : 'dark');
+  document.getElementById('icon-moon').style.display = isDark ? '' : 'none';
+  document.getElementById('icon-sun').style.display = isDark ? 'none' : '';
+}
+
+// Sidebar
+function toggleSidebar(){
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// Popover
+function togglePop(id){
+  const el = document.getElementById(id);
+  const wasOpen = el.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.ym-popover.open').forEach(p => p.classList.remove('open'));
+  if(!wasOpen) el.classList.add('open');
+}
+function closePop(id){
+  document.getElementById(id).classList.remove('open');
+}
+
+// Outside click
+document.addEventListener('click', function(e){
+  if(!e.target.closest('.ym-popover-anchor')){
+    document.querySelectorAll('.ym-popover.open').forEach(p => p.classList.remove('open'));
+  }
+});
+// Escape key
+document.addEventListener('keydown', function(e){
+  if(e.key === 'Escape'){
+    document.querySelectorAll('.ym-popover.open').forEach(p => p.classList.remove('open'));
+  }
+});
+
+// Code tabs
+function switchTab(el, panelId){
+  document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+// Copy
+function copyCode(btn){
+  const panel = btn.closest('.code-panel');
+  const text = panel.querySelector('.code-block').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!'; btn.classList.add('copied');
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); t.classList.remove('show'); }, 2000);
+  });
+}
+</script>
+<script src="download.js"></script>
+<script id="__dl_data">
+var __mdContent  = "# Popover \u2014 Yubi Market Design System\n\n> **Version:** 1.0.0 | **Category:** Overlays (43/54) | **Status:** Stable\n\n---\n\n## Overview\n\nClick-triggered floating panel anchored to a trigger element. Richer than a tooltip \u2014 can contain menus, forms, and interactive content. Closes on outside click or Escape key press.\n\n---\n\n## Placements\n\n| Modifier class | Direction     |\n|----------------|---------------|\n| (none)         | Bottom-left (default) |\n| `.pop-right`   | Bottom-right  |\n| `.pop-top`     | Top (above trigger) |\n\n---\n\n## Measurements\n\n| Property          | Value                          |\n|-------------------|--------------------------------|\n| Background        | var(--bg-panel)                |\n| Border            | 1px solid var(--border)        |\n| Border radius     | 10px                           |\n| Box shadow        | 0 8px 32px rgba(0,0,0,.14)     |\n| Min width         | 220px                          |\n| Offset from trigger | 8px                          |\n| Header padding    | 14px 16px 12px                 |\n| Body padding      | 14px 16px                      |\n| Footer padding    | 10px 16px 14px                 |\n| Enter animation   | 180ms ease                     |\n| Enter scale       | scale(.97) \u2192 scale(1)          |\n| Title font        | 13px / 700                     |\n| Arrow size        | 10 \u00d7 10px, rotated 45\u00b0         |\n| z-index           | 800                            |\n\n---\n\n## HTML\n\n```html\n<!-- Context menu popover (bottom-left default) -->\n<div class=\"ym-popover-anchor\">\n  <button class=\"ym-btn secondary btn-m\"\n          onclick=\"togglePop('my-popover')\"\n          aria-haspopup=\"true\" aria-expanded=\"false\"\n          aria-controls=\"my-popover\">\n    Actions\n  </button>\n  <div class=\"ym-popover\" id=\"my-popover\" role=\"menu\" aria-label=\"Actions\">\n    <div class=\"ym-popover-body\" style=\"padding:8px;\">\n      <div class=\"pop-menu-item\" role=\"menuitem\">View details</div>\n      <div class=\"pop-menu-item\" role=\"menuitem\">Edit loan</div>\n      <div class=\"pop-divider\"></div>\n      <div class=\"pop-menu-item danger\" role=\"menuitem\">Delete</div>\n    </div>\n  </div>\n</div>\n\n<!-- Bottom-right: add .pop-right to .ym-popover -->\n<!-- Top: add .pop-top to .ym-popover -->\n\n<!-- Popover with header + footer -->\n<div class=\"ym-popover-anchor\">\n  <button onclick=\"togglePop('pop-form')\">Add Note</button>\n  <div class=\"ym-popover\" id=\"pop-form\">\n    <div class=\"ym-popover-header\">\n      <span class=\"ym-popover-title\">Add a Note</span>\n      <button class=\"ym-popover-close\" aria-label=\"Close\" onclick=\"closePop('pop-form')\">\u00d7</button>\n    </div>\n    <div class=\"ym-popover-body\">\n      <!-- form content -->\n    </div>\n    <div class=\"ym-popover-footer\">\n      <button class=\"ym-btn secondary btn-s\" onclick=\"closePop('pop-form')\">Cancel</button>\n      <button class=\"ym-btn primary btn-s\">Save</button>\n    </div>\n  </div>\n</div>\n```\n\n---\n\n## CSS\n\n```css\n.ym-popover-anchor { position: relative; display: inline-block; }\n\n.ym-popover {\n  position: absolute;\n  top: calc(100% + 8px); left: 0;\n  background: var(--bg-panel);\n  border: 1px solid var(--border);\n  border-radius: 10px;\n  box-shadow: 0 8px 32px rgba(0,0,0,.14);\n  min-width: 220px;\n  z-index: 800;\n  opacity: 0; pointer-events: none;\n  transform: translateY(-6px) scale(.97);\n  transition: opacity 180ms ease, transform 180ms ease;\n}\n.ym-popover.open {\n  opacity: 1; pointer-events: all;\n  transform: translateY(0) scale(1);\n}\n\n/* Arrow */\n.ym-popover::before {\n  content: ''; position: absolute;\n  width: 10px; height: 10px;\n  background: var(--bg-panel);\n  border: 1px solid var(--border);\n  border-right: none; border-bottom: none;\n  transform: rotate(45deg);\n  top: -6px; left: 18px;\n}\n.ym-popover.pop-right { left: auto; right: 0; }\n.ym-popover.pop-right::before { left: auto; right: 18px; }\n.ym-popover.pop-top { top: auto; bottom: calc(100% + 8px); transform: translateY(6px) scale(.97); }\n.ym-popover.pop-top.open { transform: translateY(0) scale(1); }\n\n.ym-popover-header {\n  padding: 14px 16px 12px; border-bottom: 1px solid var(--border);\n  display: flex; align-items: center; justify-content: space-between;\n}\n.ym-popover-title { font-size: 13px; font-weight: 700; color: var(--text-1); }\n.ym-popover-close {\n  width: 24px; height: 24px; border-radius: 6px; border: none;\n  background: transparent; color: var(--text-3); cursor: pointer;\n}\n.ym-popover-close:hover { background: var(--bg-inset); color: var(--text-1); }\n.ym-popover-body { padding: 14px 16px; }\n.ym-popover-footer {\n  padding: 10px 16px 14px; border-top: 1px solid var(--border);\n  display: flex; justify-content: flex-end; gap: 8px;\n}\n\n.pop-menu-item {\n  display: flex; align-items: center; gap: 10px;\n  padding: 8px 10px; border-radius: 7px;\n  font-size: 13px; cursor: pointer; color: var(--text-1);\n  transition: background .12s;\n}\n.pop-menu-item:hover { background: var(--bg-inset); }\n.pop-menu-item.danger { color: #CD3546; }\n.pop-divider { height: 1px; background: var(--border); margin: 4px 0; }\n```\n\n---\n\n## JavaScript\n\n```javascript\nfunction togglePop(id) {\n  const el = document.getElementById(id);\n  const wasOpen = el.classList.contains('open');\n  // Close all open popovers first\n  document.querySelectorAll('.ym-popover.open').forEach(p => p.classList.remove('open'));\n  if (!wasOpen) el.classList.add('open');\n}\nfunction closePop(id) {\n  document.getElementById(id).classList.remove('open');\n}\n\n// Outside click to close\ndocument.addEventListener('click', function(e) {\n  if (!e.target.closest('.ym-popover-anchor')) {\n    document.querySelectorAll('.ym-popover.open').forEach(p => p.classList.remove('open'));\n  }\n});\n\n// Escape key to close\ndocument.addEventListener('keydown', function(e) {\n  if (e.key === 'Escape') {\n    document.querySelectorAll('.ym-popover.open').forEach(p => p.classList.remove('open'));\n  }\n});\n```\n\n---\n\n## Accessibility\n\n- `aria-haspopup=\"true\"` and `aria-expanded` on the trigger button (update dynamically)\n- `aria-controls` pointing to the popover `id`\n- `role=\"menu\"` + `role=\"menuitem\"` for menu-style popovers\n- Focus the first interactive item inside the popover when opened\n- Return focus to the trigger button when closed\n- `aria-label=\"Close\"` on the close button\n\n---\n\n## When to use Popover vs Tooltip vs Modal\n\n| Popover                          | Tooltip                          | Modal                            |\n|----------------------------------|----------------------------------|----------------------------------|\n| Click-triggered                  | Hover/focus-triggered            | Click-triggered                  |\n| Rich content with interactions   | Short plain text label only      | Full-screen blocking content     |\n| Stays open until dismissed       | Closes on mouse-out              | Explicit close required          |\n| 2\u20138 interactive items            | No interactive content           | Complex forms / confirmations    |\n\n---\n\n## Related Components\n\n- **Tooltip** (`tooltip.html`) \u2014 simple hover label, no interactions\n- **Modal** (`modal.html`) \u2014 full-blocking dialog for confirmations and forms\n- **Drawer** (`drawer.html`) \u2014 full-height side panel for larger content\n\n---\n\n*Yubi Market Design System \u00b7 Popover v1.0.0 \u00b7 Internal Use*\n";
+var __mdFilename = "popover.md";
+</script>
+</body>
+</html>

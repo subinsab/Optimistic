@@ -23,8 +23,8 @@ type Graph = { pos: Slot[]; edges: Edge[]; nodes: NodeContent[] };
 
 /* 7-node serpentine (Components pipeline: 4 top → 3 bottom) */
 const P7: Slot[] = [
-  { x: 320, y: 180 }, { x: 580, y: 180 }, { x: 840, y: 180 }, { x: 1100, y: 180 },
-  { x: 1100, y: 430 }, { x: 840, y: 430 }, { x: 580, y: 430 },
+  { x: 190, y: 180 }, { x: 510, y: 180 }, { x: 830, y: 180 }, { x: 1150, y: 180 },
+  { x: 1150, y: 430 }, { x: 830, y: 430 }, { x: 510, y: 430 },
 ];
 const E7: Edge[] = [
   { s: 0, t: 1, ss: "r", ts: "l", axis: "h" },
@@ -37,8 +37,8 @@ const E7: Edge[] = [
 
 /* 6-node serpentine (Tokens / Variables / Themes: 3 top → 3 bottom) */
 const P6: Slot[] = [
-  { x: 340, y: 180 }, { x: 720, y: 180 }, { x: 1100, y: 180 },
-  { x: 1100, y: 430 }, { x: 720, y: 430 }, { x: 340, y: 430 },
+  { x: 225, y: 180 }, { x: 670, y: 180 }, { x: 1115, y: 180 },
+  { x: 1115, y: 430 }, { x: 670, y: 430 }, { x: 225, y: 430 },
 ];
 const E6: Edge[] = [
   { s: 0, t: 1, ss: "r", ts: "l", axis: "h" },
@@ -48,7 +48,7 @@ const E6: Edge[] = [
   { s: 4, t: 5, ss: "l", ts: "r", axis: "h" },
 ];
 
-/* one graph per sidebar tab */
+/* one graph per tab */
 const GRAPHS: Record<string, Graph> = {
   Tokens: { pos: P6, edges: E6, nodes: [
     { title: "Primitive Tokens", sub: "colors · type", icon: "tokens", toks: [{ k: "Colors", v: "✓" }, { k: "Typography", v: "✓" }, { k: "Spacing", v: "✓" }, { k: "Radius", v: "✓" }] },
@@ -117,7 +117,7 @@ export default function DesignSystemCanvas() {
   const [scale, setScale] = useState(1);
   const [active, setActive] = useState<number | null>(null);
   const [exp, setExp] = useState<number | null>(null);
-  const [nav, setNav] = useState("Tokens");
+  const [nav, setNav] = useState("Components");
   const [theme, setTheme] = useState("Dark");
 
   const g = GRAPHS[nav];
@@ -154,63 +154,39 @@ export default function DesignSystemCanvas() {
     <div className={s.frame} ref={frameRef} style={{ height: 690 * scale }}>
       <div className={s.stage} style={{ transform: `scale(${scale})` }}>
         <div className={s.bgdots} />
-        <span className={`${s.bracket} ${s.brTL}`} />
-        <span className={`${s.bracket} ${s.brTR}`} />
-        <span className={`${s.bracket} ${s.brBL}`} />
-        <span className={`${s.bracket} ${s.brBR}`} />
 
-        {/* coordinate system */}
-        <span className={s.coord} style={{ left: 40, top: 40 }}>PIPELINE</span>
-        <span className={s.coord} style={{ left: 40, bottom: 30 }}>ORIGIN · 0,0</span>
-        <span className={s.coord} style={{ right: 70, bottom: 30 }}>WORKSPACE</span>
-        <span className={s.coord} style={{ left: "50%", bottom: 18 }}>X →</span>
-        <span className={s.coord} style={{ left: 18, top: "50%" }}>Y ↓</span>
-        <span className={s.hostLabel}>HOST · SYNC</span>
-
-        {/* stats + badges */}
-        <div className={s.stats}>
-          {[["1,284", "Variables"], ["246", "Components"], ["12", "Themes"], ["9", "Platforms"]].map(
-            ([n, l]) => (
-              <div key={l} className={s.stat}>
-                <div className={s.statN}>{n}</div>
-                <div className={s.statL}>{l}</div>
-              </div>
-            )
-          )}
-        </div>
-        <div className={s.badges}>
-          <span className={`${s.badge} ${s.badgeAcc}`}>● LIVE</span>
-          <span className={s.badge}>SYNCED</span>
-          <span className={s.badge}>v3.2</span>
-        </div>
-
-        {/* sidebar toolbox */}
-        <aside className={s.sidebar}>
-          <span className={s.rail} />
-          {NAV.map((b) => (
-            <button
-              key={b}
-              className={`${s.navBtn} ${nav === b ? s.navActive : ""}`}
-              onClick={() => changeNav(b)}
-            >
-              {b}
-            </button>
-          ))}
-          <div className={s.secLabel}>STACK</div>
-          <div className={s.stackGrid}>
-            {STACK.map((t) => (
-              <div key={t.id} className={s.tile}>
-                {ICON[t.id]}
-                <span className={s.tileTip}>{t.name}</span>
-              </div>
+        {/* top toolbar — horizontal tabs left, stack + badges right */}
+        <div className={s.topbar}>
+          <div className={s.tabs}>
+            {NAV.map((b) => (
+              <button
+                key={b}
+                className={`${s.tab} ${nav === b ? s.tabOn : ""}`}
+                onClick={() => changeNav(b)}
+              >
+                {b}
+              </button>
             ))}
           </div>
-          <div className={s.syncWrap}>
-            <span>SYNC MODE</span>
-            <span className={s.syncLive}>LIVE</span>
+          <div className={s.topRight}>
+            <div className={s.stackRow}>
+              {STACK.map((t) => (
+                <div key={t.id} className={s.tile}>
+                  {ICON[t.id]}
+                  <span className={s.tileTip}>{t.name}</span>
+                </div>
+              ))}
+            </div>
+            <div className={s.badges}>
+              <span className={`${s.badge} ${s.badgeAcc}`}>● LIVE</span>
+              <span className={s.badge}>SYNCED</span>
+              <span className={s.badge}>v3.2</span>
+            </div>
           </div>
-        </aside>
+        </div>
 
+        {/* graph layer — keyed by tab so switches remount with a soft rise-in */}
+        <div key={nav} className={s.graphLayer}>
         {/* edges + subtle gradient flow (the line itself lights up) */}
         <svg className={s.edges} viewBox="0 0 1500 690" preserveAspectRatio="none">
           {g.edges.map((e, i) => (
@@ -273,19 +249,33 @@ export default function DesignSystemCanvas() {
             </div>
           );
         })}
+        </div>
 
-        {/* theme switcher */}
-        <div className={s.themebar}>
-          <span className={s.themeKey}>THEME</span>
-          {THEMES.map((t) => (
-            <button
-              key={t}
-              className={`${s.themeChip} ${theme === t ? s.themeOn : ""}`}
-              onClick={() => setTheme(t)}
-            >
-              {t}
-            </button>
-          ))}
+        {/* bottom status bar — theme switcher left, live stats right */}
+        <div className={s.bottombar}>
+          <div className={s.themebar}>
+            <span className={s.themeKey}>THEME</span>
+            {THEMES.map((t) => (
+              <button
+                key={t}
+                className={`${s.themeChip} ${theme === t ? s.themeOn : ""}`}
+                onClick={() => setTheme(t)}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          <div className={s.statusRow}>
+            {[["Variables", "1,284"], ["Components", "246"], ["Themes", "12"], ["Platforms", "9"]].map(
+              ([l, n]) => (
+                <span key={l} className={s.statPair}>
+                  <span className={s.statK}>{l}</span>
+                  <span className={s.statV}>{n}</span>
+                </span>
+              )
+            )}
+            <span className={s.syncLive}>LIVE</span>
+          </div>
         </div>
       </div>
     </div>

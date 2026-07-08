@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drawer — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.comp-hero { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 48px 56px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center; }
+.dl-card { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon { width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-card-desc strong { color: var(--text-1); font-weight: 600; }
+.dl-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: background .15s, transform .1s; }
+.dl-btn:hover { background: #E84800; transform: translateY(-1px); }
+.demo-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.spec-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.code-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.related-section { padding: 40px 56px 60px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+.demo-stage { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 32px; min-height: 200px; }
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.spec-table { width: 100%; border-collapse: collapse; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 12.5px; }
+.spec-table th { text-align: left; padding: 9px 14px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+.spec-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table td:first-child { color: var(--text-1); font-weight: 500; }
+.sv { font-family: var(--mono); font-size: 11px; color: var(--accent-text); background: var(--accent-dim); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--accent); display: inline-block; }
+.color-swatches { display: flex; flex-direction: column; gap: 6px; }
+.color-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; }
+.swatch { width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(0,0,0,.1); flex-shrink: 0; }
+.color-name { font-size: 12px; font-weight: 600; color: var(--text-1); flex: 1; }
+.color-use { font-size: 11px; color: var(--text-3); }
+.anatomy-wrap { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.anatomy-header { padding: 10px 14px; background: var(--bg-inset); border-bottom: 1px solid var(--border); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.anatomy-body { padding: 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+.anatomy-item { display: flex; align-items: flex-start; gap: 10px; }
+.anatomy-num { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.anatomy-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.anatomy-text strong { color: var(--text-1); }
+.related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.related-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; display: block; transition: border-color .15s, background .15s; }
+.related-card:hover { border-color: var(--accent); background: var(--accent-dim); }
+.related-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.related-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #111; color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 12.5px; font-family: var(--mono); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 9999; white-space: nowrap; }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+@media (max-width: 1099px) { .comp-hero { grid-template-columns: 1fr; } .spec-grid { grid-template-columns: 1fr; } .related-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 809px) { .comp-hero, .demo-section, .spec-section, .code-section, .related-section { padding: 32px 20px; } .related-grid { grid-template-columns: 1fr; } }
+
+/* Demo trigger buttons */
+.drawer-demo-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+.demo-trigger-btn { font-family: 'Inter', -apple-system, sans-serif; font-size: 13px; font-weight: 600; padding: 9px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg-panel); color: var(--text-1); cursor: pointer; transition: background .15s, border-color .15s; }
+.demo-trigger-btn:hover { background: var(--bg-inset); border-color: var(--text-3); }
+.demo-trigger-btn.primary { background: #FE5104; border-color: #FE5104; color: #fff; }
+.demo-trigger-btn.primary:hover { background: #E84800; border-color: #E84800; }
+
+/* ── Drawer ── */
+.ym-drawer-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.4);
+  z-index: 1000; opacity: 0; pointer-events: none;
+  transition: opacity 250ms ease;
+}
+.ym-drawer-overlay.open { opacity: 1; pointer-events: all; }
+
+.ym-drawer {
+  position: fixed; top: 0; bottom: 0; right: 0;
+  width: 400px; max-width: 90vw;
+  background: var(--bg-panel); border-left: 1px solid var(--border);
+  z-index: 1001; display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform 280ms cubic-bezier(.4,0,.2,1);
+  font-family: 'Inter', -apple-system, sans-serif;
+  box-shadow: -8px 0 32px rgba(0,0,0,.12);
+}
+.ym-drawer-overlay.open .ym-drawer { transform: translateX(0); }
+
+.ym-drawer-sm { width: 320px; }
+.ym-drawer-lg { width: 560px; }
+
+.ym-drawer-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  padding: 22px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0;
+}
+.ym-drawer-title { font-size: 16px; font-weight: 700; color: var(--text-1); }
+.ym-drawer-subtitle { font-size: 13px; color: var(--text-3); margin-top: 3px; }
+.ym-drawer-close {
+  width: 30px; height: 30px; border-radius: 8px; border: none;
+  background: var(--bg-inset); color: var(--text-3); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: background .15s, color .15s;
+}
+.ym-drawer-close:hover { background: var(--border); color: var(--text-1); }
+
+.ym-drawer-body { flex: 1; overflow-y: auto; padding: 24px; }
+.ym-drawer-footer {
+  padding: 16px 24px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 10px; flex-shrink: 0;
+}
+
+/* Left-side drawer */
+.ym-drawer-left {
+  right: auto; left: 0;
+  border-left: none; border-right: 1px solid var(--border);
+  transform: translateX(-100%);
+  box-shadow: 8px 0 32px rgba(0,0,0,.12);
+}
+.ym-drawer-overlay.open .ym-drawer-left { transform: translateX(0); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Drawer</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="combobox.html">Combobox</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub active" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub" href="form-layout.html">Forms</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="comp-hero">
+    <div>
+      <span class="page-eyebrow">42 / Overlays</span>
+      <h1 class="page-title">Drawer</h1>
+      <p class="page-desc" style="margin-bottom:20px">Side panel that slides in from the right (or left) to show detail views, forms, or secondary content without leaving the current page. Has header, scrollable body, and sticky footer.</p>
+      <div class="page-meta">
+        <span class="meta-chip">Right / Left</span>
+        <span class="meta-chip">S / M / L widths</span>
+        <span class="meta-chip">Sticky footer</span>
+        <span class="meta-chip">Scrollable body</span>
+        <span class="meta-chip">Backdrop close</span>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">drawer.md</div>
+          <div class="dl-file-meta">Markdown · All specs · Interactions</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">Upload to <strong>Claude</strong> for exact drawer tokens, variants, and production-ready code.</p>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" class="dl-btn" href="downloads/drawer.md" download="drawer.md">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 10v1a1 1 0 001 1h8a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download drawer.md
+      </a>
+    </div>
+  </div>
+
+  <!-- LIVE DEMO -->
+  <div class="demo-section" id="demo">
+    <p class="section-label">Live Demo</p>
+    <div class="demo-stage">
+      <div class="drawer-demo-grid">
+        <button class="demo-trigger-btn primary" onclick="openDrawer('drawer-detail')">Loan Detail</button>
+        <button class="demo-trigger-btn" onclick="openDrawer('drawer-form')">Add Client (Form)</button>
+        <button class="demo-trigger-btn" onclick="openDrawer('drawer-left')">Left Drawer</button>
+        <button class="demo-trigger-btn" onclick="openDrawer('drawer-lg')">Large Drawer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPECS -->
+  <div class="spec-section" id="specs">
+    <p class="section-label">Measurements &amp; Anatomy</p>
+    <div class="spec-grid">
+      <div>
+        <table class="spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Width (S)</td><td>320px</td></tr>
+            <tr><td>Width (M / default)</td><td>400px</td></tr>
+            <tr><td>Width (L)</td><td>560px</td></tr>
+            <tr><td>Max width</td><td>90vw</td></tr>
+            <tr><td>Header padding</td><td>22px 24px</td></tr>
+            <tr><td>Body padding</td><td>24px</td></tr>
+            <tr><td>Footer padding</td><td>16px 24px</td></tr>
+            <tr><td>Title font</td><td>16px / 700</td></tr>
+            <tr><td>Shadow (right)</td><td>-8px 0 32px rgba(0,0,0,.12)</td></tr>
+            <tr><td>Backdrop</td><td>rgba(0,0,0,.4)</td></tr>
+            <tr><td>Slide animation</td><td>280ms cubic-bezier(.4,0,.2,1)</td></tr>
+            <tr><td>Close button</td><td>30 × 30px, r8</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div id="anatomy">
+        <div class="anatomy-wrap">
+          <div class="anatomy-header">Anatomy</div>
+          <div class="anatomy-body">
+            <div class="anatomy-item">
+              <div class="anatomy-num">1</div>
+              <div class="anatomy-text"><strong>Backdrop</strong> — click to close; same as modal</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">2</div>
+              <div class="anatomy-text"><strong>Drawer panel</strong> — full height, fixed width, slides from edge</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">3</div>
+              <div class="anatomy-text"><strong>Header</strong> — title, optional subtitle, close × button</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">4</div>
+              <div class="anatomy-text"><strong>Body</strong> — flex: 1, overflow-y: auto, scrolls independently</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">5</div>
+              <div class="anatomy-text"><strong>Footer</strong> — sticky, flex-shrink: 0, border-top, action buttons</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOR TOKENS -->
+  <div class="spec-section" id="colors">
+    <p class="section-label">Color Tokens</p>
+    <div class="color-swatches">
+      <div class="color-row"><div class="swatch" style="background:rgba(0,0,0,.4)"></div><span class="color-name">rgba(0,0,0,.4)</span><span class="color-use">Backdrop color</span></div>
+      <div class="color-row"><div class="swatch" style="background:var(--bg-panel);border:1px solid var(--border)"></div><span class="color-name">--bg-panel</span><span class="color-use">Drawer panel background</span></div>
+      <div class="color-row"><div class="swatch" style="background:var(--border)"></div><span class="color-name">--border</span><span class="color-use">Left border, header/footer dividers</span></div>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="code-section" id="code">
+    <p class="section-label">Code</p>
+    <div class="code-tabs">
+      <div class="code-tab active" onclick="switchTab(this,'html-panel')">HTML</div>
+      <div class="code-tab" onclick="switchTab(this,'css-panel')">CSS</div>
+      <div class="code-tab" onclick="switchTab(this,'react-panel')">React</div>
+    </div>
+
+    <div class="code-panel active" id="html-panel">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-drawer-overlay"</span> <span class="attr">id</span>=<span class="str">"my-drawer"</span>
+     <span class="attr">role</span>=<span class="str">"dialog"</span> <span class="attr">aria-modal</span>=<span class="str">"true"</span>
+     <span class="attr">onclick</span>=<span class="str">"closeOnBackdrop(event,'my-drawer')"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-drawer"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-drawer-header"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-drawer-title"</span><span class="tag">&gt;</span>Loan Details<span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-drawer-subtitle"</span><span class="tag">&gt;</span>LN-20450<span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"ym-drawer-close"</span>
+              <span class="attr">onclick</span>=<span class="str">"closeDrawer('my-drawer')"</span>
+              <span class="attr">aria-label</span>=<span class="str">"Close"</span><span class="tag">&gt;</span>×<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-drawer-body"</span><span class="tag">&gt;</span>
+      <span class="cmt">&lt;!-- scrollable content --&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-drawer-footer"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"ym-btn secondary btn-m"</span>
+              <span class="attr">onclick</span>=<span class="str">"closeDrawer('my-drawer')"</span><span class="tag">&gt;</span>Cancel<span class="tag">&lt;/button&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"ym-btn primary btn-m"</span><span class="tag">&gt;</span>Save<span class="tag">&lt;/button&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Left drawer: add ym-drawer-left to .ym-drawer --&gt;</span>
+<span class="cmt">&lt;!-- Small: add ym-drawer-sm --&gt;</span>
+<span class="cmt">&lt;!-- Large: add ym-drawer-lg --&gt;</span></pre>
+    </div>
+
+    <div class="code-panel" id="css-panel">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="fn">.ym-drawer-overlay</span> {
+  <span class="attr">position</span>: fixed; <span class="attr">inset</span>: <span class="num">0</span>; <span class="attr">background</span>: rgba(<span class="num">0,0,0,.4</span>);
+  <span class="attr">z-index</span>: <span class="num">1000</span>; <span class="attr">opacity</span>: <span class="num">0</span>; <span class="attr">pointer-events</span>: none;
+  <span class="attr">transition</span>: opacity <span class="num">250ms</span> ease;
+}
+<span class="fn">.ym-drawer-overlay.open</span> { <span class="attr">opacity</span>: <span class="num">1</span>; <span class="attr">pointer-events</span>: all; }
+
+<span class="fn">.ym-drawer</span> {
+  <span class="attr">position</span>: fixed; <span class="attr">top</span>: <span class="num">0</span>; <span class="attr">bottom</span>: <span class="num">0</span>; <span class="attr">right</span>: <span class="num">0</span>;
+  <span class="attr">width</span>: <span class="num">400px</span>; <span class="attr">max-width</span>: <span class="num">90vw</span>;
+  <span class="attr">background</span>: <span class="kw">var</span>(--bg-panel); <span class="attr">border-left</span>: <span class="num">1px</span> solid <span class="kw">var</span>(--border);
+  <span class="attr">z-index</span>: <span class="num">1001</span>; <span class="attr">display</span>: flex; <span class="attr">flex-direction</span>: column;
+  <span class="attr">transform</span>: translateX(<span class="num">100%</span>);
+  <span class="attr">transition</span>: transform <span class="num">280ms</span> cubic-bezier(<span class="num">.4,0,.2,1</span>);
+}
+<span class="fn">.ym-drawer-overlay.open .ym-drawer</span> { <span class="attr">transform</span>: translateX(<span class="num">0</span>); }
+<span class="fn">.ym-drawer-sm</span> { <span class="attr">width</span>: <span class="num">320px</span>; }
+<span class="fn">.ym-drawer-lg</span> { <span class="attr">width</span>: <span class="num">560px</span>; }
+<span class="fn">.ym-drawer-left</span> {
+  <span class="attr">right</span>: auto; <span class="attr">left</span>: <span class="num">0</span>;
+  <span class="attr">border-left</span>: none; <span class="attr">border-right</span>: <span class="num">1px</span> solid <span class="kw">var</span>(--border);
+  <span class="attr">transform</span>: translateX(<span class="num">-100%</span>);
+}
+<span class="fn">.ym-drawer-body</span> { <span class="attr">flex</span>: <span class="num">1</span>; <span class="attr">overflow-y</span>: auto; <span class="attr">padding</span>: <span class="num">24px</span>; }
+<span class="fn">.ym-drawer-footer</span> {
+  <span class="attr">padding</span>: <span class="num">16px 24px</span>; <span class="attr">border-top</span>: <span class="num">1px</span> solid <span class="kw">var</span>(--border);
+  <span class="attr">display</span>: flex; <span class="attr">justify-content</span>: flex-end; <span class="attr">gap</span>: <span class="num">10px</span>;
+  <span class="attr">flex-shrink</span>: <span class="num">0</span>;
+}</pre>
+    </div>
+
+    <div class="code-panel" id="react-panel">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="kw">function</span> <span class="fn">Drawer</span>({ open, onClose, title, subtitle, children, footer, side = <span class="str">'right'</span>, size = <span class="str">'md'</span> }) {
+  useEffect(() =&gt; {
+    <span class="kw">const</span> h = (e) =&gt; e.key === <span class="str">'Escape'</span> &amp;&amp; onClose();
+    <span class="kw">if</span> (open) document.addEventListener(<span class="str">'keydown'</span>, h);
+    <span class="kw">return</span> () =&gt; document.removeEventListener(<span class="str">'keydown'</span>, h);
+  }, [open]);
+
+  <span class="kw">const</span> drawerCls = [
+    <span class="str">'ym-drawer'</span>,
+    side === <span class="str">'left'</span> ? <span class="str">'ym-drawer-left'</span> : <span class="str">''</span>,
+    size === <span class="str">'sm'</span> ? <span class="str">'ym-drawer-sm'</span> : size === <span class="str">'lg'</span> ? <span class="str">'ym-drawer-lg'</span> : <span class="str">''</span>,
+  ].filter(Boolean).join(<span class="str">' '</span>);
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span> <span class="attr">className</span>={<span class="str">`ym-drawer-overlay${open ? ' open' : ''}`</span>}
+         <span class="attr">onClick</span>={e =&gt; e.target === e.currentTarget &amp;&amp; onClose()}&gt;
+      &lt;<span class="tag">div</span> <span class="attr">className</span>={drawerCls} <span class="attr">role</span>=<span class="str">"dialog"</span> <span class="attr">aria-modal</span>=<span class="str">"true"</span>&gt;
+        &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-drawer-header"</span>&gt;
+          &lt;<span class="tag">div</span>&gt;
+            &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-drawer-title"</span>&gt;{title}&lt;/<span class="tag">div</span>&gt;
+            {subtitle &amp;&amp; &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-drawer-subtitle"</span>&gt;{subtitle}&lt;/<span class="tag">div</span>&gt;}
+          &lt;/<span class="tag">div</span>&gt;
+          &lt;<span class="tag">button</span> <span class="attr">className</span>=<span class="str">"ym-drawer-close"</span> <span class="attr">onClick</span>={onClose}&gt;×&lt;/<span class="tag">button</span>&gt;
+        &lt;/<span class="tag">div</span>&gt;
+        &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-drawer-body"</span>&gt;{children}&lt;/<span class="tag">div</span>&gt;
+        {footer &amp;&amp; &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-drawer-footer"</span>&gt;{footer}&lt;/<span class="tag">div</span>&gt;}
+      &lt;/<span class="tag">div</span>&gt;
+    &lt;/<span class="tag">div</span>&gt;
+  );
+}</pre>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="related-section">
+    <p class="section-label">Related Components</p>
+    <div class="related-grid">
+      <a class="related-card" href="modal.html">
+        <div class="related-eyebrow">Overlays · 41</div>
+        <div class="related-title">Modal</div>
+      </a>
+      <a class="related-card" href="bottomsheet.html">
+        <div class="related-eyebrow">Overlays · 45</div>
+        <div class="related-title">Bottom Sheet</div>
+      </a>
+      <a class="related-card" href="sidebar.html">
+        <div class="related-eyebrow">Navigation · 10</div>
+        <div class="related-title">Side Navigation</div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<!-- ── Drawer instances ── -->
+
+<!-- Detail drawer -->
+<div class="ym-drawer-overlay" id="drawer-detail" onclick="closeOnBackdrop(event,'drawer-detail')">
+  <div class="ym-drawer">
+    <div class="ym-drawer-header">
+      <div><div class="ym-drawer-title">Loan Details</div><div class="ym-drawer-subtitle">LN-20450 · Acme Corp</div></div>
+      <button class="ym-drawer-close" onclick="closeDrawer('drawer-detail')" aria-label="Close">×</button>
+    </div>
+    <div class="ym-drawer-body">
+      <div style="display:flex;flex-direction:column;gap:20px;font-family:'Inter',-apple-system,sans-serif">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:11px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Loan Amount</div><div style="font-size:18px;font-weight:700;color:var(--text-1)">₹24,00,000</div></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:11px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Status</div><div style="font-size:14px;font-weight:600;color:#3F902B">Active</div></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:11px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Interest Rate</div><div style="font-size:14px;color:var(--text-1)">12.5% p.a.</div></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:11px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Tenure</div><div style="font-size:14px;color:var(--text-1)">36 months</div></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:11px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.06em">EMI</div><div style="font-size:14px;color:var(--text-1)">₹80,200 / month</div></div>
+          <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:11px;color:var(--text-3);font-weight:700;text-transform:uppercase;letter-spacing:.06em">Next Due</div><div style="font-size:14px;color:var(--text-1)">Apr 15, 2025</div></div>
+        </div>
+        <div style="height:1px;background:var(--border)"></div>
+        <div><div style="font-size:13px;font-weight:600;color:var(--text-1);margin-bottom:10px">Recent Transactions</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg-inset);border-radius:8px"><span style="font-size:13px;color:var(--text-2)">Mar EMI</span><span style="font-size:13px;font-weight:600;color:#3F902B">₹80,200</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:var(--bg-inset);border-radius:8px"><span style="font-size:13px;color:var(--text-2)">Feb EMI</span><span style="font-size:13px;font-weight:600;color:#3F902B">₹80,200</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ym-drawer-footer">
+      <button class="demo-trigger-btn" onclick="closeDrawer('drawer-detail')">Close</button>
+      <button class="demo-trigger-btn primary">Edit Loan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Form drawer -->
+<div class="ym-drawer-overlay" id="drawer-form" onclick="closeOnBackdrop(event,'drawer-form')">
+  <div class="ym-drawer">
+    <div class="ym-drawer-header">
+      <div><div class="ym-drawer-title">Add Client</div><div class="ym-drawer-subtitle">New business account</div></div>
+      <button class="ym-drawer-close" onclick="closeDrawer('drawer-form')" aria-label="Close">×</button>
+    </div>
+    <div class="ym-drawer-body" style="display:flex;flex-direction:column;gap:16px;font-family:'Inter',-apple-system,sans-serif">
+      <div style="display:flex;flex-direction:column;gap:5px"><label style="font-size:13px;font-weight:600;color:var(--text-1)">Business Name <span style="color:var(--accent)">*</span></label><input class="ym-input inp-m" type="text" placeholder="Enter business name"></div>
+      <div style="display:flex;flex-direction:column;gap:5px"><label style="font-size:13px;font-weight:600;color:var(--text-1)">PAN Number <span style="color:var(--accent)">*</span></label><input class="ym-input inp-m" type="text" placeholder="AAACE1234D"></div>
+      <div style="display:flex;flex-direction:column;gap:5px"><label style="font-size:13px;font-weight:600;color:var(--text-1)">Contact Email</label><input class="ym-input inp-m" type="email" placeholder="contact@business.com"></div>
+      <div style="display:flex;flex-direction:column;gap:5px"><label style="font-size:13px;font-weight:600;color:var(--text-1)">Notes</label><textarea rows="3" placeholder="Any special instructions…" style="padding:10px 12px;border:1.5px solid var(--border);border-radius:8px;background:var(--bg-panel);color:var(--text-1);font-size:14px;outline:none;resize:vertical;font-family:inherit;line-height:1.5"></textarea></div>
+    </div>
+    <div class="ym-drawer-footer">
+      <button class="demo-trigger-btn" onclick="closeDrawer('drawer-form')">Cancel</button>
+      <button class="demo-trigger-btn primary" onclick="closeDrawer('drawer-form')">Add Client</button>
+    </div>
+  </div>
+</div>
+
+<!-- Left drawer -->
+<div class="ym-drawer-overlay" id="drawer-left" onclick="closeOnBackdrop(event,'drawer-left')">
+  <div class="ym-drawer ym-drawer-left ym-drawer-sm">
+    <div class="ym-drawer-header">
+      <div><div class="ym-drawer-title">Filters</div></div>
+      <button class="ym-drawer-close" onclick="closeDrawer('drawer-left')" aria-label="Close">×</button>
+    </div>
+    <div class="ym-drawer-body" style="font-family:'Inter',-apple-system,sans-serif;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em">Status</div><label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-2);cursor:pointer"><input type="checkbox"> Active</label><label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-2);cursor:pointer"><input type="checkbox"> Pending</label><label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-2);cursor:pointer"><input type="checkbox"> Closed</label></div>
+      <div style="height:1px;background:var(--border)"></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em">Loan Type</div><label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-2);cursor:pointer"><input type="checkbox"> Business Loan</label><label style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-2);cursor:pointer"><input type="checkbox"> Personal Loan</label></div>
+    </div>
+    <div class="ym-drawer-footer">
+      <button class="demo-trigger-btn" onclick="closeDrawer('drawer-left')">Clear All</button>
+      <button class="demo-trigger-btn primary" onclick="closeDrawer('drawer-left')">Apply</button>
+    </div>
+  </div>
+</div>
+
+<!-- Large drawer -->
+<div class="ym-drawer-overlay" id="drawer-lg" onclick="closeOnBackdrop(event,'drawer-lg')">
+  <div class="ym-drawer ym-drawer-lg">
+    <div class="ym-drawer-header">
+      <div><div class="ym-drawer-title">Loan Application</div><div class="ym-drawer-subtitle">Full application review</div></div>
+      <button class="ym-drawer-close" onclick="closeDrawer('drawer-lg')" aria-label="Close">×</button>
+    </div>
+    <div class="ym-drawer-body" style="font-family:'Inter',-apple-system,sans-serif;color:var(--text-2);font-size:14px;line-height:1.6">
+      <p>This is a large drawer (560px) suitable for displaying full-page forms, application reviews, or complex data views that need more horizontal space.</p>
+      <p style="margin-top:14px">Use the L size when the content requires two-column layouts or tables within the drawer panel.</p>
+    </div>
+    <div class="ym-drawer-footer">
+      <button class="demo-trigger-btn" onclick="closeDrawer('drawer-lg')">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast">Copied to clipboard</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('ym-theme', next);
+  document.getElementById('icon-moon').style.display = isDark ? 'block' : 'none';
+  document.getElementById('icon-sun').style.display  = isDark ? 'none'  : 'block';
+}
+(function() {
+  const saved = localStorage.getItem('ym-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', saved);
+  if (saved === 'dark') {
+    document.getElementById('icon-moon').style.display = 'none';
+    document.getElementById('icon-sun').style.display  = 'block';
+  }
+})();
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+function switchTab(el, panelId) {
+  el.closest('.code-section').querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+  el.closest('.code-section').querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+function copyCode(btn) {
+  const code = btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!'; btn.classList.add('copied');
+    const toast = document.getElementById('toast'); toast.classList.add('show');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); toast.classList.remove('show'); }, 2000);
+  });
+}
+function openDrawer(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDrawer(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeOnBackdrop(e, id) {
+  if (e.target === e.currentTarget) closeDrawer(id);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.ym-drawer-overlay.open').forEach(d => {
+      d.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  }
+});
+</script>
+<script src="download.js"></script>
+<script id="__dl_data">
+var __mdContent  = "# Drawer \u2014 Yubi Market Design System\n\n> **Version:** 1.0.0 | **Category:** Overlays (42/54) | **Status:** Stable\n\n---\n\n## Overview\n\nSide panel that slides in from the right (or left) to show detail views, forms, or secondary content without leaving the current page. Has a fixed header, scrollable body, and sticky footer with action buttons.\n\n---\n\n## Sizes\n\n| Size | Width  |\n|------|--------|\n| S    | 320px  |\n| M    | 400px (default) |\n| L    | 560px  |\n\nAll sizes have `max-width: 90vw` for mobile safety.\n\n---\n\n## Measurements\n\n| Property          | Value                                   |\n|-------------------|-----------------------------------------|\n| Default width     | 400px                                   |\n| Max width         | 90vw                                    |\n| Header padding    | 22px 24px                               |\n| Body padding      | 24px                                    |\n| Footer padding    | 16px 24px                               |\n| Title font        | 16px / 700                              |\n| Subtitle font     | 13px / --text-3                         |\n| Backdrop          | rgba(0,0,0,.4)                          |\n| Shadow (right)    | -8px 0 32px rgba(0,0,0,.12)            |\n| Slide animation   | 280ms cubic-bezier(.4,0,.2,1)          |\n| Close button      | 30 \u00d7 30px, r8                           |\n\n---\n\n## HTML\n\n```html\n<!-- Right drawer (default) -->\n<div class=\"ym-drawer-overlay\" id=\"my-drawer\"\n     role=\"dialog\" aria-modal=\"true\" aria-labelledby=\"drawer-title\"\n     onclick=\"closeOnBackdrop(event,'my-drawer')\">\n  <div class=\"ym-drawer\">\n    <div class=\"ym-drawer-header\">\n      <div>\n        <div class=\"ym-drawer-title\" id=\"drawer-title\">Loan Details</div>\n        <div class=\"ym-drawer-subtitle\">LN-20450</div>\n      </div>\n      <button class=\"ym-drawer-close\" onclick=\"closeDrawer('my-drawer')\" aria-label=\"Close\">\u00d7</button>\n    </div>\n    <div class=\"ym-drawer-body\">\n      <!-- scrollable content -->\n    </div>\n    <div class=\"ym-drawer-footer\">\n      <button class=\"ym-btn secondary btn-m\" onclick=\"closeDrawer('my-drawer')\">Cancel</button>\n      <button class=\"ym-btn primary btn-m\">Save</button>\n    </div>\n  </div>\n</div>\n\n<!-- Size modifiers: add to .ym-drawer -->\n<!-- Small:  class=\"ym-drawer ym-drawer-sm\" -->\n<!-- Large:  class=\"ym-drawer ym-drawer-lg\" -->\n<!-- Left:   class=\"ym-drawer ym-drawer-left\" -->\n```\n\n---\n\n## CSS\n\n```css\n.ym-drawer-overlay {\n  position: fixed; inset: 0; background: rgba(0,0,0,.4);\n  z-index: 1000; opacity: 0; pointer-events: none;\n  transition: opacity 250ms ease;\n}\n.ym-drawer-overlay.open { opacity: 1; pointer-events: all; }\n\n.ym-drawer {\n  position: fixed; top: 0; bottom: 0; right: 0;\n  width: 400px; max-width: 90vw;\n  background: var(--bg-panel); border-left: 1px solid var(--border);\n  z-index: 1001; display: flex; flex-direction: column;\n  transform: translateX(100%);\n  transition: transform 280ms cubic-bezier(.4,0,.2,1);\n  box-shadow: -8px 0 32px rgba(0,0,0,.12);\n}\n.ym-drawer-overlay.open .ym-drawer { transform: translateX(0); }\n\n.ym-drawer-sm { width: 320px; }\n.ym-drawer-lg { width: 560px; }\n\n.ym-drawer-left {\n  right: auto; left: 0;\n  border-left: none; border-right: 1px solid var(--border);\n  transform: translateX(-100%);\n  box-shadow: 8px 0 32px rgba(0,0,0,.12);\n}\n.ym-drawer-overlay.open .ym-drawer-left { transform: translateX(0); }\n\n.ym-drawer-header {\n  display: flex; align-items: flex-start; justify-content: space-between;\n  padding: 22px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0;\n}\n.ym-drawer-title { font-size: 16px; font-weight: 700; color: var(--text-1); }\n.ym-drawer-body { flex: 1; overflow-y: auto; padding: 24px; }\n.ym-drawer-footer {\n  padding: 16px 24px; border-top: 1px solid var(--border);\n  display: flex; align-items: center; justify-content: flex-end;\n  gap: 10px; flex-shrink: 0;\n}\n```\n\n---\n\n## JavaScript\n\n```javascript\nfunction openDrawer(id) {\n  document.getElementById(id).classList.add('open');\n  document.body.style.overflow = 'hidden';\n}\nfunction closeDrawer(id) {\n  document.getElementById(id).classList.remove('open');\n  document.body.style.overflow = '';\n}\nfunction closeOnBackdrop(e, id) {\n  if (e.target === e.currentTarget) closeDrawer(id);\n}\ndocument.addEventListener('keydown', e => {\n  if (e.key === 'Escape') {\n    document.querySelectorAll('.ym-drawer-overlay.open').forEach(d => {\n      d.classList.remove('open');\n      document.body.style.overflow = '';\n    });\n  }\n});\n```\n\n---\n\n## When to use Drawer vs Modal\n\n| Drawer                               | Modal                                  |\n|--------------------------------------|----------------------------------------|\n| Detail view alongside list           | Confirmation requiring full attention  |\n| Long forms (5+ fields)               | Short confirmations (\u22643 fields)        |\n| Doesn't fully block context          | Fully interrupts the flow              |\n| Content relates to selected list item| Standalone action                      |\n\n---\n\n## Accessibility\n\n- `role=\"dialog\"` and `aria-modal=\"true\"` on the drawer panel (not overlay)\n- `aria-labelledby` pointing to `.ym-drawer-title`\n- Move focus into the drawer on open\n- Trap focus within while open; restore on close\n- `aria-label=\"Close\"` on the close button\n\n---\n\n## Related Components\n\n- **Modal** (`modal.html`) \u2014 centered dialog for confirmations\n- **Bottom Sheet** (`bottomsheet.html`) \u2014 mobile-optimised overlay\n- **Side Navigation** (`sidebar.html`) \u2014 persistent side panel\n\n---\n\n*Yubi Market Design System \u00b7 Drawer v1.0.0 \u00b7 Internal Use*\n";
+var __mdFilename = "drawer.md";
+</script>
+</body>
+</html>

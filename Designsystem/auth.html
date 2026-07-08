@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auth Layout — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.comp-hero { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 48px 56px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center; }
+.dl-card { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon { width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: background .15s, transform .1s; }
+.dl-btn:hover { background: #E84800; transform: translateY(-1px); }
+.demo-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.spec-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.code-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.related-section { padding: 40px 56px 60px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+.demo-stage { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 0; overflow: hidden; }
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.spec-table { width: 100%; border-collapse: collapse; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 12.5px; }
+.spec-table th { text-align: left; padding: 9px 14px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+.spec-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table td:first-child { color: var(--text-1); font-weight: 500; }
+.sv { font-family: var(--mono); font-size: 11px; color: var(--accent-text); background: var(--accent-dim); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--accent); display: inline-block; }
+.anatomy-wrap { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.anatomy-header { padding: 10px 14px; background: var(--bg-inset); border-bottom: 1px solid var(--border); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.anatomy-body { padding: 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+.anatomy-item { display: flex; align-items: flex-start; gap: 10px; }
+.anatomy-num { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.anatomy-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.anatomy-text strong { color: var(--text-1); }
+.related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.related-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; display: block; transition: border-color .15s, background .15s; }
+.related-card:hover { border-color: var(--accent); background: var(--accent-dim); }
+.related-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.related-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+@media (max-width: 1099px) { .comp-hero { grid-template-columns: 1fr; } .spec-grid { grid-template-columns: 1fr; } .related-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 809px) { .comp-hero, .demo-section, .spec-section, .code-section, .related-section { padding: 32px 20px; } .related-grid { grid-template-columns: 1fr; } }
+
+/* ── Demo variant switcher ── */
+.demo-tabs { display: flex; gap: 2px; padding: 16px 20px 0; }
+.demo-tab {
+  padding: 7px 16px; font-size: 12px; font-weight: 600;
+  color: var(--text-3); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color .15s, border-color .15s;
+  border-radius: 6px 6px 0 0;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.demo-tab.active { color: var(--accent); border-color: var(--border); border-bottom-color: var(--bg-inset); background: var(--bg-inset); }
+.demo-tab:hover:not(.active) { color: var(--text-1); }
+.demo-variant { display: none; }
+.demo-variant.active { display: block; }
+
+/* ── Auth layout preview ── */
+.auth-preview {
+  height: 540px;
+  display: flex;
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: #fff;
+  overflow: hidden;
+}
+
+/* Left decorative panel */
+.auth-left {
+  width: 42%;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+  background: #080e18;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 110% 95%, rgba(220, 90, 30, 0.85) 0%, transparent 65%),
+    radial-gradient(ellipse 60% 70% at 60% 70%, rgba(100, 60, 200, 0.55) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 50% at 15% 40%, rgba(30, 70, 180, 0.5) 0%, transparent 65%),
+    radial-gradient(ellipse 40% 40% at 80% 20%, rgba(60, 100, 220, 0.4) 0%, transparent 65%);
+}
+.auth-left-inner {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 28px 32px;
+}
+.auth-left-logo {
+  display: flex; align-items: center; gap: 8px;
+}
+.auth-left-logo-mark {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+}
+.auth-left-wordmark {
+  font-size: 15px; font-weight: 700; color: #fff;
+  letter-spacing: -0.01em;
+}
+.auth-left-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-bottom: 20px; }
+.auth-left-title {
+  font-size: 26px; font-weight: 700;
+  color: #fff; line-height: 1.25;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.auth-left-desc {
+  font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.6; max-width: 260px;
+}
+.auth-left-dots {
+  display: flex; gap: 6px;
+}
+.auth-left-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+}
+.auth-left-dot.active { background: #FD7149; width: 18px; border-radius: 3px; }
+
+/* Right form panel */
+.auth-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  overflow-y: auto;
+  padding: 32px 24px;
+}
+.auth-form-wrap {
+  width: 100%; max-width: 340px;
+}
+.auth-form-logo {
+  display: flex; align-items: center; gap: 7px;
+  margin-bottom: 24px;
+}
+.auth-form-logo-mark { display: flex; align-items: center; }
+.auth-form-logo-text {
+  font-size: 14px; font-weight: 700;
+  color: #121926; letter-spacing: -0.01em;
+}
+.auth-form-heading {
+  font-size: 28px; font-weight: 700;
+  color: #121926; line-height: 1.2;
+  margin-bottom: 4px; letter-spacing: -0.02em;
+}
+.auth-form-heading-yubi {
+  display: flex; align-items: baseline; gap: 8px;
+}
+.auth-form-heading-logo {
+  display: inline-flex; align-items: center;
+  vertical-align: middle;
+}
+.auth-form-subhead {
+  font-size: 18px; font-weight: 700;
+  color: #121926; margin-bottom: 22px;
+}
+.auth-field { margin-bottom: 16px; }
+.auth-field-label {
+  display: block; font-size: 13px; font-weight: 600;
+  color: #697586; margin-bottom: 5px;
+}
+.auth-field-input {
+  width: 100%; height: 40px;
+  border: 1px solid #CDD5DF; border-radius: 6px;
+  padding: 0 12px; font-size: 14px; color: #121926;
+  background: #fff; outline: none;
+  box-sizing: border-box;
+  transition: border-color .15s, box-shadow .15s;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+.auth-field-input::placeholder { color: #9AA3B2; }
+.auth-field-input:focus { border-color: #81AFF2; box-shadow: 0 0 0 3px rgba(129,175,242,.35); }
+.auth-field-row { display: flex; gap: 10px; }
+.auth-field-row .auth-field { flex: 1; }
+.auth-btn-primary {
+  width: 100%; height: 40px;
+  background: #FD7149; color: #fff;
+  font-size: 14px; font-weight: 600;
+  border: none; border-radius: 6px; cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,.08);
+  transition: background .15s, transform .1s;
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin-bottom: 14px;
+}
+.auth-btn-primary:hover { background: #FC5E32; transform: translateY(-1px); }
+.auth-legal {
+  font-size: 12px; color: #697586; line-height: 1.6;
+}
+.auth-legal a { color: #3554A4; text-decoration: none; }
+.auth-legal a:hover { text-decoration: underline; }
+.auth-divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 16px 0; font-size: 12px; color: #9AA3B2;
+}
+.auth-divider::before, .auth-divider::after {
+  content: ''; flex: 1; height: 1px; background: #E3E8EF;
+}
+.auth-btn-social {
+  width: 100%; height: 40px;
+  background: #fff; color: #344054;
+  font-size: 13px; font-weight: 600;
+  border: 1px solid #CDD5DF; border-radius: 6px;
+  cursor: pointer; display: flex; align-items: center;
+  justify-content: center; gap: 8px;
+  transition: background .15s;
+  font-family: 'Inter', -apple-system, sans-serif;
+  margin-bottom: 10px;
+}
+.auth-btn-social:hover { background: #F8FAFC; }
+.auth-switch {
+  text-align: center; font-size: 13px; color: #697586; margin-top: 18px;
+}
+.auth-switch a { color: #FD7149; font-weight: 600; text-decoration: none; cursor: pointer; }
+.auth-switch a:hover { text-decoration: underline; }
+.auth-otp-hint {
+  font-size: 12px; color: #697586; line-height: 1.6; margin-bottom: 16px;
+}
+.auth-resend { font-size: 12px; color: #697586; margin-top: 12px; text-align: center; }
+.auth-resend a { color: #FD7149; font-weight: 600; cursor: pointer; }
+.auth-otp-row { display: flex; gap: 8px; margin-bottom: 4px; }
+.auth-otp-cell {
+  flex: 1; height: 48px;
+  border: 1px solid #CDD5DF; border-radius: 6px;
+  text-align: center; font-size: 20px; font-weight: 700;
+  color: #121926; background: #fff; outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.auth-otp-cell:focus { border-color: #81AFF2; box-shadow: 0 0 0 3px rgba(129,175,242,.35); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Auth Layout</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="combobox.html">Combobox</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub active" href="auth.html">Auth Pages</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<main class="main">
+
+  <!-- Hero -->
+  <div class="comp-hero">
+    <div>
+      <span class="page-eyebrow">Layouts · 11 / Auth</span>
+      <h1 class="page-title">Auth Layout</h1>
+      <p class="page-desc">Full-page authentication shell for Login, Signup, and OTP verification screens. Split-screen: dark decorative left panel with brand visuals, white right panel with form. Used as the entry point for the Yubi Market distributor portal.</p>
+      <div class="page-meta">
+        <span class="meta-chip">Login</span>
+        <span class="meta-chip">Signup</span>
+        <span class="meta-chip">OTP Verify</span>
+        <span class="meta-chip">Split Screen</span>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="16" rx="2" stroke="currentColor" stroke-width="1.4"/><rect x="11" y="2" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.4"/><rect x="11" y="11" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.4"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">auth-layout.md</div>
+          <div class="dl-file-meta">Markdown · v1.0.0 · Login + Signup + OTP</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">Complete auth shell — split-screen layout, all three step variants, token specs, and CSS variables. Paste into Claude for pixel-accurate auth screens.</p>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" href="downloads/auth-layout.md" download="auth-layout.md" class="dl-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download .md
+      </a>
+    </div>
+  </div>
+
+  <!-- Demo -->
+  <section class="demo-section">
+    <div class="section-label">Live Preview</div>
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+      <div style="display:flex;gap:6px;">
+        <button class="demo-tab active" id="tab-login" onclick="switchVariant('login')">Login</button>
+        <button class="demo-tab" id="tab-signup" onclick="switchVariant('signup')">Signup</button>
+        <button class="demo-tab" id="tab-otp" onclick="switchVariant('otp')">OTP Verify</button>
+      </div>
+      <span style="font-size:12px;color:var(--text-3);">
+        <svg width="13" height="13" viewBox="0 0 16 16" fill="none" style="color:var(--text-3);vertical-align:middle;margin-right:4px;"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 7v4M8 5.5v.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        Form fields are interactive — try clicking and typing
+      </span>
+    </div>
+
+    <div class="demo-stage">
+      <!-- ── Login variant ── -->
+      <div class="demo-variant active" id="variant-login">
+        <div class="auth-preview">
+          <div class="auth-left">
+            <div class="auth-left-inner">
+              <div class="auth-left-logo">
+                <div class="auth-left-logo-mark">
+                  <svg width="26" height="26" viewBox="0 0 29 30" fill="none"><path d="M11.1089 8C11.1089 9.801 11.4636 11.584 12.1528 13.248C12.842 14.912 13.8522 16.424 15.1257 17.698C16.3993 18.971 17.9111 19.981 19.575 20.67C21.239 21.36 23.0223 21.714 24.8233 21.714V15.109C23.8868 15.109 22.9595 14.947 22.0942 14.589C21.229 14.23 20.4428 13.705 19.7806 13.043C19.1184 12.381 18.5931 11.594 18.2347 10.729C17.8763 9.864 17.7145 8.937 17.7145 8H11.1089Z" fill="#DCDC5B"/><path d="M4 21.714C5.801 21.714 7.584 21.36 9.248 20.67C10.912 19.981 12.424 18.971 13.698 17.698C14.971 16.424 15.981 14.912 16.671 13.248C17.36 11.584 17.714 9.801 17.714 8H11.109C11.109 8.937 10.947 9.864 10.589 10.729C10.23 11.594 9.705 12.381 9.043 13.043C8.381 13.705 7.594 14.23 6.729 14.589C5.864 14.947 4.937 15.109 4 15.109V21.714Z" fill="#FE5104"/><path d="M17.714 8L17.714 8.084C17.703 9.857 17.349 11.61 16.671 13.248C16.116 14.588 15.353 15.829 14.412 16.926C13.471 15.829 12.708 14.588 12.153 13.248C11.464 11.584 11.109 9.801 11.109 8H17.714Z" fill="#81AFF2"/></svg>
+                </div>
+                <span class="auth-left-wordmark">Yubi markets</span>
+              </div>
+              <div class="auth-left-body">
+                <div class="auth-left-title">Welcome to<br>Vista</div>
+                <div class="auth-left-desc">Deliver a comprehensive &amp; seamless client experience with our efficient &amp; professional platform.</div>
+              </div>
+              <div class="auth-left-dots">
+                <div class="auth-left-dot active"></div>
+                <div class="auth-left-dot"></div>
+                <div class="auth-left-dot"></div>
+              </div>
+            </div>
+          </div>
+          <div class="auth-right">
+            <div class="auth-form-wrap">
+              <div class="auth-form-logo">
+                <div class="auth-form-logo-mark">
+                  <svg width="20" height="20" viewBox="0 0 29 30" fill="none"><path d="M11.1089 8C11.1089 9.801 11.4636 11.584 12.1528 13.248C12.842 14.912 13.8522 16.424 15.1257 17.698C16.3993 18.971 17.9111 19.981 19.575 20.67C21.239 21.36 23.0223 21.714 24.8233 21.714V15.109C23.8868 15.109 22.9595 14.947 22.0942 14.589C21.229 14.23 20.4428 13.705 19.7806 13.043C19.1184 12.381 18.5931 11.594 18.2347 10.729C17.8763 9.864 17.7145 8.937 17.7145 8H11.1089Z" fill="#DCDC5B"/><path d="M4 21.714C5.801 21.714 7.584 21.36 9.248 20.67C10.912 19.981 12.424 18.971 13.698 17.698C14.971 16.424 15.981 14.912 16.671 13.248C17.36 11.584 17.714 9.801 17.714 8H11.109C11.109 8.937 10.947 9.864 10.589 10.729C10.23 11.594 9.705 12.381 9.043 13.043C8.381 13.705 7.594 14.23 6.729 14.589C5.864 14.947 4.937 15.109 4 15.109V21.714Z" fill="#FE5104"/><path d="M17.714 8L17.714 8.084C17.703 9.857 17.349 11.61 16.671 13.248C16.116 14.588 15.353 15.829 14.412 16.926C13.471 15.829 12.708 14.588 12.153 13.248C11.464 11.584 11.109 9.801 11.109 8H17.714Z" fill="#81AFF2"/></svg>
+                </div>
+                <span class="auth-form-logo-text">Yubi markets</span>
+              </div>
+              <div class="auth-form-heading-yubi">
+                <div class="auth-form-heading">Login to</div>
+                <div class="auth-form-heading-logo">
+                  <svg width="72" height="20" viewBox="0 0 576 144" fill="none"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="#121926"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="#121926"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="#121926"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="#121926"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="#121926"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="#121926"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="#121926"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="#121926"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="#121926"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="#121926"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="#121926"/></svg>
+                </div>
+              </div>
+              <div class="auth-form-subhead" style="margin-top:2px;">Login or Signup</div>
+              <div class="auth-field">
+                <label class="auth-field-label">Enter mobile number or email</label>
+                <input class="auth-field-input" type="text" placeholder="Enter mobile number or email">
+              </div>
+              <button class="auth-btn-primary">Continue</button>
+              <div class="auth-legal">
+                By entering and clicking Continue, you agree to the
+                <a href="#">Terms, E-Sign Consent &amp; Privacy Policy</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Signup variant ── -->
+      <div class="demo-variant" id="variant-signup">
+        <div class="auth-preview">
+          <div class="auth-left">
+            <div class="auth-left-inner">
+              <div class="auth-left-logo">
+                <div class="auth-left-logo-mark">
+                  <svg width="26" height="26" viewBox="0 0 29 30" fill="none"><path d="M11.1089 8C11.1089 9.801 11.4636 11.584 12.1528 13.248C12.842 14.912 13.8522 16.424 15.1257 17.698C16.3993 18.971 17.9111 19.981 19.575 20.67C21.239 21.36 23.0223 21.714 24.8233 21.714V15.109C23.8868 15.109 22.9595 14.947 22.0942 14.589C21.229 14.23 20.4428 13.705 19.7806 13.043C19.1184 12.381 18.5931 11.594 18.2347 10.729C17.8763 9.864 17.7145 8.937 17.7145 8H11.1089Z" fill="#DCDC5B"/><path d="M4 21.714C5.801 21.714 7.584 21.36 9.248 20.67C10.912 19.981 12.424 18.971 13.698 17.698C14.971 16.424 15.981 14.912 16.671 13.248C17.36 11.584 17.714 9.801 17.714 8H11.109C11.109 8.937 10.947 9.864 10.589 10.729C10.23 11.594 9.705 12.381 9.043 13.043C8.381 13.705 7.594 14.23 6.729 14.589C5.864 14.947 4.937 15.109 4 15.109V21.714Z" fill="#FE5104"/><path d="M17.714 8L17.714 8.084C17.703 9.857 17.349 11.61 16.671 13.248C16.116 14.588 15.353 15.829 14.412 16.926C13.471 15.829 12.708 14.588 12.153 13.248C11.464 11.584 11.109 9.801 11.109 8H17.714Z" fill="#81AFF2"/></svg>
+                </div>
+                <span class="auth-left-wordmark">Yubi markets</span>
+              </div>
+              <div class="auth-left-body">
+                <div class="auth-left-title">Join Yubi<br>Markets</div>
+                <div class="auth-left-desc">Get started in minutes. Set up your distributor account and start building client portfolios.</div>
+              </div>
+              <div class="auth-left-dots">
+                <div class="auth-left-dot"></div>
+                <div class="auth-left-dot active"></div>
+                <div class="auth-left-dot"></div>
+              </div>
+            </div>
+          </div>
+          <div class="auth-right">
+            <div class="auth-form-wrap">
+              <div class="auth-form-logo">
+                <div class="auth-form-logo-mark">
+                  <svg width="20" height="20" viewBox="0 0 29 30" fill="none"><path d="M11.1089 8C11.1089 9.801 11.4636 11.584 12.1528 13.248C12.842 14.912 13.8522 16.424 15.1257 17.698C16.3993 18.971 17.9111 19.981 19.575 20.67C21.239 21.36 23.0223 21.714 24.8233 21.714V15.109C23.8868 15.109 22.9595 14.947 22.0942 14.589C21.229 14.23 20.4428 13.705 19.7806 13.043C19.1184 12.381 18.5931 11.594 18.2347 10.729C17.8763 9.864 17.7145 8.937 17.7145 8H11.1089Z" fill="#DCDC5B"/><path d="M4 21.714C5.801 21.714 7.584 21.36 9.248 20.67C10.912 19.981 12.424 18.971 13.698 17.698C14.971 16.424 15.981 14.912 16.671 13.248C17.36 11.584 17.714 9.801 17.714 8H11.109C11.109 8.937 10.947 9.864 10.589 10.729C10.23 11.594 9.705 12.381 9.043 13.043C8.381 13.705 7.594 14.23 6.729 14.589C5.864 14.947 4.937 15.109 4 15.109V21.714Z" fill="#FE5104"/><path d="M17.714 8L17.714 8.084C17.703 9.857 17.349 11.61 16.671 13.248C16.116 14.588 15.353 15.829 14.412 16.926C13.471 15.829 12.708 14.588 12.153 13.248C11.464 11.584 11.109 9.801 11.109 8H17.714Z" fill="#81AFF2"/></svg>
+                </div>
+                <span class="auth-form-logo-text">Yubi markets</span>
+              </div>
+              <div class="auth-form-heading" style="margin-bottom:18px;">Create Account</div>
+              <div class="auth-field-row">
+                <div class="auth-field">
+                  <label class="auth-field-label">First name</label>
+                  <input class="auth-field-input" type="text" placeholder="First name">
+                </div>
+                <div class="auth-field">
+                  <label class="auth-field-label">Last name</label>
+                  <input class="auth-field-input" type="text" placeholder="Last name">
+                </div>
+              </div>
+              <div class="auth-field">
+                <label class="auth-field-label">Mobile number</label>
+                <input class="auth-field-input" type="tel" placeholder="+91 00000 00000">
+              </div>
+              <div class="auth-field">
+                <label class="auth-field-label">Email address</label>
+                <input class="auth-field-input" type="email" placeholder="you@example.com">
+              </div>
+              <button class="auth-btn-primary" style="margin-top:4px;">Create Account</button>
+              <div class="auth-legal">
+                By creating an account, you agree to the
+                <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
+              </div>
+              <div class="auth-switch">Already have an account? <a>Sign in</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── OTP variant ── -->
+      <div class="demo-variant" id="variant-otp">
+        <div class="auth-preview">
+          <div class="auth-left">
+            <div class="auth-left-inner">
+              <div class="auth-left-logo">
+                <div class="auth-left-logo-mark">
+                  <svg width="26" height="26" viewBox="0 0 29 30" fill="none"><path d="M11.1089 8C11.1089 9.801 11.4636 11.584 12.1528 13.248C12.842 14.912 13.8522 16.424 15.1257 17.698C16.3993 18.971 17.9111 19.981 19.575 20.67C21.239 21.36 23.0223 21.714 24.8233 21.714V15.109C23.8868 15.109 22.9595 14.947 22.0942 14.589C21.229 14.23 20.4428 13.705 19.7806 13.043C19.1184 12.381 18.5931 11.594 18.2347 10.729C17.8763 9.864 17.7145 8.937 17.7145 8H11.1089Z" fill="#DCDC5B"/><path d="M4 21.714C5.801 21.714 7.584 21.36 9.248 20.67C10.912 19.981 12.424 18.971 13.698 17.698C14.971 16.424 15.981 14.912 16.671 13.248C17.36 11.584 17.714 9.801 17.714 8H11.109C11.109 8.937 10.947 9.864 10.589 10.729C10.23 11.594 9.705 12.381 9.043 13.043C8.381 13.705 7.594 14.23 6.729 14.589C5.864 14.947 4.937 15.109 4 15.109V21.714Z" fill="#FE5104"/><path d="M17.714 8L17.714 8.084C17.703 9.857 17.349 11.61 16.671 13.248C16.116 14.588 15.353 15.829 14.412 16.926C13.471 15.829 12.708 14.588 12.153 13.248C11.464 11.584 11.109 9.801 11.109 8H17.714Z" fill="#81AFF2"/></svg>
+                </div>
+                <span class="auth-left-wordmark">Yubi markets</span>
+              </div>
+              <div class="auth-left-body">
+                <div class="auth-left-title">One step<br>away</div>
+                <div class="auth-left-desc">We sent a 6-digit OTP to your registered mobile number. Enter it to continue.</div>
+              </div>
+              <div class="auth-left-dots">
+                <div class="auth-left-dot"></div>
+                <div class="auth-left-dot"></div>
+                <div class="auth-left-dot active"></div>
+              </div>
+            </div>
+          </div>
+          <div class="auth-right">
+            <div class="auth-form-wrap">
+              <div class="auth-form-logo">
+                <div class="auth-form-logo-mark">
+                  <svg width="20" height="20" viewBox="0 0 29 30" fill="none"><path d="M11.1089 8C11.1089 9.801 11.4636 11.584 12.1528 13.248C12.842 14.912 13.8522 16.424 15.1257 17.698C16.3993 18.971 17.9111 19.981 19.575 20.67C21.239 21.36 23.0223 21.714 24.8233 21.714V15.109C23.8868 15.109 22.9595 14.947 22.0942 14.589C21.229 14.23 20.4428 13.705 19.7806 13.043C19.1184 12.381 18.5931 11.594 18.2347 10.729C17.8763 9.864 17.7145 8.937 17.7145 8H11.1089Z" fill="#DCDC5B"/><path d="M4 21.714C5.801 21.714 7.584 21.36 9.248 20.67C10.912 19.981 12.424 18.971 13.698 17.698C14.971 16.424 15.981 14.912 16.671 13.248C17.36 11.584 17.714 9.801 17.714 8H11.109C11.109 8.937 10.947 9.864 10.589 10.729C10.23 11.594 9.705 12.381 9.043 13.043C8.381 13.705 7.594 14.23 6.729 14.589C5.864 14.947 4.937 15.109 4 15.109V21.714Z" fill="#FE5104"/><path d="M17.714 8L17.714 8.084C17.703 9.857 17.349 11.61 16.671 13.248C16.116 14.588 15.353 15.829 14.412 16.926C13.471 15.829 12.708 14.588 12.153 13.248C11.464 11.584 11.109 9.801 11.109 8H17.714Z" fill="#81AFF2"/></svg>
+                </div>
+                <span class="auth-form-logo-text">Yubi markets</span>
+              </div>
+              <div class="auth-form-heading" style="margin-bottom:8px;">Verify OTP</div>
+              <div class="auth-otp-hint">Enter the 6-digit code sent to <strong style="color:#121926;">+91 98765 43210</strong></div>
+              <div class="auth-otp-row">
+                <input class="auth-otp-cell" type="text" maxlength="1" inputmode="numeric">
+                <input class="auth-otp-cell" type="text" maxlength="1" inputmode="numeric">
+                <input class="auth-otp-cell" type="text" maxlength="1" inputmode="numeric">
+                <input class="auth-otp-cell" type="text" maxlength="1" inputmode="numeric">
+                <input class="auth-otp-cell" type="text" maxlength="1" inputmode="numeric">
+                <input class="auth-otp-cell" type="text" maxlength="1" inputmode="numeric">
+              </div>
+              <div class="auth-resend" style="margin-bottom:16px;">Didn't receive? <a>Resend OTP</a> in 00:45</div>
+              <button class="auth-btn-primary">Verify &amp; Continue</button>
+              <div class="auth-switch">Wrong number? <a onclick="switchVariant('login')">Go back</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spec -->
+  <section class="spec-section">
+    <div class="section-label">Anatomy &amp; Specs</div>
+    <div class="spec-grid">
+      <div class="anatomy-wrap">
+        <div class="anatomy-header">Anatomy</div>
+        <div class="anatomy-body">
+          <div class="anatomy-item">
+            <div class="anatomy-num">1</div>
+            <div class="anatomy-text"><strong>Left panel</strong> — 42% width, dark navy bg (#080e18), CSS radial-gradient blobs, logo, heading, sub-copy, step dots</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">2</div>
+            <div class="anatomy-text"><strong>Logo row</strong> — brand mark SVG + "Yubi markets" wordmark, 20px, weight 700</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">3</div>
+            <div class="anatomy-text"><strong>Page heading</strong> — "Login to [logo]" or step title. 28px 700. Login variant uses inline logo SVG next to text</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">4</div>
+            <div class="anatomy-text"><strong>Form input</strong> — height 40px, radius.md, border #CDD5DF. Focus ring: #81AFF2 + shadow</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">5</div>
+            <div class="anatomy-text"><strong>Primary CTA</strong> — full-width, height 40px, #FD7149, radius.md, weight 600</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">6</div>
+            <div class="anatomy-text"><strong>Legal text</strong> — 12px, #697586. Links in #3554A4</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">7</div>
+            <div class="anatomy-text"><strong>OTP cells</strong> — 6 × 48px cells, radius.md, 20px 700 value, auto-advance on input</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <table class="spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Layout</td><td><span class="sv">split — 42% / 58%</span></td></tr>
+            <tr><td>Left panel bg</td><td><span class="sv">#080e18</span></td></tr>
+            <tr><td>Left panel blobs</td><td><span class="sv">CSS radial-gradient</span></td></tr>
+            <tr><td>Right panel bg</td><td><span class="sv">#ffffff</span></td></tr>
+            <tr><td>Form max-width</td><td><span class="sv">340px</span></td></tr>
+            <tr><td>Input height</td><td><span class="sv">40px</span></td></tr>
+            <tr><td>Input radius</td><td><span class="sv">radius.md — 6px</span></td></tr>
+            <tr><td>Input border</td><td><span class="sv">#CDD5DF</span></td></tr>
+            <tr><td>Focus ring</td><td><span class="sv">#81AFF2 + 3px shadow</span></td></tr>
+            <tr><td>CTA height</td><td><span class="sv">40px</span></td></tr>
+            <tr><td>CTA color</td><td><span class="sv">#FD7149</span></td></tr>
+            <tr><td>OTP cell size</td><td><span class="sv">48px × 48px</span></td></tr>
+            <tr><td>Heading font</td><td><span class="sv">Inter 700, 28px</span></td></tr>
+            <tr><td>Legal text</td><td><span class="sv">12px, #697586</span></td></tr>
+            <tr><td>Link color</td><td><span class="sv">#3554A4</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code -->
+  <section class="code-section">
+    <div class="section-label">Code</div>
+    <div class="code-tabs">
+      <div class="code-tab active" onclick="switchTab(this,'auth-html')">HTML</div>
+      <div class="code-tab" onclick="switchTab(this,'auth-css')">CSS</div>
+      <div class="code-tab" onclick="switchTab(this,'auth-js')">JS</div>
+    </div>
+
+    <div class="code-panel active" id="auth-html">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="cmt">&lt;!-- Auth Layout Shell — use for Login, Signup, OTP --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-page"</span><span class="tag">&gt;</span>
+
+  <span class="cmt">&lt;!-- Left decorative panel --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-left"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-left-inner"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-left-logo"</span><span class="tag">&gt;</span>
+        <span class="cmt">&lt;!-- 26×26 brand mark SVG --&gt;</span>
+        <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"auth-left-wordmark"</span><span class="tag">&gt;</span>Yubi markets<span class="tag">&lt;/span&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-left-body"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-left-title"</span><span class="tag">&gt;</span>Welcome to Vista<span class="tag">&lt;/div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-left-desc"</span><span class="tag">&gt;</span>
+          Deliver a comprehensive &amp;amp; seamless client experience.
+        <span class="tag">&lt;/div&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+      <span class="cmt">&lt;!-- Step indicator dots --&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-left-dots"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-dot active"</span><span class="tag">&gt;&lt;/div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-dot"</span><span class="tag">&gt;&lt;/div&gt;</span>
+        <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-dot"</span><span class="tag">&gt;&lt;/div&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+
+  <span class="cmt">&lt;!-- Right form panel --&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-right"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-form-wrap"</span><span class="tag">&gt;</span>
+
+      <span class="cmt">&lt;!-- Logo --&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-form-logo"</span><span class="tag">&gt;</span>
+        <span class="cmt">&lt;!-- 20×20 brand mark SVG --&gt;</span>
+        <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"auth-form-logo-text"</span><span class="tag">&gt;</span>Yubi markets<span class="tag">&lt;/span&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+
+      <span class="cmt">&lt;!-- Page heading --&gt;</span>
+      <span class="tag">&lt;h1</span> <span class="attr">class</span>=<span class="str">"auth-heading"</span><span class="tag">&gt;</span>Login or Signup<span class="tag">&lt;/h1&gt;</span>
+
+      <span class="cmt">&lt;!-- Form fields --&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"auth-field"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;label</span> <span class="attr">class</span>=<span class="str">"auth-field-label"</span><span class="tag">&gt;</span>Enter mobile number or email<span class="tag">&lt;/label&gt;</span>
+        <span class="tag">&lt;input</span> <span class="attr">class</span>=<span class="str">"auth-field-input"</span> <span class="attr">type</span>=<span class="str">"text"</span>
+               <span class="attr">placeholder</span>=<span class="str">"Enter mobile number or email"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;/div&gt;</span>
+
+      <span class="cmt">&lt;!-- CTA --&gt;</span>
+      <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"auth-btn-primary"</span><span class="tag">&gt;</span>Continue<span class="tag">&lt;/button&gt;</span>
+
+      <span class="cmt">&lt;!-- Legal --&gt;</span>
+      <span class="tag">&lt;p</span> <span class="attr">class</span>=<span class="str">"auth-legal"</span><span class="tag">&gt;</span>
+        By entering and clicking Continue, you agree to the
+        <span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="str">"#"</span><span class="tag">&gt;</span>Terms, E-Sign Consent &amp;amp; Privacy Policy<span class="tag">&lt;/a&gt;</span>
+      <span class="tag">&lt;/p&gt;</span>
+
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+    </div>
+
+    <div class="code-panel" id="auth-css">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="cmt">/* ── Auth page shell ── */</span>
+<span class="tag">.auth-page</span> {
+  <span class="attr">min-height</span>: <span class="num">100vh</span>;
+  <span class="attr">display</span>: <span class="str">flex</span>;
+  <span class="attr">font-family</span>: <span class="str">'Inter', -apple-system, sans-serif</span>;
+}
+
+<span class="cmt">/* Left decorative panel */</span>
+<span class="tag">.auth-left</span> {
+  <span class="attr">width</span>: <span class="num">42%</span>;
+  <span class="attr">flex-shrink</span>: <span class="num">0</span>;
+  <span class="attr">position</span>: <span class="str">relative</span>;
+  <span class="attr">overflow</span>: <span class="str">hidden</span>;
+  <span class="attr">background</span>: <span class="num">#080e18</span>;
+  <span class="attr">background-image</span>:
+    <span class="fn">radial-gradient</span>(<span class="str">ellipse 80% 60% at 110% 95%</span>, <span class="fn">rgba</span>(<span class="num">220,90,30,.85</span>) <span class="num">0%</span>, <span class="str">transparent</span> <span class="num">65%</span>),
+    <span class="fn">radial-gradient</span>(<span class="str">ellipse 60% 70% at 60% 70%</span>,  <span class="fn">rgba</span>(<span class="num">100,60,200,.55</span>) <span class="num">0%</span>, <span class="str">transparent</span> <span class="num">65%</span>),
+    <span class="fn">radial-gradient</span>(<span class="str">ellipse 55% 50% at 15% 40%</span>,  <span class="fn">rgba</span>(<span class="num">30,70,180,.50</span>)  <span class="num">0%</span>, <span class="str">transparent</span> <span class="num">65%</span>),
+    <span class="fn">radial-gradient</span>(<span class="str">ellipse 40% 40% at 80% 20%</span>,  <span class="fn">rgba</span>(<span class="num">60,100,220,.40</span>) <span class="num">0%</span>, <span class="str">transparent</span> <span class="num">65%</span>);
+}
+<span class="tag">.auth-left-inner</span> {
+  <span class="attr">position</span>: <span class="str">absolute</span>; <span class="attr">inset</span>: <span class="num">0</span>;
+  <span class="attr">display</span>: <span class="str">flex</span>; <span class="attr">flex-direction</span>: <span class="str">column</span>;
+  <span class="attr">justify-content</span>: <span class="str">space-between</span>;
+  <span class="attr">padding</span>: <span class="num">28px 28px 32px</span>;
+}
+<span class="tag">.auth-left-title</span> {
+  <span class="attr">font-size</span>: <span class="num">26px</span>; <span class="attr">font-weight</span>: <span class="num">700</span>;
+  <span class="attr">color</span>: <span class="num">#fff</span>; <span class="attr">line-height</span>: <span class="num">1.25</span>;
+  <span class="attr">margin-bottom</span>: <span class="num">12px</span>; <span class="attr">letter-spacing</span>: <span class="num">-0.02em</span>;
+}
+<span class="tag">.auth-left-desc</span> {
+  <span class="attr">font-size</span>: <span class="num">13px</span>; <span class="attr">color</span>: <span class="fn">rgba</span>(<span class="num">255,255,255,0.65</span>);
+  <span class="attr">line-height</span>: <span class="num">1.6</span>; <span class="attr">max-width</span>: <span class="num">260px</span>;
+}
+
+<span class="cmt">/* Step indicator dots */</span>
+<span class="tag">.auth-left-dots</span> { <span class="attr">display</span>: <span class="str">flex</span>; <span class="attr">gap</span>: <span class="num">6px</span>; }
+<span class="tag">.auth-dot</span> {
+  <span class="attr">width</span>: <span class="num">6px</span>; <span class="attr">height</span>: <span class="num">6px</span>; <span class="attr">border-radius</span>: <span class="num">50%</span>;
+  <span class="attr">background</span>: <span class="fn">rgba</span>(<span class="num">255,255,255,0.3</span>);
+}
+<span class="tag">.auth-dot.active</span> {
+  <span class="attr">background</span>: <span class="num">#FD7149</span>; <span class="attr">width</span>: <span class="num">18px</span>; <span class="attr">border-radius</span>: <span class="num">3px</span>;
+}
+
+<span class="cmt">/* Right form panel */</span>
+<span class="tag">.auth-right</span> {
+  <span class="attr">flex</span>: <span class="num">1</span>;
+  <span class="attr">display</span>: <span class="str">flex</span>; <span class="attr">align-items</span>: <span class="str">center</span>; <span class="attr">justify-content</span>: <span class="str">center</span>;
+  <span class="attr">background</span>: <span class="num">#ffffff</span>;
+  <span class="attr">padding</span>: <span class="num">32px 24px</span>;
+}
+<span class="tag">.auth-form-wrap</span> { <span class="attr">width</span>: <span class="num">100%</span>; <span class="attr">max-width</span>: <span class="num">340px</span>; }
+<span class="tag">.auth-heading</span> {
+  <span class="attr">font-size</span>: <span class="num">28px</span>; <span class="attr">font-weight</span>: <span class="num">700</span>; <span class="attr">color</span>: <span class="num">#121926</span>;
+  <span class="attr">letter-spacing</span>: <span class="num">-0.02em</span>; <span class="attr">margin-bottom</span>: <span class="num">22px</span>;
+}
+
+<span class="cmt">/* Field */</span>
+<span class="tag">.auth-field</span> { <span class="attr">margin-bottom</span>: <span class="num">16px</span>; }
+<span class="tag">.auth-field-label</span> {
+  <span class="attr">display</span>: <span class="str">block</span>; <span class="attr">font-size</span>: <span class="num">13px</span>; <span class="attr">font-weight</span>: <span class="num">600</span>;
+  <span class="attr">color</span>: <span class="num">#697586</span>; <span class="attr">margin-bottom</span>: <span class="num">5px</span>;
+}
+<span class="tag">.auth-field-input</span> {
+  <span class="attr">width</span>: <span class="num">100%</span>; <span class="attr">height</span>: <span class="num">40px</span>;
+  <span class="attr">border</span>: <span class="num">1px</span> <span class="str">solid</span> <span class="num">#CDD5DF</span>; <span class="attr">border-radius</span>: <span class="num">6px</span>;
+  <span class="attr">padding</span>: <span class="num">0 12px</span>; <span class="attr">font-size</span>: <span class="num">14px</span>; <span class="attr">color</span>: <span class="num">#121926</span>;
+  <span class="attr">outline</span>: <span class="str">none</span>; <span class="attr">box-sizing</span>: <span class="str">border-box</span>;
+}
+<span class="tag">.auth-field-input</span>:<span class="fn">focus</span> {
+  <span class="attr">border-color</span>: <span class="num">#81AFF2</span>;
+  <span class="attr">box-shadow</span>: <span class="num">0 0 0 3px</span> <span class="fn">rgba</span>(<span class="num">129,175,242,.35</span>);
+}
+
+<span class="cmt">/* CTA button */</span>
+<span class="tag">.auth-btn-primary</span> {
+  <span class="attr">width</span>: <span class="num">100%</span>; <span class="attr">height</span>: <span class="num">40px</span>;
+  <span class="attr">background</span>: <span class="num">#FD7149</span>; <span class="attr">color</span>: <span class="num">#fff</span>;
+  <span class="attr">font-size</span>: <span class="num">14px</span>; <span class="attr">font-weight</span>: <span class="num">600</span>;
+  <span class="attr">border</span>: <span class="str">none</span>; <span class="attr">border-radius</span>: <span class="num">6px</span>; <span class="attr">cursor</span>: <span class="str">pointer</span>;
+  <span class="attr">margin-bottom</span>: <span class="num">14px</span>;
+}
+<span class="tag">.auth-btn-primary</span>:<span class="fn">hover</span> { <span class="attr">background</span>: <span class="num">#FC5E32</span>; }
+
+<span class="cmt">/* OTP cells */</span>
+<span class="tag">.auth-otp-row</span> { <span class="attr">display</span>: <span class="str">flex</span>; <span class="attr">gap</span>: <span class="num">8px</span>; <span class="attr">margin-bottom</span>: <span class="num">4px</span>; }
+<span class="tag">.auth-otp-cell</span> {
+  <span class="attr">flex</span>: <span class="num">1</span>; <span class="attr">height</span>: <span class="num">48px</span>;
+  <span class="attr">border</span>: <span class="num">1px</span> <span class="str">solid</span> <span class="num">#CDD5DF</span>; <span class="attr">border-radius</span>: <span class="num">6px</span>;
+  <span class="attr">text-align</span>: <span class="str">center</span>; <span class="attr">font-size</span>: <span class="num">20px</span>; <span class="attr">font-weight</span>: <span class="num">700</span>;
+  <span class="attr">color</span>: <span class="num">#121926</span>; <span class="attr">outline</span>: <span class="str">none</span>;
+}
+<span class="tag">.auth-otp-cell</span>:<span class="fn">focus</span> {
+  <span class="attr">border-color</span>: <span class="num">#81AFF2</span>;
+  <span class="attr">box-shadow</span>: <span class="num">0 0 0 3px</span> <span class="fn">rgba</span>(<span class="num">129,175,242,.35</span>);
+}
+
+<span class="cmt">/* Responsive — stack on mobile */</span>
+<span class="tag">@media</span> (<span class="attr">max-width</span>: <span class="num">768px</span>) {
+  <span class="tag">.auth-page</span> { <span class="attr">flex-direction</span>: <span class="str">column</span>; }
+  <span class="tag">.auth-left</span>  { <span class="attr">width</span>: <span class="num">100%</span>; <span class="attr">height</span>: <span class="num">200px</span>; }
+}</pre>
+    </div>
+
+    <div class="code-panel" id="auth-js">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <pre class="code-block"><span class="cmt">// OTP auto-advance on input</span>
+document.querySelectorAll(<span class="str">'.auth-otp-cell'</span>).forEach((cell, i, cells) =&gt; {
+  cell.addEventListener(<span class="str">'input'</span>, () =&gt; {
+    <span class="kw">if</span> (cell.value &amp;&amp; i &lt; cells.length - <span class="num">1</span>) cells[i + <span class="num">1</span>].focus();
+  });
+  cell.addEventListener(<span class="str">'keydown'</span>, e =&gt; {
+    <span class="kw">if</span> (e.key === <span class="str">'Backspace'</span> &amp;&amp; !cell.value &amp;&amp; i &gt; <span class="num">0</span>) cells[i - <span class="num">1</span>].focus();
+  });
+});</pre>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="related-section">
+    <div class="section-label">Related Components</div>
+    <div class="related-grid">
+      <a href="input.html" class="related-card">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Input</div>
+      </a>
+      <a href="pininput.html" class="related-card">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Pin Input</div>
+      </a>
+      <a href="button.html" class="related-card">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Button</div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+function toggleTheme(){const h=document.documentElement,d=h.getAttribute('data-theme')==='dark',n=d?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('ym-theme',n);document.getElementById('icon-moon').style.display=d?'block':'none';document.getElementById('icon-sun').style.display=d?'none':'block';}
+(function(){const s=localStorage.getItem('ym-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',s);if(s==='dark'){document.getElementById('icon-moon').style.display='none';document.getElementById('icon-sun').style.display='block';}})();
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+function switchTab(tab, panelId){
+  const section=tab.closest('.code-section');
+  section.querySelectorAll('.code-tab').forEach(t=>t.classList.remove('active'));
+  section.querySelectorAll('.code-panel').forEach(p=>p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+function copyCode(btn){
+  const code=btn.nextElementSibling.textContent;
+  navigator.clipboard.writeText(code).then(()=>{
+    btn.textContent='Copied!';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copy';btn.classList.remove('copied');},2000);
+  });
+}
+function switchVariant(name){
+  document.querySelectorAll('.demo-variant').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.demo-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('variant-'+name).classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+}
+// OTP auto-advance
+document.querySelectorAll('.auth-otp-cell').forEach((cell,i,cells)=>{
+  cell.addEventListener('input',()=>{if(cell.value&&i<cells.length-1)cells[i+1].focus();});
+  cell.addEventListener('keydown',e=>{if(e.key==='Backspace'&&!cell.value&&i>0)cells[i-1].focus();});
+});
+</script>
+<script src="download.js"></script>
+<script id="__dl_data">
+var __mdContent = "# Auth Layout — Yubi Market Design System\n\n> **Version:** 1.0.0 | **Category:** Layouts | **Status:** Stable\n\n---\n\n## Overview\n\nFull-page authentication shell for the Yubi Market distributor portal. Split-screen layout: dark decorative left panel with brand gradients and messaging, white right panel containing the form. Covers three screen states: Login (phone/email entry), Signup (account creation), and OTP Verification.\n\n---\n\n## Layout Structure\n\n| Region | Width | Background |\n|--------|-------|------------|\n| Left panel | 42% | #080e18 + CSS radial-gradient blobs |\n| Right panel | 58% | #ffffff |\n| Form container | max-width 340px | centered in right panel |\n\nOn mobile (< 768px) the panels stack vertically: left panel becomes a 200px header band, form panel fills the rest.\n\n---\n\n## Left Panel Blobs (CSS only — no images)\n\n```css\nbackground-image:\n  radial-gradient(ellipse 80% 60% at 110% 95%, rgba(220,90,30,.85) 0%, transparent 65%),\n  radial-gradient(ellipse 60% 70% at 60% 70%,  rgba(100,60,200,.55) 0%, transparent 65%),\n  radial-gradient(ellipse 55% 50% at 15% 40%,  rgba(30,70,180,.50)  0%, transparent 65%),\n  radial-gradient(ellipse 40% 40% at 80% 20%,  rgba(60,100,220,.40) 0%, transparent 65%);\n```\n\n---\n\n## Variants\n\n### 1. Login\n- Heading: \"Login to [Yubi markets logo inline]\"\n- Sub-heading: \"Login or Signup\"\n- Field: mobile number or email (single input)\n- CTA: \"Continue\" (primary, full-width)\n- Legal text + T&C link below CTA\n\n### 2. Signup\n- Heading: \"Create Account\"\n- Fields: First name + Last name (side by side), Mobile, Email\n- CTA: \"Create Account\" (primary, full-width)\n- Legal text + switch link (\"Already have an account? Sign in\")\n\n### 3. OTP Verify\n- Heading: \"Verify OTP\"\n- Sub-copy: \"Enter the 6-digit code sent to +91 XXXXX XXXXX\"\n- 6 × OTP cells (48×48px, auto-advance on input)\n- Resend link with countdown\n- CTA: \"Verify & Continue\"\n- Back link to Login\n\n---\n\n## Measurements\n\n| Property | Value |\n|----------|-------|\n| Left panel bg | #080e18 |\n| Right panel bg | #ffffff |\n| Form max-width | 340px |\n| Logo mark size | 20×20px (form), 26×26px (left panel) |\n| Heading | Inter 700, 28px, #121926 |\n| Field label | Inter 600, 13px, #697586 |\n| Input height | 40px |\n| Input border | 1px solid #CDD5DF |\n| Input radius | 6px (radius.md) |\n| Input focus | border #81AFF2 + box-shadow 0 0 0 3px rgba(129,175,242,.35) |\n| CTA height | 40px |\n| CTA bg | #FD7149 |\n| CTA hover bg | #FC5E32 |\n| CTA radius | 6px (radius.md) |\n| Legal text | 12px, #697586 |\n| Legal link color | #3554A4 |\n| OTP cell size | 48×48px |\n| OTP font | Inter 700, 20px |\n| Step dot inactive | 6px circle, rgba(255,255,255,0.3) |\n| Step dot active | 18×6px pill, #FD7149 |\n\n---\n\n## HTML\n\n```html\n<div class=\"auth-page\">\n\n  <!-- Left decorative panel -->\n  <div class=\"auth-left\">\n    <div class=\"auth-left-inner\">\n      <div class=\"auth-left-logo\">\n        <!-- brand mark SVG -->\n        <span class=\"auth-left-wordmark\">Yubi markets</span>\n      </div>\n      <div class=\"auth-left-body\">\n        <div class=\"auth-left-title\">Welcome to Vista</div>\n        <div class=\"auth-left-desc\">Deliver a comprehensive & seamless client experience.</div>\n      </div>\n      <div class=\"auth-left-dots\">\n        <div class=\"auth-dot active\"></div>\n        <div class=\"auth-dot\"></div>\n        <div class=\"auth-dot\"></div>\n      </div>\n    </div>\n  </div>\n\n  <!-- Right form panel -->\n  <div class=\"auth-right\">\n    <div class=\"auth-form-wrap\">\n      <!-- Logo -->\n      <div class=\"auth-form-logo\"><!-- mark --> Yubi markets</div>\n\n      <!-- Heading -->\n      <h1 class=\"auth-heading\">Login or Signup</h1>\n\n      <!-- Field -->\n      <div class=\"auth-field\">\n        <label class=\"auth-field-label\">Enter mobile number or email</label>\n        <input class=\"auth-field-input\" type=\"text\" placeholder=\"Enter mobile number or email\">\n      </div>\n\n      <!-- CTA -->\n      <button class=\"auth-btn-primary\">Continue</button>\n\n      <!-- Legal -->\n      <p class=\"auth-legal\">\n        By entering and clicking Continue, you agree to the\n        <a href=\"#\">Terms, E-Sign Consent & Privacy Policy</a>\n      </p>\n    </div>\n  </div>\n</div>\n```\n\n---\n\n## CSS\n\n```css\n.auth-page {\n  min-height: 100vh;\n  display: flex;\n  font-family: 'Inter', -apple-system, sans-serif;\n}\n.auth-left {\n  width: 42%; flex-shrink: 0;\n  position: relative; overflow: hidden;\n  background: #080e18;\n  background-image:\n    radial-gradient(ellipse 80% 60% at 110% 95%, rgba(220,90,30,.85) 0%, transparent 65%),\n    radial-gradient(ellipse 60% 70% at 60% 70%,  rgba(100,60,200,.55) 0%, transparent 65%),\n    radial-gradient(ellipse 55% 50% at 15% 40%,  rgba(30,70,180,.50)  0%, transparent 65%),\n    radial-gradient(ellipse 40% 40% at 80% 20%,  rgba(60,100,220,.40) 0%, transparent 65%);\n}\n.auth-left-inner {\n  position: absolute; inset: 0;\n  display: flex; flex-direction: column;\n  justify-content: space-between;\n  padding: 28px 28px 32px;\n}\n.auth-left-title { font-size: 26px; font-weight: 700; color: #fff; line-height: 1.25; margin-bottom: 12px; }\n.auth-left-desc  { font-size: 13px; color: rgba(255,255,255,0.65); line-height: 1.6; max-width: 260px; }\n.auth-dot        { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.3); }\n.auth-dot.active { background: #FD7149; width: 18px; border-radius: 3px; }\n\n.auth-right      { flex: 1; display: flex; align-items: center; justify-content: center; background: #fff; padding: 32px 24px; }\n.auth-form-wrap  { width: 100%; max-width: 340px; }\n.auth-heading    { font-size: 28px; font-weight: 700; color: #121926; letter-spacing: -0.02em; margin-bottom: 22px; }\n\n.auth-field-label { display: block; font-size: 13px; font-weight: 600; color: #697586; margin-bottom: 5px; }\n.auth-field-input {\n  width: 100%; height: 40px;\n  border: 1px solid #CDD5DF; border-radius: 6px;\n  padding: 0 12px; font-size: 14px; color: #121926;\n  outline: none; box-sizing: border-box;\n}\n.auth-field-input:focus { border-color: #81AFF2; box-shadow: 0 0 0 3px rgba(129,175,242,.35); }\n\n.auth-btn-primary {\n  width: 100%; height: 40px;\n  background: #FD7149; color: #fff;\n  font-size: 14px; font-weight: 600;\n  border: none; border-radius: 6px; cursor: pointer;\n  margin-bottom: 14px;\n}\n.auth-btn-primary:hover { background: #FC5E32; }\n\n.auth-otp-row  { display: flex; gap: 8px; margin-bottom: 4px; }\n.auth-otp-cell {\n  flex: 1; height: 48px;\n  border: 1px solid #CDD5DF; border-radius: 6px;\n  text-align: center; font-size: 20px; font-weight: 700;\n  color: #121926; outline: none;\n}\n.auth-otp-cell:focus { border-color: #81AFF2; box-shadow: 0 0 0 3px rgba(129,175,242,.35); }\n\n@media (max-width: 768px) {\n  .auth-page { flex-direction: column; }\n  .auth-left  { width: 100%; height: 200px; }\n}\n```\n\n---\n\n## JavaScript\n\n```javascript\n// OTP auto-advance on input\ndocument.querySelectorAll('.auth-otp-cell').forEach((cell, i, cells) => {\n  cell.addEventListener('input', () => {\n    if (cell.value && i < cells.length - 1) cells[i + 1].focus();\n  });\n  cell.addEventListener('keydown', e => {\n    if (e.key === 'Backspace' && !cell.value && i > 0) cells[i - 1].focus();\n  });\n});\n```\n\n---\n\n## Accessibility\n\n- Wrap in `<main>` with `aria-label=\"Authentication\"`\n- Each input has `<label>` with explicit `for` / `id` pairing\n- OTP cells: `aria-label=\"Digit 1\"` through `\"Digit 6\"`; `inputmode=\"numeric\"` for mobile keyboard\n- CTA button: descriptive label (\"Continue\", not \"Submit\")\n- Left panel is decorative — mark it `aria-hidden=\"true\"`\n\n---\n\n*Yubi Market Design System · Auth Layout v1.0.0 · Internal Use*\n";
+var __mdFilename = "auth-layout.md";
+</script>
+</body>
+</html>

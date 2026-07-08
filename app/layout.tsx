@@ -31,16 +31,12 @@ export const metadata: Metadata = {
   ],
 };
 
-// Set the theme before paint to avoid a flash of the wrong theme.
+// Dark-only by design ("dark field, one warm pixel"). Force the theme and
+// clear any light preference stored by the old toggle.
 const themeScript = `
 (function () {
-  try {
-    var stored = localStorage.getItem('optimistic-theme');
-    var theme = stored || 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
-  } catch (e) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
+  document.documentElement.setAttribute('data-theme', 'dark');
+  try { localStorage.removeItem('optimistic-theme'); } catch (e) {}
 })();
 `;
 

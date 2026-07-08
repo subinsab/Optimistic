@@ -1,0 +1,93 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.chip {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 2px;
+  border: 1px solid #333336;
+  background: #1c1c1e;
+  cursor: pointer;
+  transition: border-color 0.25s, transform 0.15s ease;
+}
+.chip:hover { border-color: #3f3f44; }
+.chip:active { transform: scale(0.97); }
+.stat { cursor: default; }
+.stat:active { transform: none; }
+.glyph {
+  width: 18px;
+  height: auto;
+  color: #4a4d55;
+  transition: color 0.25s;
+}
+.chip:hover .glyph { color: #5a5e68; }
+.liked .glyph,
+.liked:hover .glyph { color: #ff7a00; }
+/* hover: pixels scatter radially and reassemble once, rippling outward —
+   the same gesture as the logo O and the CTA pixel arrow */
+.glyph rect { transform-box: fill-box; }
+.chip:hover .glyph rect {
+  animation: heartScatter 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes heartScatter {
+  0% { transform: translate(0, 0); }
+  35% { transform: translate(var(--dx), var(--dy)); }
+  100% { transform: translate(0, 0); }
+}
+.count {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #cfd3da;
+  font-variant-numeric: tabular-nums;
+}
+/* idle = icon + number only; the label slides in on hover */
+.chipLabel {
+  font-family: var(--font-mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  color: #767b87;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 0;
+  opacity: 0;
+  margin-left: -9px; /* cancels the flex gap while collapsed */
+  transition: max-width 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.25s, margin-left 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.chip:hover .chipLabel {
+  max-width: 96px;
+  opacity: 1;
+  margin-left: 0;
+}
+.status {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.statusSync { color: #767b87; }
+.statusOk { color: #ff7a00; }
+/* discovery whisper — shown until the first interaction */
+.statusHint {
+  color: #767b87;
+  animation: hintBreathe 3.2s ease-in-out infinite;
+}
+@keyframes hintBreathe {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.95; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .statusHint { animation: none; opacity: 0.7; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chip, .glyph, .chipLabel { transition: none; }
+  .chip:active { transform: none; }
+  .chip:hover .glyph rect { animation: none; }
+}

@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add New Client — YM Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet">
+<style>
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   YDS TOKENS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --brand-50:  #FFF5F2;
+  --brand-100: #FFEBE5;
+  --brand-200: #FED6CB;
+  --brand-500: #FD7149;
+  --brand-600: #FD5E32;
+  --brand-700: #FC3A04;
+
+  --text-900: #121926;
+  --text-700: #364152;
+  --text-600: #4B5565;
+  --text-500: #697586;
+  --text-400: #9AA4B2;
+  --text-200: #CDD5DF;
+
+  --border-300: #CDD5DF;
+  --border-200: #E3E8EF;
+  --border-100: #EEF2F6;
+
+  --bg-page:  #F8FAFC;
+  --bg-panel: #FFFFFF;
+  --bg-100:   #EEF2F6;
+
+  --success-700: #204916;
+  --success-600: #26581A;
+  --success-500: #2D671F;
+  --success-400: #3F902B;
+  --success-100: #DDF6C7;
+  --success-50:  #EDF9EA;
+  --caution-600: #DC6803;
+  --caution-500: #F79009;
+  --caution-200: #F9EDBF;
+  --caution-100: #FFFAEB;
+  --error-500:   #CD3546;
+  --error-100:   #FBE8F1;
+  --special-500: #4065C5;
+
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 8px;
+  --navbar-h: 52px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-900);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+button { font-family: inherit; cursor: pointer; }
+input, select, textarea { font-family: inherit; }
+a { text-decoration: none; color: inherit; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOPBAR
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.topbar {
+  height: var(--navbar-h);
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.topbar-left { display: flex; align-items: center; gap: 14px; }
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border-200);
+  border-radius: var(--radius-m);
+  background: var(--bg-panel);
+  font-size: 13px;
+  color: var(--text-700);
+  cursor: pointer;
+  transition: background .15s, border-color .15s;
+  text-decoration: none;
+}
+.back-btn:hover { background: var(--bg-100); border-color: var(--border-300); }
+.back-btn svg { width: 14px; height: 14px; }
+.topbar-title { font-size: 15px; font-weight: 600; color: var(--text-900); }
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+.need-help {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 13px;
+  color: var(--text-500);
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: var(--radius-m);
+  transition: background .15s, color .15s;
+}
+.need-help:hover { background: var(--bg-100); color: var(--text-700); }
+.need-help svg { width: 15px; height: 15px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STEPPER
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.stepper-bar {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border-100);
+  padding: 0 24px;
+}
+.stepper {
+  display: flex;
+  align-items: center;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 16px 0;
+  gap: 0;
+}
+.step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 0;
+}
+.step-node {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.step-circle {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  transition: all .25s ease;
+}
+.step-circle.pending {
+  background: var(--bg-100);
+  color: var(--text-400);
+  border: 1.5px solid var(--border-200);
+}
+.step-circle.active {
+  background: var(--brand-500);
+  color: white;
+  box-shadow: 0 0 0 4px rgba(253,113,73,0.15);
+}
+.step-circle.done {
+  background: var(--success-400);
+  color: white;
+}
+.step-label {
+  display: flex;
+  flex-direction: column;
+}
+.step-name {
+  font-size: 12px;
+  font-weight: 600;
+  transition: color .2s;
+}
+.step-name.active { color: var(--brand-600); }
+.step-name.done  { color: var(--success-500); }
+.step-name.pending { color: var(--text-400); }
+.step-desc {
+  font-size: 10px;
+  color: var(--text-400);
+  line-height: 1.3;
+}
+.step-line {
+  flex: 1;
+  height: 2px;
+  margin: 0 12px;
+  border-radius: 2px;
+  transition: background .3s;
+}
+.step-line.done { background: var(--success-400); }
+.step-line.active { background: linear-gradient(90deg, var(--success-400), var(--brand-200)); }
+.step-line.pending { background: var(--border-200); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MAIN CONTENT AREA
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.content-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 24px 120px;
+}
+.card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-200);
+  border-radius: var(--radius-l);
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CARD PANELS (steps)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.panel { display: none; padding: 28px; }
+.panel.active { display: block; }
+
+/* Panel animation */
+.panel.entering { animation: panelIn .22s ease forwards; }
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Heading row */
+.panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+.panel-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-900);
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-s);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+}
+.badge-draft {
+  background: var(--caution-100);
+  color: #92400E;
+  border: 1px solid var(--caution-200);
+}
+.badge-new {
+  background: var(--special-500);
+  color: white;
+}
+.panel-sub {
+  font-size: 13px;
+  color: var(--text-500);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FORM ELEMENTS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.form { display: flex; flex-direction: column; gap: 20px; }
+
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-700);
+  line-height: 1;
+}
+.field-label span { color: var(--error-500); margin-left: 2px; }
+
+.input {
+  height: 40px;
+  border: 1.5px solid var(--border-200);
+  border-radius: var(--radius-l);
+  padding: 0 14px;
+  font-size: 14px;
+  color: var(--text-900);
+  background: var(--bg-panel);
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+  width: 100%;
+}
+.input::placeholder { color: var(--text-400); }
+.input:focus {
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(253,113,73,0.12);
+}
+.input.error {
+  border-color: var(--error-500);
+  box-shadow: 0 0 0 3px rgba(205,53,70,0.1);
+}
+.input.success {
+  border-color: var(--success-400);
+  box-shadow: 0 0 0 3px rgba(63,144,43,0.1);
+}
+
+/* PAN input with uppercase transform */
+.pan-wrap { position: relative; }
+.pan-wrap .input { padding-right: 48px; text-transform: uppercase; letter-spacing: 1px; font-size: 15px; font-weight: 500; }
+.pan-badge {
+  position: absolute;
+  right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-s);
+  pointer-events: none;
+}
+.pan-badge.valid   { background: var(--success-100); color: var(--success-600); }
+.pan-badge.invalid { background: var(--error-100); color: var(--error-500); }
+
+/* Select wrapper */
+.select-wrap { position: relative; }
+.select-wrap svg.chevron {
+  position: absolute;
+  right: 12px; top: 50%; transform: translateY(-50%);
+  width: 14px; height: 14px;
+  color: var(--text-400);
+  pointer-events: none;
+}
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 40px;
+  border: 1.5px solid var(--border-200);
+  border-radius: var(--radius-l);
+  padding: 0 36px 0 14px;
+  font-size: 14px;
+  color: var(--text-900);
+  background: var(--bg-panel);
+  outline: none;
+  cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+.select:focus {
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px rgba(253,113,73,0.12);
+}
+
+/* Helper / Error text */
+.field-helper { font-size: 12px; color: var(--text-400); line-height: 1.4; }
+.field-error  { font-size: 12px; color: var(--error-500); display: flex; align-items: center; gap: 4px; }
+.field-error svg { width: 12px; height: 12px; flex-shrink: 0; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAN VERIFY BUTTON + STATES
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.btn-verify {
+  height: 40px;
+  padding: 0 20px;
+  border: 1.5px solid var(--brand-500);
+  background: var(--brand-50);
+  color: var(--brand-700);
+  border-radius: var(--radius-l);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s;
+  flex-shrink: 0;
+}
+.btn-verify:hover { background: var(--brand-100); }
+.btn-verify:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-verify svg { width: 14px; height: 14px; }
+
+.pan-input-row { display: flex; gap: 10px; align-items: flex-end; }
+.pan-input-row .field { flex: 1; }
+
+/* Loading spinner */
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(253,113,73,0.3);
+  border-top-color: var(--brand-500);
+  border-radius: 50%;
+  animation: spin .6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Verify result */
+.verify-result {
+  display: none;
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  border: 1px solid var(--border-200);
+}
+.verify-result.show { display: block; animation: panelIn .2s ease; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAN CONFIRMED CARD
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.pan-banner {
+  background: #1E5C15;
+  padding: 16px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  position: relative;
+  overflow: hidden;
+}
+.pan-banner::before {
+  content: '';
+  position: absolute;
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+  top: -70px; right: -40px;
+}
+.pan-banner::after {
+  content: '';
+  position: absolute;
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+  bottom: -30px; right: 60px;
+}
+.pan-shield {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  position: relative; z-index: 1;
+}
+.pan-shield svg { width: 20px; height: 20px; color: white; }
+.pan-banner-text { position: relative; z-index: 1; }
+.pan-banner-title { font-size: 14px; font-weight: 700; color: white; line-height: 1.3; }
+.pan-banner-sub { font-size: 12px; color: rgba(255,255,255,0.8); line-height: 1.5; margin-top: 2px; }
+
+.pan-details {
+  background: var(--bg-panel);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pan-row {
+  display: flex;
+  gap: 20px;
+}
+.pan-cell { flex: 1; }
+.pan-cell-label { font-size: 11px; color: var(--text-400); line-height: 14px; margin-bottom: 3px; }
+.pan-cell-value { font-size: 14px; font-weight: 600; color: var(--text-900); line-height: 18px; }
+
+/* Error result */
+.verify-error-banner {
+  background: #FBF1F2;
+  border: 1px solid var(--error-500);
+  border-radius: var(--radius-l);
+  padding: 14px 16px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  animation: panelIn .2s ease;
+}
+.verify-error-banner svg { width: 18px; height: 18px; color: var(--error-500); flex-shrink: 0; margin-top: 1px; }
+.verify-error-title { font-size: 13px; font-weight: 600; color: var(--error-500); margin-bottom: 2px; }
+.verify-error-sub { font-size: 12px; color: var(--text-500); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FORM DIVIDER
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.form-divider {
+  height: 1px;
+  background: var(--border-100);
+  margin: 4px 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SUCCESS STATE
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.success-card {
+  padding: 48px 28px 40px;
+  text-align: center;
+  animation: panelIn .3s ease;
+}
+.success-icon-wrap {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--success-100);
+  border: 3px solid var(--success-50);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+}
+.success-icon-wrap svg { width: 36px; height: 36px; color: var(--success-400); }
+.success-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-900);
+  margin-bottom: 8px;
+}
+.success-sub {
+  font-size: 14px;
+  color: var(--text-500);
+  line-height: 1.6;
+  max-width: 360px;
+  margin: 0 auto 28px;
+}
+.success-summary {
+  background: var(--bg-page);
+  border: 1px solid var(--border-200);
+  border-radius: var(--radius-l);
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  text-align: left;
+}
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border-100);
+}
+.summary-row:last-child { border-bottom: none; }
+.summary-label { font-size: 12px; color: var(--text-400); }
+.summary-value { font-size: 13px; font-weight: 500; color: var(--text-900); }
+.summary-kyc-tag {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: var(--radius-s);
+  font-size: 11px; font-weight: 600;
+  background: var(--caution-100); color: var(--caution-600);
+  border: 1px solid var(--caution-200);
+}
+.success-actions { display: flex; gap: 10px; justify-content: center; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BUTTONS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.btn-primary {
+  height: 42px;
+  padding: 0 24px;
+  background: var(--brand-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-l);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s, box-shadow .15s;
+  box-shadow: 0 2px 8px rgba(253,113,73,0.3);
+  text-decoration: none;
+}
+.btn-primary:hover { background: var(--brand-600); }
+.btn-primary:disabled { background: var(--border-200); color: var(--text-400); box-shadow: none; cursor: not-allowed; }
+.btn-primary svg { width: 16px; height: 16px; }
+
+.btn-secondary {
+  height: 42px;
+  padding: 0 24px;
+  background: var(--bg-panel);
+  color: var(--text-700);
+  border: 1.5px solid var(--border-200);
+  border-radius: var(--radius-l);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s, border-color .15s;
+  text-decoration: none;
+}
+.btn-secondary:hover { background: var(--bg-100); border-color: var(--border-300); }
+.btn-secondary svg { width: 16px; height: 16px; }
+
+.btn-ghost {
+  height: 42px;
+  padding: 0 20px;
+  background: none;
+  color: var(--brand-600);
+  border: none;
+  border-radius: var(--radius-l);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s;
+  text-decoration: none;
+}
+.btn-ghost:hover { background: var(--brand-50); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STICKY FOOTER
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.sticky-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: 68px;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  z-index: 100;
+  box-shadow: 0 -4px 16px rgba(0,0,0,0.04);
+}
+.footer-inner {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0;
+}
+.footer-left { display: flex; align-items: center; gap: 10px; }
+.footer-step-info { font-size: 12px; color: var(--text-400); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RADIO GROUP
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.radio-group { display: flex; flex-direction: column; gap: 8px; }
+.radio-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border-200);
+  border-radius: var(--radius-l);
+  cursor: pointer;
+  transition: border-color .15s, background .15s;
+  user-select: none;
+}
+.radio-option:hover { border-color: var(--brand-500); background: var(--brand-50); }
+.radio-option.selected { border-color: var(--brand-500); background: var(--brand-50); }
+.radio-dot {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-300);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: border-color .15s;
+}
+.radio-option.selected .radio-dot { border-color: var(--brand-500); }
+.radio-dot-inner {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--brand-500);
+  opacity: 0;
+  transform: scale(0);
+  transition: opacity .15s, transform .15s;
+}
+.radio-option.selected .radio-dot-inner { opacity: 1; transform: scale(1); }
+.radio-label { font-size: 13px; color: var(--text-700); font-weight: 500; flex: 1; }
+.radio-desc { font-size: 11px; color: var(--text-400); margin-top: 1px; }
+.radio-icon { color: var(--text-400); }
+.radio-option.selected .radio-icon { color: var(--brand-500); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PROGRESS INDICATOR (mini)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.progress-track {
+  height: 3px;
+  background: var(--border-100);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--brand-500), var(--brand-400));
+  border-radius: 2px;
+  transition: width .4s ease;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ TOPBAR ═══════════════════ -->
+<header class="topbar">
+  <div class="topbar-left">
+    <a href="my-clients.html" class="back-btn">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+        <path d="M10 3L6 8l4 5"/>
+      </svg>
+      My Clients
+    </a>
+    <span class="topbar-title" id="topbarTitle">Add New Client</span>
+  </div>
+  <div class="topbar-right">
+    <div class="need-help">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="8" cy="8" r="6"/>
+        <path d="M6 6c0-1.1.9-2 2-2s2 .9 2 2c0 1-.8 1.5-2 2v1M8 12.5v.5"/>
+      </svg>
+      Need help?
+    </div>
+  </div>
+</header>
+
+<!-- Progress bar (thin, below topbar) -->
+<div class="progress-track">
+  <div class="progress-fill" id="progressFill" style="width:33%"></div>
+</div>
+
+<!-- ═══════════════════ STEPPER ═══════════════════ -->
+<div class="stepper-bar">
+  <div class="stepper">
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-node">
+        <div class="step-circle active" id="s1-circle">1</div>
+        <div class="step-label">
+          <span class="step-name active" id="s1-name">PAN Verification</span>
+          <span class="step-desc">Verify client identity</span>
+        </div>
+      </div>
+      <div class="step-line pending" id="line1"></div>
+    </div>
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-node">
+        <div class="step-circle pending" id="s2-circle">2</div>
+        <div class="step-label">
+          <span class="step-name pending" id="s2-name">Client Details</span>
+          <span class="step-desc">Zone, RM & channel</span>
+        </div>
+      </div>
+      <div class="step-line pending" id="line2"></div>
+    </div>
+    <!-- Step 3 -->
+    <div class="step" style="flex:0">
+      <div class="step-node">
+        <div class="step-circle pending" id="s3-circle">3</div>
+        <div class="step-label">
+          <span class="step-name pending" id="s3-name">Confirmation</span>
+          <span class="step-desc">Review & submit</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ CONTENT ═══════════════════ -->
+<div class="content-wrap">
+  <div class="card">
+
+    <!-- ──────── STEP 1: PAN VERIFICATION ──────── -->
+    <div class="panel active entering" id="panel1">
+      <div class="panel-heading">
+        <h2 class="panel-title">Verify PAN</h2>
+        <span class="badge badge-draft">Draft Mode</span>
+      </div>
+      <p class="panel-sub">Enter the client's PAN to fetch their registered name and type. This helps pre-fill the profile.</p>
+
+      <div class="form">
+        <!-- PAN Input + Verify -->
+        <div class="field">
+          <label class="field-label">PAN Number <span>*</span></label>
+          <div class="pan-input-row">
+            <div class="field" style="margin:0;flex:1;">
+              <div class="pan-wrap">
+                <input class="input" id="panInput" type="text" maxlength="10"
+                  placeholder="ABCDE1234F"
+                  oninput="onPanInput(this)"
+                  onkeydown="if(event.key==='Enter') verifyPAN()">
+                <span class="pan-badge" id="panBadge" style="display:none"></span>
+              </div>
+            </div>
+            <button class="btn-verify" id="verifyBtn" onclick="verifyPAN()" disabled>
+              <span id="verifyBtnContent">
+                <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M3 8l4 4 6-7"/>
+                </svg>
+                Verify
+              </span>
+            </button>
+          </div>
+          <span class="field-helper">Format: 5 letters, 4 digits, 1 letter (e.g. ABCDE1234F)</span>
+          <span class="field-error" id="panError" style="display:none">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="8" cy="8" r="6"/><path d="M8 5v4M8 11v.5"/>
+            </svg>
+            <span id="panErrorMsg"></span>
+          </span>
+        </div>
+
+        <!-- Verify result -->
+        <div id="verifyResult"></div>
+      </div>
+    </div>
+
+    <!-- ──────── STEP 2: CLIENT DETAILS ──────── -->
+    <div class="panel" id="panel2">
+      <div class="panel-heading">
+        <h2 class="panel-title">Client Details</h2>
+        <span class="badge badge-draft">Draft Mode</span>
+      </div>
+      <p class="panel-sub">Add assignment and communication preferences for this client.</p>
+
+      <div class="form">
+
+        <!-- Zone -->
+        <div class="field">
+          <label class="field-label">Zone <span>*</span></label>
+          <div class="select-wrap">
+            <select class="select" id="zoneSelect">
+              <option value="north">North Zone</option>
+              <option value="south">South Zone</option>
+              <option value="east">East Zone</option>
+              <option value="west">West Zone</option>
+              <option value="central">Central Zone</option>
+            </select>
+            <svg class="chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 6l4 4 4-4"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Owner RM / Team -->
+        <div class="field">
+          <label class="field-label">Owner RM / Team <span>*</span></label>
+          <input class="input" id="rmEmail" type="email"
+            placeholder="Enter email address"
+            oninput="validateEmail()"
+            onblur="validateEmailBlur()">
+          <span class="field-helper" id="rmHelper">Assigned RM's email. You can transfer this later.</span>
+          <span class="field-error" id="rmError" style="display:none">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="8" cy="8" r="6"/><path d="M8 5v4M8 11v.5"/>
+            </svg>
+            <span id="rmErrorMsg"></span>
+          </span>
+        </div>
+
+        <!-- Preferred Channel -->
+        <div class="field">
+          <label class="field-label">Preferred Communication Channel</label>
+          <div class="radio-group" id="channelGroup">
+            <div class="radio-option selected" onclick="selectChannel(this,'email')">
+              <div class="radio-dot"><div class="radio-dot-inner"></div></div>
+              <div>
+                <div class="radio-label">Email</div>
+                <div class="radio-desc">Formal updates and documents</div>
+              </div>
+              <svg class="radio-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="4" width="12" height="9" rx="1.5"/><path d="M2 5.5l6 4 6-4"/>
+              </svg>
+            </div>
+            <div class="radio-option" onclick="selectChannel(this,'whatsapp')">
+              <div class="radio-dot"><div class="radio-dot-inner"></div></div>
+              <div>
+                <div class="radio-label">WhatsApp</div>
+                <div class="radio-desc">Quick updates and reminders</div>
+              </div>
+              <svg class="radio-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <path d="M13.5 2.5C12.1 1.1 10.2.4 8.2.4 4 .4.7 3.7.7 7.9c0 1.3.3 2.5 1 3.7L.5 15.5l4.1-.9C5.7 15.1 7 15.4 8.2 15.4c4.2 0 7.5-3.3 7.5-7.5 0-2-.8-3.9-2.2-5.4z"/>
+              </svg>
+            </div>
+            <div class="radio-option" onclick="selectChannel(this,'sms')">
+              <div class="radio-dot"><div class="radio-dot-inner"></div></div>
+              <div>
+                <div class="radio-label">SMS</div>
+                <div class="radio-desc">Transaction alerts only</div>
+              </div>
+              <svg class="radio-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4">
+                <rect x="2" y="3" width="12" height="10" rx="1.5"/><path d="M5 7h6M5 9.5h4"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- PAN Confirmed (read-only, carried from step 1) -->
+        <div class="verify-result show" id="panCardStep2">
+          <!-- filled dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────── STEP 3: CONFIRM ──────── -->
+    <div class="panel" id="panel3">
+      <div class="panel-heading">
+        <h2 class="panel-title">Confirm &amp; Submit</h2>
+        <span class="badge badge-new">New Client</span>
+      </div>
+      <p class="panel-sub">Review the details below before adding this client to your portfolio.</p>
+
+      <div id="confirmSummaryWrap"></div>
+    </div>
+
+    <!-- ──────── STEP 4: SUCCESS ──────── -->
+    <div class="panel" id="panel4">
+      <div class="success-card">
+        <div class="success-icon-wrap">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="24" cy="24" r="20"/>
+            <path d="M14 24l8 8 12-14"/>
+          </svg>
+        </div>
+        <h2 class="success-title">Client Added!</h2>
+        <p class="success-sub" id="successSub">The client profile has been created and is pending KYC verification.</p>
+
+        <div class="success-summary" id="successSummaryCard"></div>
+
+        <div class="success-actions">
+          <a href="my-clients.html" class="btn-secondary">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M10 3L6 8l4 5"/>
+            </svg>
+            Back to Clients
+          </a>
+          <button class="btn-primary" onclick="resetFlow()">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M8 3v10M3 8h10"/>
+            </svg>
+            Add Another
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════ STICKY FOOTER ═══════════════════ -->
+<div class="sticky-footer" id="stickyFooter">
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-step-info" id="footerStepInfo">Step 1 of 3</span>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn-secondary" id="backBtn" onclick="goBack()" style="display:none;">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M10 3L6 8l4 5"/>
+        </svg>
+        Back
+      </button>
+      <button class="btn-primary" id="nextBtn" onclick="goNext()" disabled>
+        Continue
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M6 3l4 5-4 5"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STATE
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const state = {
+  step: 1,
+  pan: '',
+  panVerified: false,
+  panData: null,
+  zone: 'north',
+  rmEmail: '',
+  channel: 'email',
+};
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PAN LOGIC
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const PAN_RE = /^[A-Z]{5}[0-9]{4}[A-Z]{1}$/;
+
+// Mock PAN database
+const PAN_DB = {
+  'ABCDE1234F': { name: 'Kumar Vivek',        type: 'Individual' },
+  'PQRST5678G': { name: 'Mehta Priya',         type: 'Individual' },
+  'MNBVC3210H': { name: 'Patel Arjun Kumar',   type: 'Individual' },
+  'AABCS1234D': { name: 'Sharma Enterprises',  type: 'Company'    },
+  'ZZZZZ0000A': { name: null,                  type: null         }, // force error
+};
+
+function onPanInput(el) {
+  const raw = el.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  el.value = raw;
+  state.pan = raw;
+  state.panVerified = false;
+
+  const badge = document.getElementById('panBadge');
+  const btn = document.getElementById('verifyBtn');
+  const result = document.getElementById('verifyResult');
+
+  // Reset
+  result.innerHTML = '';
+  result.className = 'verify-result';
+  hideError('panError');
+  el.classList.remove('error','success');
+  badge.style.display = 'none';
+  document.getElementById('nextBtn').disabled = true;
+
+  if (raw.length === 10) {
+    if (PAN_RE.test(raw)) {
+      badge.textContent = 'Valid format';
+      badge.className = 'pan-badge valid';
+      badge.style.display = '';
+      el.classList.add('success');
+      btn.disabled = false;
+    } else {
+      badge.textContent = 'Invalid';
+      badge.className = 'pan-badge invalid';
+      badge.style.display = '';
+      el.classList.add('error');
+      btn.disabled = true;
+    }
+  } else if (raw.length > 0) {
+    btn.disabled = true;
+  } else {
+    btn.disabled = true;
+  }
+}
+
+function verifyPAN() {
+  const raw = state.pan;
+  if (!PAN_RE.test(raw)) {
+    showError('panError', 'panErrorMsg', 'Invalid PAN format. Please check and retry.');
+    return;
+  }
+
+  // Show loading
+  const btn = document.getElementById('verifyBtn');
+  btn.disabled = true;
+  document.getElementById('verifyBtnContent').innerHTML = `<div class="spinner"></div> Verifying…`;
+  hideError('panError');
+
+  setTimeout(() => {
+    const record = PAN_DB[raw];
+    document.getElementById('verifyBtnContent').innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8l4 4 6-7"/></svg> Verify`;
+
+    if (record && record.name) {
+      // Success
+      state.panVerified = true;
+      state.panData = { pan: raw, ...record };
+      renderVerifySuccess(raw, record.name, record.type);
+      document.getElementById('nextBtn').disabled = false;
+      btn.disabled = true; // Lock after verify
+      document.getElementById('panInput').disabled = true;
+    } else if (record && !record.name) {
+      // Force error case
+      renderVerifyError('PAN not found in NSDL records. Please check the number and try again.');
+      btn.disabled = false;
+    } else {
+      // Unknown PAN → simulate success with mock data
+      state.panVerified = true;
+      state.panData = { pan: raw, name: 'Profile Not Found', type: 'Unknown' };
+      renderVerifySuccess(raw, 'Profile Not Found', 'Unknown');
+      document.getElementById('nextBtn').disabled = false;
+      btn.disabled = true;
+      document.getElementById('panInput').disabled = true;
+    }
+  }, 1600);
+}
+
+function renderVerifySuccess(pan, name, type) {
+  const el = document.getElementById('verifyResult');
+  el.className = 'verify-result show';
+  el.innerHTML = buildPanCard(pan, name, type);
+}
+
+function buildPanCard(pan, name, type) {
+  return `
+    <div class="pan-banner">
+      <div class="pan-shield">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 2L3 7v5c0 5.5 4 10.7 9 12 5-1.3 9-6.5 9-12V7L12 2z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="pan-banner-text">
+        <div class="pan-banner-title">PAN Confirmed</div>
+        <div class="pan-banner-sub">Name linked to this PAN has been fetched. Continue to capture profile details.</div>
+      </div>
+    </div>
+    <div class="pan-details">
+      <div class="pan-row">
+        <div class="pan-cell">
+          <div class="pan-cell-label">PAN NUMBER</div>
+          <div class="pan-cell-value" style="letter-spacing:1px;font-size:13px;">${pan}</div>
+        </div>
+        <div class="pan-cell">
+          <div class="pan-cell-label">DETECTED TYPE</div>
+          <div class="pan-cell-value">${type}</div>
+        </div>
+      </div>
+      <div class="pan-row">
+        <div class="pan-cell">
+          <div class="pan-cell-label">REGISTERED NAME</div>
+          <div class="pan-cell-value">${name}</div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderVerifyError(msg) {
+  const el = document.getElementById('verifyResult');
+  el.className = 'verify-result show';
+  el.innerHTML = `
+    <div class="verify-error-banner">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="8" cy="8" r="6"/><path d="M8 5v4M8 11v.5"/>
+      </svg>
+      <div>
+        <div class="verify-error-title">Verification Failed</div>
+        <div class="verify-error-sub">${msg}</div>
+      </div>
+    </div>
+  `;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STEP 2 LOGIC
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function validateEmail() {
+  const val = document.getElementById('rmEmail').value.trim();
+  state.rmEmail = val;
+  const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const helper = document.getElementById('rmHelper');
+  const errorEl = document.getElementById('rmError');
+  const input = document.getElementById('rmEmail');
+
+  if (val && !emailRE.test(val)) {
+    input.classList.add('error');
+  } else {
+    input.classList.remove('error');
+  }
+  checkStep2();
+}
+
+function validateEmailBlur() {
+  const val = document.getElementById('rmEmail').value.trim();
+  const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const rmError = document.getElementById('rmError');
+  const rmErrorMsg = document.getElementById('rmErrorMsg');
+  const input = document.getElementById('rmEmail');
+
+  if (!val) {
+    showError('rmError','rmErrorMsg','Owner email is required.');
+    input.classList.add('error');
+  } else if (!emailRE.test(val)) {
+    showError('rmError','rmErrorMsg','Enter a valid email address.');
+    input.classList.add('error');
+  } else {
+    hideError('rmError');
+    input.classList.remove('error');
+    input.classList.add('success');
+  }
+  checkStep2();
+}
+
+function checkStep2() {
+  const val = document.getElementById('rmEmail').value.trim();
+  const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  document.getElementById('nextBtn').disabled = !(val && emailRE.test(val));
+}
+
+function selectChannel(el, channel) {
+  document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  state.channel = channel;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STEP 3 — CONFIRM SUMMARY
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function buildConfirmSummary() {
+  const pd = state.panData;
+  const zoneLabels = { north:'North Zone',south:'South Zone',east:'East Zone',west:'West Zone',central:'Central Zone' };
+  const channelLabels = { email:'Email',whatsapp:'WhatsApp',sms:'SMS' };
+
+  return `
+    <div class="success-summary" style="margin-bottom:0;">
+      <div class="summary-row">
+        <span class="summary-label">PAN</span>
+        <span class="summary-value" style="letter-spacing:1px;font-size:12px;">${pd.pan}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Registered Name</span>
+        <span class="summary-value">${pd.name}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Client Type</span>
+        <span class="summary-value">${pd.type}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Zone</span>
+        <span class="summary-value">${zoneLabels[document.getElementById('zoneSelect').value]}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Owner RM</span>
+        <span class="summary-value">${state.rmEmail}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Channel</span>
+        <span class="summary-value">${channelLabels[state.channel]}</span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">KYC Status</span>
+        <span class="summary-kyc-tag">
+          <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="6" r="5"/><path d="M6 3v4M6 9v.5"/>
+          </svg>
+          Pending
+        </span>
+      </div>
+    </div>
+  `;
+}
+
+function buildSuccessSummary() {
+  const pd = state.panData;
+  const channelLabels = { email:'Email',whatsapp:'WhatsApp',sms:'SMS' };
+  return `
+    <div class="summary-row">
+      <span class="summary-label">Client</span>
+      <span class="summary-value">${pd.name}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">PAN</span>
+      <span class="summary-value" style="letter-spacing:1px;font-size:12px;">${pd.pan}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Assigned RM</span>
+      <span class="summary-value">${state.rmEmail}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Status</span>
+      <span class="summary-kyc-tag">
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="6" cy="6" r="5"/><path d="M6 3v4M6 9v.5"/>
+        </svg>
+        KYC Pending
+      </span>
+    </div>
+  `;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAVIGATION
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function goNext() {
+  if (state.step === 1) {
+    goToStep(2);
+  } else if (state.step === 2) {
+    const val = document.getElementById('rmEmail').value.trim();
+    const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!val || !emailRE.test(val)) {
+      validateEmailBlur();
+      return;
+    }
+    state.rmEmail = val;
+    goToStep(3);
+  } else if (state.step === 3) {
+    goToStep(4);
+  }
+}
+
+function goBack() {
+  if (state.step > 1) goToStep(state.step - 1);
+}
+
+function goToStep(n) {
+  // Hide all panels
+  document.querySelectorAll('.panel').forEach(p => { p.classList.remove('active','entering'); });
+
+  // Show target
+  const target = document.getElementById(`panel${n}`);
+  target.classList.add('active','entering');
+
+  // Populate dynamic content
+  if (n === 2) {
+    // Carry PAN card into step 2
+    document.getElementById('panCardStep2').className = 'verify-result show';
+    document.getElementById('panCardStep2').innerHTML = buildPanCard(state.panData.pan, state.panData.name, state.panData.type);
+    document.getElementById('nextBtn').disabled = !state.rmEmail;
+    if (state.rmEmail) checkStep2();
+  }
+  if (n === 3) {
+    document.getElementById('confirmSummaryWrap').innerHTML = buildConfirmSummary();
+    document.getElementById('nextBtn').innerHTML = `Submit <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8l4 4 6-7"/></svg>`;
+    document.getElementById('nextBtn').disabled = false;
+  }
+  if (n === 4) {
+    document.getElementById('successSummaryCard').innerHTML = buildSuccessSummary();
+    document.getElementById('stickyFooter').style.display = 'none';
+  }
+
+  state.step = n;
+  updateStepperUI(n);
+  updateFooter(n);
+  updateProgress(n);
+}
+
+function updateStepperUI(n) {
+  // Step circles
+  for (let i = 1; i <= 3; i++) {
+    const circle = document.getElementById(`s${i}-circle`);
+    const nameEl = document.getElementById(`s${i}-name`);
+    if (i < n) {
+      circle.className = 'step-circle done';
+      circle.innerHTML = `<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 8l4 4 6-7"/></svg>`;
+      nameEl.className = 'step-name done';
+    } else if (i === n) {
+      circle.className = 'step-circle active';
+      circle.textContent = i;
+      nameEl.className = 'step-name active';
+    } else {
+      circle.className = 'step-circle pending';
+      circle.textContent = i;
+      nameEl.className = 'step-name pending';
+    }
+  }
+  // Lines
+  ['line1','line2'].forEach((id, idx) => {
+    const lineStep = idx + 1; // line1 = between 1&2, line2 = between 2&3
+    const el = document.getElementById(id);
+    if (n > lineStep + 1) el.className = 'step-line done';
+    else if (n === lineStep + 1) el.className = 'step-line active';
+    else el.className = 'step-line pending';
+  });
+}
+
+function updateFooter(n) {
+  const backBtn = document.getElementById('backBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const stepInfo = document.getElementById('footerStepInfo');
+
+  if (n === 4) {
+    document.getElementById('stickyFooter').style.display = 'none';
+    return;
+  }
+  document.getElementById('stickyFooter').style.display = 'flex';
+  backBtn.style.display = n > 1 ? '' : 'none';
+  stepInfo.textContent = `Step ${n} of 3`;
+
+  if (n === 1) {
+    nextBtn.innerHTML = `Continue <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M6 3l4 5-4 5"/></svg>`;
+    nextBtn.disabled = !state.panVerified;
+  } else if (n === 2) {
+    nextBtn.innerHTML = `Continue <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M6 3l4 5-4 5"/></svg>`;
+  } else if (n === 3) {
+    nextBtn.innerHTML = `Submit <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" width="16" height="16"><path d="M3 8l4 4 6-7"/></svg>`;
+    nextBtn.disabled = false;
+  }
+  document.getElementById('topbarTitle').textContent =
+    n === 1 ? 'Add New Client — PAN Verification' :
+    n === 2 ? 'Add New Client — Client Details' :
+              'Add New Client — Confirm';
+}
+
+function updateProgress(n) {
+  const pct = n === 1 ? 33 : n === 2 ? 66 : n >= 3 ? 100 : 100;
+  document.getElementById('progressFill').style.width = pct + '%';
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESET
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function resetFlow() {
+  state.step = 1;
+  state.pan = '';
+  state.panVerified = false;
+  state.panData = null;
+  state.rmEmail = '';
+  state.channel = 'email';
+
+  document.getElementById('panInput').value = '';
+  document.getElementById('panInput').disabled = false;
+  document.getElementById('panInput').classList.remove('error','success');
+  document.getElementById('panBadge').style.display = 'none';
+  document.getElementById('verifyResult').innerHTML = '';
+  document.getElementById('verifyResult').className = 'verify-result';
+  document.getElementById('verifyBtnContent').innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 8l4 4 6-7"/></svg> Verify`;
+  document.getElementById('verifyBtn').disabled = true;
+  document.getElementById('rmEmail').value = '';
+  document.getElementById('rmEmail').classList.remove('error','success');
+  hideError('rmError');
+
+  goToStep(1);
+  document.getElementById('stickyFooter').style.display = 'flex';
+  document.getElementById('nextBtn').disabled = true;
+  document.getElementById('backBtn').style.display = 'none';
+  document.getElementById('topbarTitle').textContent = 'Add New Client';
+  updateStepperUI(1);
+  updateProgress(1);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   UTILS
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function showError(errId, msgId, msg) {
+  document.getElementById(errId).style.display = 'flex';
+  document.getElementById(msgId).textContent = msg;
+}
+function hideError(errId) {
+  document.getElementById(errId).style.display = 'none';
+}
+</script>
+</body>
+</html>

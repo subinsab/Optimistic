@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Upload — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.comp-hero { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 48px 56px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center; }
+.dl-card { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon { width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: background .15s, transform .1s; }
+.dl-btn:hover { background: #E84800; transform: translateY(-1px); }
+.demo-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.spec-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.code-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.related-section { padding: 40px 56px 60px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+.demo-stage { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 36px 32px; }
+.demo-stage + .demo-stage { margin-top: 16px; }
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.spec-table { width: 100%; border-collapse: collapse; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 12.5px; }
+.spec-table th { text-align: left; padding: 9px 14px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+.spec-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table td:first-child { color: var(--text-1); font-weight: 500; }
+.sv { font-family: var(--mono); font-size: 11px; color: var(--accent-text); background: var(--accent-dim); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--accent); display: inline-block; }
+.anatomy-wrap { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.anatomy-header { padding: 10px 14px; background: var(--bg-inset); border-bottom: 1px solid var(--border); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.anatomy-body { padding: 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+.anatomy-item { display: flex; align-items: flex-start; gap: 10px; }
+.anatomy-num { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.anatomy-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.anatomy-text strong { color: var(--text-1); }
+.related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.related-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; display: block; transition: border-color .15s, background .15s; }
+.related-card:hover { border-color: var(--accent); background: var(--accent-dim); }
+.related-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.related-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+.demo-label { font-size: 10px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 14px; }
+@media (max-width: 1099px) { .comp-hero { grid-template-columns: 1fr; } .spec-grid { grid-template-columns: 1fr; } .related-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 809px) { .comp-hero, .demo-section, .spec-section, .code-section, .related-section { padding: 32px 20px; } .related-grid { grid-template-columns: 1fr; } }
+
+/* ── Upload ── */
+.ym-dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  background: var(--bg-panel);
+  padding: 36px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+  font-family: 'Inter', -apple-system, sans-serif;
+  position: relative;
+}
+.ym-dropzone:hover,
+.ym-dropzone.drag-over {
+  border-color: #4065C5;
+  background: rgba(64,101,197,.04);
+}
+.ym-dropzone input[type="file"] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+}
+.dropzone-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 14px;
+}
+.dropzone-title { font-size: 14px; font-weight: 700; color: var(--text-1); margin-bottom: 4px; }
+.dropzone-sub { font-size: 12.5px; color: var(--text-3); line-height: 1.5; }
+.dropzone-types { font-size: 11px; color: var(--text-3); margin-top: 10px; }
+.dropzone-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 14px; padding: 8px 16px;
+  border-radius: 8px; border: 1.5px solid var(--border);
+  background: var(--bg-panel); color: var(--text-1);
+  font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: inherit;
+  transition: border-color .14s, background .14s;
+  position: relative; z-index: 1;
+}
+.dropzone-btn:hover { border-color: #4065C5; background: rgba(64,101,197,.05); }
+
+/* File list */
+.ym-file-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
+.ym-file-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+.file-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.file-icon-pdf  { background: rgba(205,53,70,.1); color: #CD3546; }
+.file-icon-img  { background: rgba(64,101,197,.1); color: #4065C5; }
+.file-icon-xlsx { background: rgba(63,144,43,.1); color: #3F902B; }
+.file-icon-doc  { background: rgba(64,101,197,.1); color: #4065C5; }
+.file-content { flex: 1; min-width: 0; }
+.file-name { font-size: 13px; font-weight: 600; color: var(--text-1); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.file-size { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.file-progress-wrap { height: 3px; background: var(--border); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+.file-progress-bar { height: 100%; background: #4065C5; border-radius: 2px; transition: width 300ms ease; }
+.file-status { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.file-status-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+.file-status-ok      { background: rgba(63,144,43,.15); color: #3F902B; }
+.file-status-error   { background: rgba(205,53,70,.15); color: #CD3546; }
+.file-status-loading { background: var(--bg-inset); color: var(--text-3); }
+.file-remove-btn {
+  width: 24px; height: 24px; border-radius: 6px;
+  border: none; background: transparent; cursor: pointer;
+  color: var(--text-3); display: flex; align-items: center; justify-content: center;
+  transition: background .12s, color .12s;
+}
+.file-remove-btn:hover { background: var(--bg-inset); color: #CD3546; }
+
+/* Compact upload button style */
+.ym-upload-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 16px; border-radius: 8px;
+  border: 1.5px solid var(--border); background: var(--bg-panel);
+  color: var(--text-1); font-size: 13px; font-weight: 600;
+  cursor: pointer; font-family: 'Inter', -apple-system, sans-serif;
+  transition: border-color .14s, background .14s;
+  position: relative;
+}
+.ym-upload-btn input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.ym-upload-btn:hover { border-color: #4065C5; background: rgba(64,101,197,.05); }
+
+/* Error dropzone */
+.ym-dropzone.upload-error { border-color: #CD3546; background: rgba(205,53,70,.03); }
+.upload-error-msg { font-size: 11.5px; color: #CD3546; margin-top: 8px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Upload</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="combobox.html">Combobox</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub active" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub" href="form-layout.html">Forms</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<main class="main">
+
+  <!-- Hero -->
+  <section class="comp-hero">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <span style="font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-3);">Forms · 28/54</span>
+        <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;background:rgba(63,144,43,.1);color:#3F902B;border:1px solid rgba(63,144,43,.25);">Stable</span>
+      </div>
+      <h1 style="font-size:32px;font-weight:800;color:var(--text-1);margin:0 0 12px;letter-spacing:-.02em;">Upload</h1>
+      <p style="font-size:15px;color:var(--text-2);line-height:1.6;max-width:560px;margin:0 0 20px;">File upload for KYC documents, bank statements, ITR files, and ID proofs. Drag-and-drop dropzone, file list with upload progress bars, per-file success/error status, and a compact button-style variant.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;font-size:12.5px;color:var(--text-3);">
+        <span>Dropzone: <strong style="color:var(--text-1);">2px dashed border</strong></span>
+        <span>Progress: <strong style="color:var(--text-1);">3px bar</strong></span>
+        <span>Drag-over: <strong style="color:var(--text-1);">accent border</strong></span>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 13V4M7 7l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 14v2a1 1 0 001 1h12a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">upload.md</div>
+          <div class="dl-file-meta">Markdown · 2.4 KB</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">Dropzone, file list, drag-and-drop events, upload progress, and error state spec.</p>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" href="downloads/upload.md" download="upload.md" class="dl-btn">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 11h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download .md
+      </a>
+    </div>
+  </section>
+
+  <!-- Demo -->
+  <section class="demo-section">
+    <div class="section-label">Upload Variants</div>
+
+    <!-- Dropzone -->
+    <div class="demo-stage">
+      <div class="demo-label">Drag & Drop Dropzone</div>
+      <div class="ym-dropzone" id="dropzone1"
+        ondragover="handleDragOver(event,'dropzone1')"
+        ondragleave="handleDragLeave(event,'dropzone1')"
+        ondrop="handleDrop(event,'dropzone1','fileList1')">
+        <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.xlsx"
+          onchange="handleFileSelect(this,'fileList1')">
+        <div class="dropzone-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 14V4M8 7l3-3 3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 16v2a1 1 0 001 1h14a1 1 0 001-1v-2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </div>
+        <div class="dropzone-title">Drop files here or click to browse</div>
+        <div class="dropzone-sub">Upload KYC documents, bank statements, and ID proofs</div>
+        <div class="dropzone-types">PDF, JPG, PNG, XLSX · Max 10 MB per file</div>
+      </div>
+      <div class="ym-file-list" id="fileList1">
+        <!-- Pre-populated examples -->
+        <div class="ym-file-item">
+          <div class="file-icon file-icon-pdf">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <div class="file-content">
+            <div class="file-name">PAN_Card_AK12345.pdf</div>
+            <div class="file-size">124 KB</div>
+            <div class="file-progress-wrap"><div class="file-progress-bar" style="width:100%"></div></div>
+          </div>
+          <div class="file-status">
+            <div class="file-status-icon file-status-ok">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+          <button class="file-remove-btn" aria-label="Remove file">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="ym-file-item">
+          <div class="file-icon file-icon-img">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.3"/><circle cx="5.5" cy="5.5" r="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M2 11l4-3 3 3 1.5-2 3 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="file-content">
+            <div class="file-name">Aadhaar_Front.jpg</div>
+            <div class="file-size">382 KB · Uploading…</div>
+            <div class="file-progress-wrap"><div class="file-progress-bar" style="width:62%" id="upload-progress"></div></div>
+          </div>
+          <div class="file-status">
+            <div class="file-status-icon file-status-loading">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.3" stroke-dasharray="3 3"/></svg>
+            </div>
+          </div>
+          <button class="file-remove-btn" aria-label="Remove file">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+        <div class="ym-file-item">
+          <div class="file-icon file-icon-xlsx">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 5h6M5 8h6M5 11h6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          </div>
+          <div class="file-content">
+            <div class="file-name">Bank_Statement_Q4_2025.xlsx</div>
+            <div class="file-size">1.4 MB · Failed</div>
+            <div class="file-progress-wrap"><div class="file-progress-bar" style="width:30%;background:#CD3546;"></div></div>
+          </div>
+          <div class="file-status">
+            <div class="file-status-icon file-status-error">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+          <button class="file-remove-btn" aria-label="Remove file">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Compact button upload -->
+    <div class="demo-stage">
+      <div class="demo-label">Compact button variant</div>
+      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <label class="ym-upload-btn">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 10V2M5 4l2-2 2 2M2 10v2h10v-2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Upload Document
+          <input type="file" accept=".pdf,.jpg,.png">
+        </label>
+        <span style="font-size:12px;color:var(--text-3);">No file chosen</span>
+      </div>
+    </div>
+
+    <!-- Error state -->
+    <div class="demo-stage">
+      <div class="demo-label">Error state</div>
+      <div class="ym-dropzone upload-error">
+        <input type="file" accept=".pdf,.jpg,.png">
+        <div class="dropzone-icon" style="background:rgba(205,53,70,.1);color:#CD3546;">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 7v5M11 14.5v.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="11" r="8.5" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <div class="dropzone-title" style="color:#CD3546;">File too large</div>
+        <div class="dropzone-sub">The file you dropped exceeds the 10 MB limit.</div>
+      </div>
+      <div class="upload-error-msg">Bank_Statement_Annex.pdf is 18.4 MB. Maximum allowed size is 10 MB.</div>
+    </div>
+  </section>
+
+  <!-- Spec -->
+  <section class="spec-section">
+    <div class="section-label">Anatomy &amp; Specs</div>
+    <div class="spec-grid">
+      <div class="anatomy-wrap">
+        <div class="anatomy-header">Anatomy</div>
+        <div class="anatomy-body">
+          <div class="anatomy-item">
+            <div class="anatomy-num">1</div>
+            <div class="anatomy-text"><strong>Dropzone</strong> — 2px dashed border, 14px radius, click or drag-drop</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">2</div>
+            <div class="anatomy-text"><strong>Hidden input</strong> — `position:absolute; opacity:0` over entire zone</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">3</div>
+            <div class="anatomy-text"><strong>Drag-over state</strong> — accent border, light accent bg via `.drag-over` class</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">4</div>
+            <div class="anatomy-text"><strong>File item</strong> — 36px icon tile, name + size, 3px progress bar</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">5</div>
+            <div class="anatomy-text"><strong>Status icon</strong> — 22px circle: green ✓, red ×, grey loading</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">6</div>
+            <div class="anatomy-text"><strong>Remove button</strong> — 24px, hover red × icon</div>
+          </div>
+          <div class="anatomy-item">
+            <div class="anatomy-num">7</div>
+            <div class="anatomy-text"><strong>Error state</strong> — `.upload-error` on dropzone, red icon + message below</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <table class="spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Dropzone border</td><td><span class="sv">2px dashed var(--border)</span></td></tr>
+            <tr><td>Dropzone radius</td><td><span class="sv">14px</span></td></tr>
+            <tr><td>Drag-over border</td><td><span class="sv">#4065C5</span></td></tr>
+            <tr><td>Drag-over bg</td><td><span class="sv">rgba(64,101,197,.04)</span></td></tr>
+            <tr><td>Icon tile</td><td><span class="sv">48px, 12px radius</span></td></tr>
+            <tr><td>File item radius</td><td><span class="sv">10px</span></td></tr>
+            <tr><td>Progress bar height</td><td><span class="sv">3px</span></td></tr>
+            <tr><td>Progress colour</td><td><span class="sv">#4065C5</span></td></tr>
+            <tr><td>Error progress</td><td><span class="sv">#CD3546</span></td></tr>
+            <tr><td>Status icon size</td><td><span class="sv">22px circle</span></td></tr>
+            <tr><td>Remove button</td><td><span class="sv">24px, 6px radius</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- Code -->
+  <section class="code-section">
+    <div class="section-label">Code</div>
+    <div class="code-tabs">
+      <div class="code-tab active" onclick="switchTab(this,'html-panel')">HTML</div>
+      <div class="code-tab" onclick="switchTab(this,'css-panel')">CSS</div>
+      <div class="code-tab" onclick="switchTab(this,'js-panel')">JS</div>
+    </div>
+
+    <div class="code-panel active" id="html-panel">
+      <button class="copy-btn" onclick="copyCode(this,'html-panel')">Copy</button>
+      <pre class="code-block"><span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-dropzone"</span>
+     <span class="attr">ondragover</span>=<span class="str">"handleDragOver(event)"</span>
+     <span class="attr">ondragleave</span>=<span class="str">"handleDragLeave(event)"</span>
+     <span class="attr">ondrop</span>=<span class="str">"handleDrop(event)"</span>
+     <span class="attr">role</span>=<span class="str">"button"</span>
+     <span class="attr">aria-label</span>=<span class="str">"Upload files"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="str">"file"</span>
+         <span class="attr">multiple</span>
+         <span class="attr">accept</span>=<span class="str">".pdf,.jpg,.png"</span>
+         <span class="attr">onchange</span>=<span class="str">"handleFileSelect(this)"</span>
+         <span class="attr">aria-hidden</span>=<span class="str">"true"</span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"dropzone-icon"</span><span class="tag">&gt;</span><span class="cmt">&lt;!-- SVG --&gt;</span><span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"dropzone-title"</span><span class="tag">&gt;</span>Drop files here or click to browse<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"dropzone-types"</span><span class="tag">&gt;</span>PDF, JPG, PNG · Max 10 MB<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- File list (rendered by JS) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-file-list"</span> <span class="attr">id</span>=<span class="str">"fileList"</span><span class="tag">&gt;&lt;/div&gt;</span>
+
+<span class="cmt">&lt;!-- Single file item template --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-file-item"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"file-icon file-icon-pdf"</span><span class="tag">&gt;</span><span class="cmt">&lt;!-- SVG --&gt;</span><span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"file-content"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"file-name"</span><span class="tag">&gt;</span>PAN_Card.pdf<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"file-size"</span><span class="tag">&gt;</span>124 KB<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"file-progress-wrap"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"file-progress-bar"</span> <span class="attr">style</span>=<span class="str">"width:65%"</span><span class="tag">&gt;&lt;/div&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;button</span> <span class="attr">class</span>=<span class="str">"file-remove-btn"</span> <span class="attr">aria-label</span>=<span class="str">"Remove file"</span><span class="tag">&gt;</span><span class="cmt">&lt;!-- × --&gt;</span><span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+    </div>
+
+    <div class="code-panel" id="css-panel">
+      <button class="copy-btn" onclick="copyCode(this,'css-panel')">Copy</button>
+      <pre class="code-block"><span class="fn">.ym-dropzone</span> {
+  <span class="attr">border</span>: <span class="num">2px</span> <span class="str">dashed</span> <span class="fn">var(--border)</span>;
+  <span class="attr">border-radius</span>: <span class="num">14px</span>;
+  <span class="attr">background</span>: <span class="fn">var(--bg-panel)</span>;
+  <span class="attr">padding</span>: <span class="num">36px 24px</span>;
+  <span class="attr">text-align</span>: <span class="str">center</span>;
+  <span class="attr">cursor</span>: <span class="str">pointer</span>;
+  <span class="attr">position</span>: <span class="str">relative</span>;
+  <span class="attr">transition</span>: <span class="str">border-color 160ms, background 160ms</span>;
+}
+<span class="fn">.ym-dropzone:hover,
+.ym-dropzone.drag-over</span> {
+  <span class="attr">border-color</span>: <span class="num">#4065C5</span>;
+  <span class="attr">background</span>: <span class="str">rgba(64,101,197,.04)</span>;
+}
+<span class="fn">.ym-dropzone input[type="file"]</span> {
+  <span class="attr">position</span>: <span class="str">absolute</span>; <span class="attr">inset</span>: <span class="num">0</span>;
+  <span class="attr">opacity</span>: <span class="num">0</span>; <span class="attr">cursor</span>: <span class="str">pointer</span>;
+}
+<span class="fn">.file-progress-bar</span> {
+  <span class="attr">height</span>: <span class="num">3px</span>; <span class="attr">background</span>: <span class="num">#4065C5</span>;
+  <span class="attr">border-radius</span>: <span class="num">2px</span>;
+  <span class="attr">transition</span>: <span class="str">width 300ms ease</span>;
+}</pre>
+    </div>
+
+    <div class="code-panel" id="js-panel">
+      <button class="copy-btn" onclick="copyCode(this,'js-panel')">Copy</button>
+      <pre class="code-block"><span class="kw">function</span> <span class="fn">handleDragOver</span>(e) {
+  e.preventDefault();
+  e.currentTarget.classList.add(<span class="str">'drag-over'</span>);
+}
+<span class="kw">function</span> <span class="fn">handleDragLeave</span>(e) {
+  e.currentTarget.classList.remove(<span class="str">'drag-over'</span>);
+}
+<span class="kw">function</span> <span class="fn">handleDrop</span>(e, listId) {
+  e.preventDefault();
+  e.currentTarget.classList.remove(<span class="str">'drag-over'</span>);
+  addFiles([...e.dataTransfer.files], listId);
+}
+<span class="kw">function</span> <span class="fn">handleFileSelect</span>(input, listId) {
+  addFiles([...input.files], listId);
+  input.value = <span class="str">''</span>; <span class="cmt">// reset so same file can be re-selected</span>
+}
+<span class="kw">function</span> <span class="fn">addFiles</span>(files, listId) {
+  <span class="kw">const</span> list = document.getElementById(listId);
+  files.forEach(file =&gt; {
+    <span class="kw">const</span> item = document.createElement(<span class="str">'div'</span>);
+    item.className = <span class="str">'ym-file-item'</span>;
+    item.innerHTML = <span class="str">`
+      &lt;div class="file-content"&gt;
+        &lt;div class="file-name"&gt;${file.name}&lt;/div&gt;
+        &lt;div class="file-size"&gt;${formatSize(file.size)}&lt;/div&gt;
+        &lt;div class="file-progress-wrap"&gt;
+          &lt;div class="file-progress-bar" style="width:0%"&gt;&lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;button class="file-remove-btn" onclick="this.closest('.ym-file-item').remove()"&gt;×&lt;/button&gt;`</span>;
+    list.appendChild(item);
+    <span class="cmt">// Simulate upload progress</span>
+    simulateUpload(item.querySelector(<span class="str">'.file-progress-bar'</span>));
+  });
+}
+<span class="kw">function</span> <span class="fn">formatSize</span>(bytes) {
+  <span class="kw">if</span> (bytes &lt; 1024) <span class="kw">return</span> bytes + <span class="str">' B'</span>;
+  <span class="kw">if</span> (bytes &lt; 1048576) <span class="kw">return</span> (bytes / 1024).toFixed(1) + <span class="str">' KB'</span>;
+  <span class="kw">return</span> (bytes / 1048576).toFixed(1) + <span class="str">' MB'</span>;
+}</pre>
+    </div>
+  </section>
+
+  <!-- Related -->
+  <section class="related-section">
+    <div class="section-label">Related Components</div>
+    <div class="related-grid">
+      <a href="input.html" class="related-card">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Input</div>
+      </a>
+      <a href="loader.html" class="related-card">
+        <div class="related-eyebrow">Feedback</div>
+        <div class="related-title">Loader</div>
+      </a>
+      <a href="notification.html" class="related-card">
+        <div class="related-eyebrow">Feedback</div>
+        <div class="related-title">Notification</div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ── Theme ── */
+function toggleTheme(){const h=document.documentElement,d=h.getAttribute('data-theme')==='dark',n=d?'light':'dark';h.setAttribute('data-theme',n);localStorage.setItem('ym-theme',n);document.getElementById('icon-moon').style.display=d?'block':'none';document.getElementById('icon-sun').style.display=d?'none':'block';}
+(function(){const s=localStorage.getItem('ym-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',s);if(s==='dark'){document.getElementById('icon-moon').style.display='none';document.getElementById('icon-sun').style.display='block';}})();
+/* ── Sidebar ── */
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+function handleDragOver(e, id) { e.preventDefault(); document.getElementById(id)?.classList.add('drag-over'); }
+function handleDragLeave(e, id) { document.getElementById(id)?.classList.remove('drag-over'); }
+function handleDrop(e, dzId, listId) {
+  e.preventDefault();
+  document.getElementById(dzId)?.classList.remove('drag-over');
+  addFiles([...e.dataTransfer.files], listId);
+}
+function handleFileSelect(input, listId) {
+  addFiles([...input.files], listId);
+  input.value = '';
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/1048576).toFixed(1) + ' MB';
+}
+
+function addFiles(files, listId) {
+  const list = document.getElementById(listId);
+  if (!list) return;
+  files.forEach(file => {
+    const item = document.createElement('div');
+    item.className = 'ym-file-item';
+    item.innerHTML = `
+      <div class="file-icon file-icon-pdf">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="3" y="1" width="10" height="14" rx="1.5" stroke="currentColor" stroke-width="1.3"/></svg>
+      </div>
+      <div class="file-content">
+        <div class="file-name">${file.name}</div>
+        <div class="file-size">${formatSize(file.size)}</div>
+        <div class="file-progress-wrap"><div class="file-progress-bar" style="width:0%"></div></div>
+      </div>
+      <button class="file-remove-btn" onclick="this.closest('.ym-file-item').remove()" aria-label="Remove file">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </button>`;
+    list.appendChild(item);
+    const bar = item.querySelector('.file-progress-bar');
+    let pct = 0;
+    const iv = setInterval(() => {
+      pct = Math.min(pct + Math.random() * 15, 100);
+      bar.style.width = pct + '%';
+      if (pct >= 100) clearInterval(iv);
+    }, 200);
+  });
+}
+
+function switchTab(tab, panelId) {
+  tab.closest('.code-section').querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+  tab.closest('.code-section').querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+  tab.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+function copyCode(btn, panelId) {
+  const text = document.getElementById(panelId).querySelector('.code-block').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!'; btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+</script>
+<script src="download.js"></script>
+<script id="__dl_data">
+var __mdContent  = "# Upload \u2014 Yubi Market Design System\n\n> **Version:** 1.0.0 | **Category:** Forms (28/54) | **Status:** Stable\n\n---\n\n## Overview\n\nFile upload component for KYC documents, bank statements, ITR files, and ID proofs. Includes a drag-and-drop dropzone with hidden input, a file list with per-file upload progress bars, success/error/loading status icons, and a compact button-style variant.\n\n---\n\n## Variants\n\n| Variant        | Description                                      |\n|----------------|--------------------------------------------------|\n| Dropzone       | Large clickable/draggable area, icon + text      |\n| Button         | Compact inline button wrapping hidden `<input>`  |\n| Error state    | `.upload-error` on dropzone, red border + icon   |\n\n---\n\n## Measurements\n\n| Property             | Value                              |\n|----------------------|------------------------------------|\n| Dropzone border      | 2px dashed var(--border)           |\n| Dropzone radius      | 14px                               |\n| Dropzone padding     | 36px 24px                          |\n| Drag-over border     | #4065C5                            |\n| Drag-over bg         | rgba(64,101,197,.04)               |\n| Icon tile            | 48px \u00d7 48px / 12px radius          |\n| File item radius     | 10px                               |\n| File item padding    | 10px 14px                          |\n| File icon tile       | 36px \u00d7 36px / 8px radius           |\n| Progress bar height  | 3px                                |\n| Progress bar radius  | 2px                                |\n| Progress colour      | #4065C5                            |\n| Error progress       | #CD3546                            |\n| Status icon size     | 22px circle                        |\n| Remove button        | 24px \u00d7 24px / 6px radius           |\n\n---\n\n## HTML\n\n```html\n<!-- Dropzone -->\n<div class=\"ym-dropzone\"\n     ondragover=\"handleDragOver(event)\"\n     ondragleave=\"handleDragLeave(event)\"\n     ondrop=\"handleDrop(event)\"\n     role=\"button\"\n     aria-label=\"Upload files \u2014 drag and drop or click to browse\">\n\n  <input type=\"file\" multiple accept=\".pdf,.jpg,.png\"\n         onchange=\"handleFileSelect(this)\"\n         aria-hidden=\"true\" tabindex=\"-1\" />\n\n  <div class=\"dropzone-icon\"><!-- SVG --></div>\n  <div class=\"dropzone-title\">Drop files here or click to browse</div>\n  <div class=\"dropzone-sub\">Upload KYC documents, bank statements</div>\n  <div class=\"dropzone-types\">PDF, JPG, PNG \u00b7 Max 10 MB per file</div>\n</div>\n\n<!-- File list -->\n<div class=\"ym-file-list\" id=\"fileList\">\n\n  <div class=\"ym-file-item\">\n    <div class=\"file-icon file-icon-pdf\"><!-- SVG --></div>\n    <div class=\"file-content\">\n      <div class=\"file-name\">PAN_Card.pdf</div>\n      <div class=\"file-size\">124 KB</div>\n      <div class=\"file-progress-wrap\">\n        <div class=\"file-progress-bar\" style=\"width:100%\"></div>\n      </div>\n    </div>\n    <div class=\"file-status\">\n      <div class=\"file-status-icon file-status-ok\"><!-- \u2713 SVG --></div>\n    </div>\n    <button class=\"file-remove-btn\" aria-label=\"Remove file\"><!-- \u00d7 SVG --></button>\n  </div>\n\n</div>\n\n<!-- Compact button -->\n<label class=\"ym-upload-btn\">\n  <!-- Upload SVG -->\n  Upload Document\n  <input type=\"file\" accept=\".pdf,.jpg,.png\">\n</label>\n```\n\n---\n\n## CSS\n\n```css\n.ym-dropzone {\n  border: 2px dashed var(--border); border-radius: 14px;\n  background: var(--bg-panel); padding: 36px 24px;\n  text-align: center; cursor: pointer; position: relative;\n  transition: border-color 160ms, background 160ms;\n}\n.ym-dropzone:hover,\n.ym-dropzone.drag-over { border-color: #4065C5; background: rgba(64,101,197,.04); }\n.ym-dropzone input[type=\"file\"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }\n\n.ym-file-list { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }\n.ym-file-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; }\n\n.file-progress-wrap { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-top: 5px; }\n.file-progress-bar { height: 100%; background: #4065C5; border-radius: 2px; transition: width 300ms ease; }\n\n.file-status-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }\n.file-status-ok    { background: rgba(63,144,43,.15); color: #3F902B; }\n.file-status-error { background: rgba(205,53,70,.15); color: #CD3546; }\n\n/* Error dropzone */\n.ym-dropzone.upload-error { border-color: #CD3546; background: rgba(205,53,70,.03); }\n```\n\n---\n\n## JavaScript\n\n```javascript\nfunction handleDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }\nfunction handleDragLeave(e) { e.currentTarget.classList.remove('drag-over'); }\nfunction handleDrop(e) {\n  e.preventDefault();\n  e.currentTarget.classList.remove('drag-over');\n  addFiles([...e.dataTransfer.files]);\n}\nfunction handleFileSelect(input) {\n  addFiles([...input.files]);\n  input.value = ''; // reset for re-selection of same file\n}\n\nfunction addFiles(files) {\n  const list = document.getElementById('fileList');\n  files.forEach(file => {\n    const item = createFileItem(file);\n    list.appendChild(item);\n    simulateUpload(item.querySelector('.file-progress-bar'));\n  });\n}\n\nfunction formatSize(bytes) {\n  if (bytes < 1024)    return bytes + ' B';\n  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';\n  return (bytes / 1048576).toFixed(1) + ' MB';\n}\n```\n\n---\n\n## Accessibility\n\n- Dropzone: `role=\"button\"` with `aria-label` describing accept types and action\n- Hidden file input: `aria-hidden=\"true\"` and `tabindex=\"-1\"` \u2014 the wrapper provides keyboard focus\n- File list items: `role=\"listitem\"` within `role=\"list\"` on `.ym-file-list`\n- Remove button: `aria-label=\"Remove [filename]\"` for screen reader clarity\n- Error state: `aria-describedby` on the dropzone pointing to the error message element\n- Upload progress: use `aria-valuenow` / `aria-valuemin` / `aria-valuemax` on progress bars, `aria-label=\"Uploading [filename]\"`\n\n---\n\n## Related Components\n\n- **Input** (`input.html`) \u2014 text inputs for file name or notes alongside upload\n- **Loader** (`loader.html`) \u2014 progress spinner for long uploads\n- **Notification** (`notification.html`) \u2014 upload success/failure banner\n\n---\n\n*Yubi Market Design System \u00b7 Upload v1.0.0 \u00b7 Internal Use*\n";
+var __mdFilename = "upload.md";
+</script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Border Radius — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* Download card */
+.dl-card { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon { width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-card-desc strong { color: var(--text-1); font-weight: 600; }
+.dl-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: background .15s, transform .1s; }
+.dl-btn:hover { background: #FD5E32; transform: translateY(-1px); }
+.dl-btn:active { transform: translateY(0); }
+.hero-with-dl { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 48px 56px 40px; display: grid; grid-template-columns: 1fr 320px; gap: 40px; align-items: center; }
+@media (max-width: 1100px) { .hero-with-dl { grid-template-columns: 1fr 280px; } }
+@media (max-width: 768px)  { .hero-with-dl { padding: 32px 20px 28px; grid-template-columns: 1fr; } }
+
+  .radius-scale-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    align-items: flex-end;
+  }
+  .radius-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .radius-box {
+    width: 56px;
+    height: 56px;
+    background: rgba(254,81,4,.10);
+    border: 2px solid #FE5104;
+    flex-shrink: 0;
+  }
+  .radius-card-token {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent-text);
+    text-align: center;
+  }
+  .radius-card-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-1);
+    text-align: center;
+  }
+
+  /* Guideline panel */
+  .guideline-cols {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 700px) {
+    .guideline-cols { grid-template-columns: 1fr; }
+  }
+  .guideline-col {
+    padding: 20px;
+    border-right: 1px solid var(--border);
+  }
+  .guideline-col:last-child { border-right: none; }
+  .guideline-col-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .guideline-dot-do {
+    width: 8px; height: 8px; border-radius: 99px; background: #3F902B; flex-shrink: 0;
+  }
+  .guideline-dot-dont {
+    width: 8px; height: 8px; border-radius: 99px; background: #CD3546; flex-shrink: 0;
+  }
+  .guideline-col-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+  }
+  .guideline-col-label.do { color: #3F902B; }
+  .guideline-col-label.dont { color: #CD3546; }
+  .guideline-rule {
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.6;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .guideline-rule:last-child { border-bottom: none; }
+  .guideline-rule-bullet {
+    width: 5px; height: 5px; border-radius: 99px; background: var(--border-strong); margin-top: 8px; flex-shrink: 0;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Border Radius</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item active" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="combobox.html">Combobox</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub" href="form-layout.html">Forms</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<main class="main">
+  <div class="hero-with-dl">
+    <div>
+      <span class="page-eyebrow">07 / Border Radius</span>
+      <h1 class="page-title">Border Radius</h1>
+      <p class="page-desc" style="margin-bottom:20px">A 9-step scale from sharp to pill. Each value maps to a specific class of component — approachable but precise.</p>
+      <div class="page-meta">
+        <span class="meta-chip">9 Steps</span>
+        <span class="meta-chip">0px → 9999px</span>
+        <span class="meta-chip">Semantic Mapping</span>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">yubi-market-radius.md</div>
+          <div class="dl-file-meta">Markdown · 9 radius steps · component defaults · CSS vars</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">Upload this file to <strong>Claude</strong> to instantly reference every radius token, component default, and usage guideline — no copy-pasting needed.</p>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" class="dl-btn" href="downloads/radius.md" download="yubi-market-radius.md">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download radius.md
+      </a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- Section 1: Radius Scale -->
+    <div class="section">
+      <span class="section-eyebrow">radius.scale</span>
+      <h2 class="section-title">Radius Scale</h2>
+      <p class="section-desc">Nine steps cover every component from sharp-edged data tables to perfectly circular avatars. Each box below renders the actual border-radius.</p>
+
+      <div class="panel">
+        <div class="panel-body">
+          <div class="radius-scale-row">
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 0px;"></div>
+              <div class="radius-card-token">radius.none</div>
+              <div class="radius-card-value">0px</div>
+            </div>
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 2px;"></div>
+              <div class="radius-card-token">radius.xs</div>
+              <div class="radius-card-value">2px</div>
+            </div>
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 4px;"></div>
+              <div class="radius-card-token">radius.sm</div>
+              <div class="radius-card-value">4px</div>
+            </div>
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 6px;"></div>
+              <div class="radius-card-token">radius.md</div>
+              <div class="radius-card-value">6px</div>
+            </div>
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 8px;"></div>
+              <div class="radius-card-token">radius.lg</div>
+              <div class="radius-card-value">8px</div>
+            </div>
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 12px;"></div>
+              <div class="radius-card-token">radius.xl</div>
+              <div class="radius-card-value">12px</div>
+            </div>
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 16px;"></div>
+              <div class="radius-card-token">radius.2xl</div>
+              <div class="radius-card-value">16px</div>
+            </div>
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 24px;"></div>
+              <div class="radius-card-token">radius.3xl</div>
+              <div class="radius-card-value">24px</div>
+            </div>
+
+            <div class="radius-card">
+              <div class="radius-box" style="border-radius: 9999px;"></div>
+              <div class="radius-card-token">radius.full</div>
+              <div class="radius-card-value">9999px</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Component Defaults -->
+    <div class="section">
+      <span class="section-eyebrow">radius.components</span>
+      <h2 class="section-title">Component Defaults</h2>
+      <p class="section-desc">Canonical radius assignments for each component. Overriding these requires explicit justification in the component spec.</p>
+
+      <div class="panel">
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Token</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Button</td>
+              <td><code>radius.md</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">6px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Input</td>
+              <td><code>radius.md</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">6px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Textarea</td>
+              <td><code>radius.md</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">6px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Select / Dropdown</td>
+              <td><code>radius.md</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">6px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Card (default)</td>
+              <td><code>radius.xl</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">12px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Card (compact)</td>
+              <td><code>radius.lg</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">8px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Badge / Tag</td>
+              <td><code>radius.sm</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">4px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Pill / Status chip</td>
+              <td><code>radius.full</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">9999px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Avatar</td>
+              <td><code>radius.full</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">9999px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Modal</td>
+              <td><code>radius.2xl</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">16px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Tooltip</td>
+              <td><code>radius.md</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">6px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Alert / Banner</td>
+              <td><code>radius.lg</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">8px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Popover</td>
+              <td><code>radius.xl</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">12px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Toggle switch (track)</td>
+              <td><code>radius.full</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">9999px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Progress bar</td>
+              <td><code>radius.full</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">9999px</td>
+            </tr>
+            <tr>
+              <td style="font-weight:500; color:var(--text-1);">Skeleton loader</td>
+              <td><code>radius.sm</code></td>
+              <td style="font-family:var(--mono); font-size:12px;">4px</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 3: Usage Guidelines -->
+    <div class="section">
+      <span class="section-eyebrow">radius.guidelines</span>
+      <h2 class="section-title">Usage Guidelines</h2>
+      <p class="section-desc">Dos and don'ts for applying radius tokens across components and compositions.</p>
+
+      <div class="panel">
+        <div class="guideline-cols">
+          <div class="guideline-col">
+            <div class="guideline-col-header">
+              <div class="guideline-dot-do"></div>
+              <span class="guideline-col-label do">Do</span>
+            </div>
+            <div class="guideline-rule">
+              <div class="guideline-rule-bullet"></div>
+              <span>Match child radius to parent minus the parent's padding. If a card uses <code>radius.xl</code> (12px) with 4px padding, inner children should use <code>radius.lg</code> (8px) to stay optically flush.</span>
+            </div>
+            <div class="guideline-rule">
+              <div class="guideline-rule-bullet"></div>
+              <span>Use <code>radius.full</code> (9999px) for pill shapes — status chips, tags, toggle tracks, and circular avatars. This future-proofs against size changes.</span>
+            </div>
+            <div class="guideline-rule">
+              <div class="guideline-rule-bullet"></div>
+              <span>Apply <code>radius.none</code> to elements that must bleed to a container edge — full-width images inside a card, inline code blocks in a table cell, edge-aligned banners.</span>
+            </div>
+            <div class="guideline-rule">
+              <div class="guideline-rule-bullet"></div>
+              <span>Keep radius consistent across the same component type. All primary buttons in an interface should share the same token — mixing <code>radius.sm</code> and <code>radius.xl</code> on buttons looks accidental.</span>
+            </div>
+          </div>
+          <div class="guideline-col">
+            <div class="guideline-col-header">
+              <div class="guideline-dot-dont"></div>
+              <span class="guideline-col-label dont">Don't</span>
+            </div>
+            <div class="guideline-rule">
+              <div class="guideline-rule-bullet"></div>
+              <span>Never use arbitrary radius values like <code>border-radius: 10px</code> or <code>border-radius: 5px 3px 7px 2px</code>. All values must map to a named scale token.</span>
+            </div>
+            <div class="guideline-rule">
+              <div class="guideline-rule-bullet"></div>
+              <span>Don't apply large radius tokens (<code>radius.2xl</code>, <code>radius.3xl</code>) to small interactive elements like buttons or inputs — it creates cartoonish proportions that feel inconsistent with the system's precision.</span>
+            </div>
+            <div class="guideline-rule">
+              <div class="guideline-rule-bullet"></div>
+              <span>Avoid mixing rounded and square styles within the same component group. If stat cards use <code>radius.xl</code>, summary cards in the same view should not use <code>radius.none</code>.</span>
+            </div>
+            <div class="guideline-rule">
+              <div class="guideline-rule-bullet"></div>
+              <span>Don't use radius as a differentiator for component variants unless the variant spec explicitly calls for it (e.g., a pill variant of an input). Radius variation should encode purpose, not decoration.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <span>Yubi Market Design System · Border Radius v1.0.0</span>
+    <span>07 / 08</span>
+  </footer>
+</main>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  document.getElementById('icon-moon').style.display = isDark ? 'block' : 'none';
+  document.getElementById('icon-sun').style.display  = isDark ? 'none'  : 'block';
+  localStorage.setItem('ym-theme', isDark ? 'light' : 'dark');
+}
+(function() {
+  const saved = localStorage.getItem('ym-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', saved);
+  if (saved === 'dark') {
+    document.getElementById('icon-moon').style.display = 'none';
+    document.getElementById('icon-sun').style.display  = 'block';
+  }
+})();
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('open'); document.getElementById('overlay').classList.toggle('show'); }
+function closeSidebar()  { document.getElementById('sidebar').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
+</script>
+<script src="download.js"></script>
+<script id="__dl_data">
+var __mdContent  = "# Yubi Market \u2014 Border Radius Token Reference for Claude\n\n> **How to use:** Upload this file to Claude and say \"Use the Yubi Market border radius system.\" Claude will reference these exact tokens, values, and rules for any UI work.\n\n**Version:** 1.0.0 | **Steps:** 9 | **Range:** 0px \u2192 9999px | **Token Prefix:** `radius.*`\n\n---\n\n## Rules Claude Must Follow\n\n1. **Tokens only** \u2014 never use arbitrary border-radius values. Always reference a named `radius.*` token.\n2. **No custom values** \u2014 if a value isn't in the scale, use the nearest token. Never invent values outside the scale.\n3. **Match child to parent** \u2014 child element radius = parent radius minus parent padding. If a card uses `radius.xl` (12px) with 4px padding, inner children should use `radius.lg` (8px).\n4. **Pills use radius.full** \u2014 status chips, tags, toggle tracks, avatar circles, and progress bars always use `radius.full` (9999px).\n5. **Sharp edges use radius.none** \u2014 elements that bleed to a container edge (full-width images, edge-aligned banners) use `radius.none`.\n6. **Consistency per component type** \u2014 all instances of the same component must share the same radius token. Never mix tokens on the same component type.\n7. **Buttons and inputs = radius.md** \u2014 the standard token for form controls is `radius.md` (6px).\n8. **Modals = radius.2xl** \u2014 modal dialogs use `radius.2xl` (16px).\n\n---\n\n## Full Scale\n\n| Token | Value | Use for |\n|---|---|---|\n| `radius.none` | 0px | Sharp edges, flush-to-container elements, full-bleed images |\n| `radius.xs` | 2px | Very subtle rounding, rarely used |\n| `radius.sm` | 4px | Badge / tag, skeleton loaders |\n| `radius.md` | 6px | Buttons, inputs, textareas, selects, tooltips |\n| `radius.lg` | 8px | Compact cards, alerts / banners |\n| `radius.xl` | 12px | Default cards, popovers |\n| `radius.2xl` | 16px | Modals / dialogs |\n| `radius.3xl` | 24px | Large decorative panels |\n| `radius.full` | 9999px | Pills, status chips, avatars, toggle tracks, progress bars |\n\n---\n\n## Component Defaults\n\n| Component | Token | Value |\n|---|---|---|\n| Button | `radius.md` | 6px |\n| Input | `radius.md` | 6px |\n| Textarea | `radius.md` | 6px |\n| Select / Dropdown | `radius.md` | 6px |\n| Tooltip | `radius.md` | 6px |\n| Card (default) | `radius.xl` | 12px |\n| Card (compact) | `radius.lg` | 8px |\n| Badge / Tag | `radius.sm` | 4px |\n| Pill / Status chip | `radius.full` | 9999px |\n| Avatar | `radius.full` | 9999px |\n| Modal | `radius.2xl` | 16px |\n| Alert / Banner | `radius.lg` | 8px |\n| Popover | `radius.xl` | 12px |\n| Toggle switch (track) | `radius.full` | 9999px |\n| Progress bar | `radius.full` | 9999px |\n| Skeleton loader | `radius.sm` | 4px |\n\n---\n\n## Usage Guidelines\n\n### Do\n- Match child radius to parent minus parent's padding for optical flush alignment.\n- Use `radius.full` (9999px) for pill shapes \u2014 this future-proofs against size changes.\n- Apply `radius.none` to elements that must bleed to a container edge.\n- Keep radius consistent across the same component type throughout the interface.\n\n### Don't\n- Mix `radius.sm` and `radius.xl` on the same component type \u2014 it looks accidental.\n- Use arbitrary values like `border-radius: 10px` or `border-radius: 50%` \u2014 always use tokens.\n- Apply a larger radius to a child than its parent \u2014 the child would visually overflow.\n\n---\n\n## CSS Custom Properties\n\n```css\n:root {\n  --radius-none: 0px;\n  --radius-xs:   2px;\n  --radius-sm:   4px;\n  --radius-md:   6px;\n  --radius-lg:   8px;\n  --radius-xl:   12px;\n  --radius-2xl:  16px;\n  --radius-3xl:  24px;\n  --radius-full: 9999px;\n}\n```\n\n---\n\n*Yubi Market Design System \u00b7 Border Radius Token Reference v1.0.0*\n*Upload this file to Claude for full border radius system context.*\n";
+var __mdFilename = "radius.md";
+</script>
+</body>
+</html>

@@ -43,7 +43,7 @@
   font-variant-numeric: tabular-nums;
 }
 .unit { font-size: 0.5em; color: #8a8f9a; margin-left: 2px; font-weight: 500; }
-.sub { margin-top: 6px; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.06em; color: #6b7079; }
+.sub { margin-top: 6px; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.06em; color: #767b87; }
 
 .viz { margin-top: auto; padding-top: 18px; }
 .svg { width: 100%; display: block; overflow: visible; }
