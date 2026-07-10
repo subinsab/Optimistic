@@ -1,0 +1,110 @@
+#!/usr/bin/env node
+/* ============================================================
+   Optimistic tokens -> CSS custom properties.
+   Emits app/tokens.generated.css. References are preserved as
+   var() so the chain stays live: change a core token and every
+   semantic/component value that points at it updates too.
+
+   Run:  node tokens/build-css.mjs
+   ============================================================ */
+import { readFileSync, writeFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+import { dirname, join } from "node:path";
+
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const read = (p) => JSON.parse(readFileSync(join(ROOT, p), "utf8"));
+
+/* a {a.b.c} reference -> the css var name it targets */
+function refToVar(ref) {
+  const p = ref.slice(1, -1).split(".");
+  const h = p[0];
+  if (h === "color") return "--color-" + p.slice(1).join("-");
+  if (h === "space") return "--space-" + p.slice(1).join("-");
+  if (h === "radius") return "--radius-" + p.slice(1).join("-");
+  if (h === "border-width") return "--border-width-" + p.slice(1).join("-");
+  if (h === "size") return "--size-" + p.slice(1).join("-");
+  if (h === "text-style") return "--type-" + p.slice(1).join("-");
+  if (h === "font") {
+    const s = p[1];
+    if (s === "family") return "--font-family-" + p[2];
+    if (s === "weight") return "--font-weight-" + p[2];
+    if (s === "size") return "--font-size-" + p[2];
+    if (s === "line-height") return "--font-lh-" + p[2];
+    if (s === "letter-spacing") return "--font-tracking-" + p[2];
+  }
+  return null;
+}
+/* a token value -> a css value (literal, or var() when it is a reference) */
+function cssValue(v) {
+  if (typeof v === "string" && v.startsWith("{")) {
+    const name = refToVar(v);
+    return name ? `var(${name})` : v;
+  }
+  return v;
+}
+
+/* walk a token tree, calling emit(varName, value) for every $value leaf */
+function walk(node, prefix, emit) {
+  for (const [k, v] of Object.entries(node)) {
+    if (k.startsWith("$")) continue;
+    const name = prefix ? `${prefix}-${k}` : k;
+    if (v && typeof v === "object" && v.$value !== undefined) emit(name, v.$value);
+    else if (v && typeof v === "object") walk(v, name, emit);
+  }
+}
+
+const lines = { root: [], light: [] };
+const push = (bucket, s) => lines[bucket].push(s);
+const decl = (bucket, name, value) => push(bucket, `  ${name}: ${value};`);
+
+/* ---- core colours (literal) ---- */
+push("root", "  /* core palette */");
+walk(read("tokens/primitive/color.json").color, "color", (n, v) => decl("root", `--${n}`, cssValue(v)));
+
+/* ---- primitive typography ---- */
+const T = read("tokens/primitive/typography.json").font;
+push("root", "\n  /* type primitives */");
+for (const [k, v] of Object.entries(T.family)) decl("root", `--font-family-${k}`, v.$value);
+for (const [k, v] of Object.entries(T.weight)) decl("root", `--font-weight-${k}`, v.$value);
+for (const [k, v] of Object.entries(T.size)) if (!k.startsWith("$")) decl("root", `--font-size-${k}`, v.$value);
+for (const [k, v] of Object.entries(T["line-height"])) if (!k.startsWith("$")) decl("root", `--font-lh-${k}`, v.$value);
+for (const [k, v] of Object.entries(T["letter-spacing"])) if (!k.startsWith("$")) decl("root", `--font-tracking-${k}`, v.$value);
+
+/* ---- dimensions ---- */
+const D = read("tokens/primitive/dimension.json");
+push("root", "\n  /* spacing */");
+walk(D.space, "space", (n, v) => decl("root", `--${n}`, v));
+push("root", "\n  /* radius */");
+walk(D.radius, "radius", (n, v) => decl("root", `--${n}`, v));
+push("root", "\n  /* border width */");
+walk(D["border-width"], "border-width", (n, v) => decl("root", `--${n}`, v));
+push("root", "\n  /* sizing */");
+walk(D.size, "size", (n, v) => decl("root", `--${n}`, v));
+
+/* ---- semantic typography (text-style) -> sub-vars + font shorthand ---- */
+push("root", "\n  /* type styles (semantic -> primitives) */");
+const TS = read("tokens/semantic/typography.json")["text-style"];
+for (const [name, ts] of Object.entries(TS)) {
+  if (name.startsWith("$")) continue;
+  const v = ts.$value;
+  decl("root", `--type-${name}-family`, cssValue(v.fontFamily));
+  decl("root", `--type-${name}-weight`, cssValue(v.fontWeight));
+  decl("root", `--type-${name}-size`, cssValue(v.fontSize));
+  decl("root", `--type-${name}-lh`, cssValue(v.lineHeight));
+  decl("root", `--type-${name}-tracking`, cssValue(v.letterSpacing));
+  decl("root", `--type-${name}`, `${cssValue(v.fontWeight)} ${cssValue(v.fontSize)}/${cssValue(v.lineHeight)} ${cssValue(v.fontFamily)}`);
+}
+
+/* ---- semantic colours (theme sets: dark = default under :root, light override) ---- */
+push("root", "\n  /* semantic colour roles (dark theme) */");
+walk(read("tokens/semantic/color-dark.json").color, "", (n, v) => decl("root", `--${n}`, cssValue(v)));
+walk(read("tokens/semantic/color-light.json").color, "", (n, v) => decl("light", `--${n}`, cssValue(v)));
+
+const out =
+  "/* AUTO-GENERATED by tokens/build-css.mjs. Do not edit by hand. */\n" +
+  ":root {\n" + lines.root.join("\n") + "\n}\n\n" +
+  '[data-theme="light"] {\n' + lines.light.join("\n") + "\n}\n";
+
+writeFileSync(join(ROOT, "app/tokens.generated.css"), out);
+const count = (out.match(/--[a-z0-9-]+:/g) || []).length;
+console.log(`wrote app/tokens.generated.css  (${count} custom properties)`);

@@ -1,7 +1,7 @@
 {
   "button": {
     "radius":        { "$value": "{radius.md}", "$type": "dimension" },
-    "font":          { "$value": "{text-style.label}", "$type": "typography" },
+    "font":          { "$value": "{text-style.body-2}", "$type": "typography" },
     "gap":           { "$value": "{space.100}", "$type": "dimension" },
     "size": {
       "sm": { "height": { "$value": "{size.control.sm}", "$type": "dimension" }, "padding-x": { "$value": "{space.150}", "$type": "dimension" }, "padding-y": { "$value": "{space.075}", "$type": "dimension" } },

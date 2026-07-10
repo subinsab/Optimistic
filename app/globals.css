@@ -4,6 +4,10 @@
    React, Angular, and plain HTML.
    ════════════════════════════════════════════════════════════════ */
 
+/* Generated from tokens/ by tokens/build-css.mjs — the single source of truth.
+   Colours, spacing, sizing and type all resolve from these. */
+@import "./tokens.generated.css";
+
 /* ── BRAND CONSTANTS (theme-independent) ───────────────────────── */
 :root {
   /* Dawn palette — optimism reads as first light */
@@ -55,18 +59,18 @@
 /* ── THEME: DARK (default — Armory-style immersive) ────────────── */
 :root,
 [data-theme="dark"] {
-  --bg:        #0A0A0B;
+  --bg:        #0B0B0B; /* matches the home sections for a seamless scroll */
   --bg-elev:   #131316;
   --bg-elev-2: #1A1A1F;
   --bg-hover:  #202027;
-  --bg-inset:  #0E0E10;
+  --bg-inset:  #0B0B0B;
 
   --text-1: #F4F4F5;
   --text-2: #A7A7B0;
   --text-3: #6E6E78;
   --text-4: #45454E;
 
-  --border:        rgba(255,255,255,.09);
+  --border:        #1E1E1E;
   --border-strong: rgba(255,255,255,.16);
 
   --accent:      var(--opt-coral);
@@ -168,8 +172,10 @@ button { font: inherit; cursor: pointer; }
 }
 @media (pointer: coarse) { .cursor-glow { display: none; } }
 
-/* Reveal-on-scroll base (toggled via .is-visible) */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out); }
+/* Reveal-on-scroll. Default VISIBLE so content (and colours) always render even
+   if JS never runs. The hidden start only applies once JS arms an off-screen section. */
+.reveal { opacity: 1; transform: none; transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out); }
+.reveal-armed:not(.is-visible) { opacity: 0; transform: translateY(18px); }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ── SITE-WIDE CONTENT UTILITIES (shared across routes) ────────── */

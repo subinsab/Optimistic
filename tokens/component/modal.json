@@ -9,14 +9,14 @@
     "gap-header":   { "$value": "{space.250}",            "$type": "dimension", "$description": "Header → body" },
     "gap-footer":   { "$value": "{space.300}",            "$type": "dimension", "$description": "Body → footer" },
     "footer-gap":   { "$value": "{space.200}",            "$type": "dimension", "$description": "Between footer actions" },
-    "title-font":   { "$value": "{text-style.heading-3}", "$type": "typography" },
+    "title-font":   { "$value": "{text-style.header-3}", "$type": "typography" },
     "title-text":   { "$value": "{color.text.primary}",   "$type": "color" },
     "body-font":    { "$value": "{text-style.body-2}",    "$type": "typography" },
     "body-text":    { "$value": "{color.text.secondary}", "$type": "color" },
     "width": {
-      "sm": { "$value": "480px", "$type": "dimension" },
-      "md": { "$value": "560px", "$type": "dimension" },
-      "lg": { "$value": "640px", "$type": "dimension" }
+      "sm": { "$value": "{size.modal.sm}", "$type": "dimension" },
+      "md": { "$value": "{size.modal.md}", "$type": "dimension" },
+      "lg": { "$value": "{size.modal.lg}", "$type": "dimension" }
     }
   }
 }

@@ -2,12 +2,13 @@ import Reveal from "./_components/Reveal";
 import ScrollRevealText from "./_components/ScrollRevealText";
 import CityBackground from "./_components/CityBackground";
 import {
-  IcoSecurity,
-  IcoAgent,
-  IcoCloud,
-  IcoData,
+  IcoTrust,
+  IcoReuse,
+  IcoAlign,
+  IcoLanguage,
 } from "./_components/IsoIcons";
 import ShipField from "./_components/ShipField";
+import DotField from "./_components/DotField";
 import WorkflowTimeline from "./_components/WorkflowTimeline";
 import SandboxStack from "./_components/SandboxStack";
 import DesignSystemCanvas from "./_components/DesignSystemCanvas";
@@ -16,7 +17,10 @@ import TokenGraph from "./_components/TokenGraph";
 import ParticleCloud from "./_components/ParticleCloud";
 import FaqSection from "./_components/FaqSection";
 import { getPublishedArticles, PLACEHOLDER } from "./_data/articles";
+import CoverArt, { fmtDate } from "./_components/CoverArt";
 import DotWordmark from "./_components/DotWordmark";
+import OptimisticHeart from "./_components/OptimisticHeart";
+import CtaButton from "./_components/CtaButton";
 import s from "./home.module.css";
 
 export default async function Home() {
@@ -33,21 +37,11 @@ export default async function Home() {
           <CityBackground />
         </div>
         <div className={s.cityVignette} aria-hidden="true" />
-
-        {/* engineering overlay */}
-        <div className={s.engLeft} aria-hidden="true">
-          {["SYS", "CORE", "ARCH", "UI", "DL"].map((l) => (
-            <span key={l} className={s.engItem}>{l}</span>
-          ))}
-        </div>
-        <div className={s.engRight} aria-hidden="true">
-          <span className={s.engItem}>GRID</span>
-          <span className={s.engVer}>v3.2</span>
-        </div>
+        <div className={s.cityGrain} aria-hidden="true" />
 
         <div className={s.cityOverlay}>
           <Reveal className={s.eyebrow}>
-            <span className={s.eyebrowHatch} /> OUR INFRASTRUCTURE
+            <span className={s.eyebrowHatch} /> WHAT DOES OPTIMISM LOOK LIKE, BUILT?
           </Reveal>
           <Reveal delay={120}>
             <h1 className={s.cityTitle}>
@@ -58,8 +52,8 @@ export default async function Home() {
           </Reveal>
           <Reveal delay={220}>
             <p className={s.cityLead}>
-              An AI-friendly design system engineered for production-ready
-              components, tokens, and architecture that scale with AI.
+              Design once, ship everywhere. A headless, atomic design system
+              at home in every stack, fluent in AI.
             </p>
           </Reveal>
         </div>
@@ -67,13 +61,12 @@ export default async function Home() {
         {/* bottom status bar */}
         <div className={s.engStatus} aria-hidden="true">
           <span className={s.engStatusLabel}>Infrastructure Layer</span>
-          <div className={s.engStat}><span className={s.engK}>Nodes</span><span className={s.engV}>12,048</span></div>
-          <div className={s.engStat}><span className={s.engK}>Components</span><span className={s.engV}>1,284</span></div>
           <div className={s.engStat}><span className={s.engK}>Tokens</span><span className={s.engV}>8,932</span></div>
+          <div className={s.engStat}><span className={s.engK}>Variables</span><span className={s.engV}>2,148</span></div>
+          <div className={s.engStat}><span className={s.engK}>Atoms</span><span className={s.engV}>246</span></div>
           <div className={s.engStat}><span className={s.engK}>Sync Status</span><span className={s.engLive}>● LIVE</span></div>
         </div>
 
-        <div className={s.scrollCue} aria-hidden="true"><span /> Scroll</div>
       </section>
 
       {/* ════════ SECTION B — neural-engines statement (scroll reveal) ════════ */}
@@ -81,23 +74,21 @@ export default async function Home() {
         <div className={s.bGrid} aria-hidden="true" />
         <div className={s.bGrain} aria-hidden="true" />
         <div className={s.bInner}>
-          <div className={s.bIcons} aria-hidden="true">
-            {ENGINE_ICONS.map((icon, i) => (
-              <span key={i} className={s.bIcon}>
-                {icon}
-              </span>
-            ))}
-          </div>
+          {/* a real like button, quietly running the optimistic update */}
+          <OptimisticHeart hint="click the heart" />
           <h2 className={s.bHeadline}>
-            <ScrollRevealText text="Integrate with the world’s most powerful neural engines. Seamlessly connect your custom data to GPT-4, Claude 3, and Perplexity for unmatched precision. Build agents that don’t just process, they understand." />
+            <ScrollRevealText text="Every interface has a moment of faith. The heart fills in before the server answers. Engineers call it an optimistic update. We named the whole system after it: render the finished thing first, let the proof catch up." />
           </h2>
           <p className={s.bSupport}>
-            Unlock the full potential of LLM-native workflows. Our infrastructure
-            ensures low latency and high-fidelity output for every request.
+            Faith needs a keeper. Ours is a headless core where every decision
+            is written once, as a token, and never paraphrased. What a designer
+            means is what the code says. Atoms grow into molecules, molecules
+            into products, and nothing falls out of step.
           </p>
           <p className={s.bSubtext}>
-            Token-driven, framework-agnostic, and built to scale — from first
-            prototype to production-grade deployment.
+            Bring any stack. React, Angular or plain HTML, the system plugs in
+            the same, and the AI beside you reads it as fluently as your
+            engineers do.
           </p>
         </div>
       </section>
@@ -109,6 +100,7 @@ export default async function Home() {
           {CARDS.map((c) => (
             <article key={c.title} className={s.cCell}>
               <div className={s.cIllo} aria-hidden="true">
+                <DotField />
                 {c.icon}
               </div>
               <h3 className={s.cTitle}>{c.title}</h3>
@@ -122,36 +114,49 @@ export default async function Home() {
       <section className={s.sectionD}>
         <div className={s.dGrain} aria-hidden="true" />
         <div className={s.dInner}>
-          <h2 className={s.dTitle}>Recently shipped</h2>
+          <div className={s.eEyebrow}>
+            <span className={s.eHatch} /> LIVE FROM THE PIPELINE
+          </div>
+          <h2 className={s.dTitle}>The system at work</h2>
+          <p className={s.dLead}>
+            Nothing here is a mockup. Three windows into the same machine,
+            running as you read.
+          </p>
           <div className={s.dGrid}>
             <article className={`${s.card} ${s.cardShip}`}>
-              <ShipField />
+              <div className={s.cardViz}><ShipField /></div>
               <div className={s.cardOverlay}>
+                <div className={s.cardKicker}>Tokens to release</div>
                 <div className={s.cardLabel}>
-                  Ship <span className={s.shipBadge}>26</span>
+                  Assembly <span className={s.shipBadge}>v3.2</span>
                 </div>
                 <p className={s.cardSub}>
-                  See what’s next in agentic infrastructure.
+                  Small decisions finding each other. Tokens become
+                  components, components become a release.
                 </p>
               </div>
             </article>
 
             <article className={`${s.card} ${s.cardWf}`}>
-              <WorkflowTimeline />
+              <div className={`${s.cardViz} ${s.cardVizPanel}`}><WorkflowTimeline /></div>
               <div className={s.cardOverlay}>
-                <div className={s.cardLabel}>Workflows</div>
+                <div className={s.cardKicker}>Design to code</div>
+                <div className={s.cardLabel}>Pipeline</div>
                 <p className={s.cardSub}>
-                  Pause for minutes or months, then resume from that exact point.
+                  One variable changes in design. The rest is automatic:
+                  tokens rebuild, code regenerates, the release ships itself.
                 </p>
               </div>
             </article>
 
             <article className={`${s.card} ${s.cardSb}`}>
-              <SandboxStack />
+              <div className={`${s.cardViz} ${s.cardVizPanel}`}><SandboxStack /></div>
               <div className={s.cardOverlay}>
-                <div className={s.cardLabel}>Sandbox</div>
+                <div className={s.cardKicker}>Browse and adopt</div>
+                <div className={s.cardLabel}>Library</div>
                 <p className={s.cardSub}>
-                  The safest way to run code you didn’t write.
+                  Everything here is already built and already alive. Open a
+                  component, try it, take it home.
                 </p>
               </div>
             </article>
@@ -164,12 +169,14 @@ export default async function Home() {
         <div className={s.eGrain} aria-hidden="true" />
         <div className={s.eHead}>
           <div className={s.eEyebrow}>
-            <span className={s.eHatch} /> HEADLESS DESIGN SYSTEM
+            <span className={s.eHatch} /> HOW IT WORKS
           </div>
-          <h2 className={s.eTitle}>Build design systems that scale.</h2>
+          <h2 className={s.eTitle}>How a decision travels.</h2>
           <p className={s.eLead}>
-            Design once. Synchronize Tokens, Variables, Components, Themes and
-            Code across every product — automatically.
+            Every decision starts life as a Figma Variable. Token Studio
+            carries it into the headless core, and from there the structure is
+            atomic: tokens form components, components form products. Trace
+            any line below and it ends in shipped software.
           </p>
         </div>
         <div className={s.eCanvas}>
@@ -248,6 +255,7 @@ export default async function Home() {
 
       {/* ════════ SECTION H — split: intelligence cloud + principles ════════ */}
       <section className={s.sectionH}>
+        <div className={`${s.eGrain} ${s.hGrain}`} aria-hidden="true" />
         <div className={s.hLeft}>
           <ParticleCloud />
         </div>
@@ -289,9 +297,9 @@ export default async function Home() {
               Design Tokens, Figma Variables, governance, platform support,
               security, and licensing.
             </p>
-            <a className={s.iBtn} href="#contact">
-              Contact Us <span aria-hidden="true">→</span>
-            </a>
+            <div className={s.btnRow}>
+              <CtaButton href="/contact">Contact Us</CtaButton>
+            </div>
           </div>
           <div className={s.iRight}>
             <FaqSection />
@@ -323,7 +331,7 @@ export default async function Home() {
               href={featured.placeholder ? undefined : `/blog/${featured.slug}`}
             >
               <div className={s.jCover}>
-                <CoverArt seed={featured.seed} />
+                <CoverArt seed={featured.seed} className={s.coverImg} />
                 <div className={s.jOverlay} aria-hidden="true" />
                 <span className={s.jCat}>{featured.category}</span>
                 <h3 className={s.jFeatTitle}>{featured.title}</h3>
@@ -343,7 +351,7 @@ export default async function Home() {
                   href={a.placeholder ? undefined : `/blog/${a.slug}`}
                 >
                   <div className={s.jThumb}>
-                    <CoverArt seed={a.seed + i} />
+                    <CoverArt seed={a.seed + i} className={s.coverImg} />
                   </div>
                   <div className={s.jSecBody}>
                     <span className={s.jSecCat}>{a.category}</span>
@@ -362,9 +370,7 @@ export default async function Home() {
                   accessibility guides, governance patterns, and design system
                   updates.
                 </p>
-                <a className={s.jCtaBtn} href="/blog">
-                  View All Articles <span aria-hidden="true">→</span>
-                </a>
+                <CtaButton href="/blog">View All Articles</CtaButton>
               </div>
             </div>
           </div>
@@ -383,42 +389,6 @@ export default async function Home() {
         <p className={s.kCaption}>Build interfaces, optimistically.</p>
       </section>
     </main>
-  );
-}
-
-/* Section J — procedural monochrome cover art + date helper */
-const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
-function fmtDate(iso: string) {
-  if (!iso) return "—";
-  const [y, m, d] = iso.split("-").map(Number);
-  return `${MONTHS[m - 1]} ${d}, ${y}`;
-}
-function CoverArt({ seed }: { seed: number }) {
-  const rnd = (n: number) => {
-    const x = Math.sin(seed * 99.7 + n * 37.13) * 10000;
-    return x - Math.floor(x);
-  };
-  const f = (v: number) => Math.round(v * 10) / 10;
-  const ell = [0, 1, 2, 3].map((i) => ({
-    cx: f(40 + rnd(i) * 320),
-    cy: f(20 + rnd(i + 9) * 220),
-    rx: f(50 + rnd(i + 3) * 150),
-    ry: f(40 + rnd(i + 5) * 120),
-    o: (0.05 + rnd(i + 7) * 0.1).toFixed(3),
-  }));
-  return (
-    <svg className={s.coverImg} viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="400" height="260" fill="#0c0c0d" />
-      <defs>
-        <pattern id={`dm${seed}`} width="9" height="9" patternUnits="userSpaceOnUse">
-          <circle cx="1" cy="1" r="0.8" fill="rgba(255,255,255,0.05)" />
-        </pattern>
-      </defs>
-      <rect width="400" height="260" fill={`url(#dm${seed})`} />
-      {ell.map((e, i) => (
-        <ellipse key={i} cx={e.cx} cy={e.cy} rx={e.rx} ry={e.ry} fill="none" stroke={`rgba(220,224,230,${e.o})`} strokeWidth="1" />
-      ))}
-    </svg>
   );
 }
 
@@ -518,48 +488,27 @@ const TIMELINE: { year: string; title: string; phase: string; progress: number; 
   },
 ];
 
-/* Section B — abstract monochrome engine glyphs (original, not brand logos) */
-const ENGINE_ICONS: React.ReactNode[] = [
-  // slashed lens
-  <svg key="a" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round">
-    <circle cx="12" cy="12" r="7" />
-    <line x1="8" y1="16" x2="16" y2="8" />
-  </svg>,
-  // four-point sparkle
-  <svg key="b" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <path d="M12 3 13.7 10.3 21 12 13.7 13.7 12 21 10.3 13.7 3 12 10.3 10.3Z" />
-  </svg>,
-  // radial node
-  <svg key="c" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round">
-    <circle cx="12" cy="12" r="2.4" />
-    <path d="M12 3.5v4M12 16.5v4M3.5 12h4M16.5 12h4M6 6l2.8 2.8M15.2 15.2 18 18M18 6l-2.8 2.8M8.8 15.2 6 18" />
-  </svg>,
-  // six-spoke asterisk
-  <svg key="d" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round">
-    <path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7" />
-  </svg>,
-];
 
 /* Section C — CAD-blueprint feature grid */
 const CARDS: { title: string; copy: string; icon: React.ReactNode }[] = [
   {
-    title: "Secure Guard",
-    copy: "We fortify your AI deployments with robust security protocols. Our team ensures every model adheres to strict data privacy standards.",
-    icon: <IcoSecurity />,
+    title: "Trust Is a Component",
+    copy: "An interface is a promise that no one gets left outside. We keep it in the smallest places: contrast that holds, focus that lands, semantics that speak. Accessibility is not a review here. It is a material.",
+    icon: <IcoTrust />,
   },
   {
-    title: "Agent Build",
-    copy: "Tailored AI agents designed for your specific needs. We develop custom logic and workflows that integrate deeply with your existing tools.",
-    icon: <IcoAgent />,
+    title: "The Hundredth Button",
+    copy: "Somewhere today, a team is building its hundredth button. Those years belong to the product instead. Take the finished piece: install it, theme it, ship it, in React, Angular or plain HTML.",
+    icon: <IcoReuse />,
   },
   {
-    title: "Cloud Scale",
-    copy: "Infrastructure optimization for high-traffic AI apps. We ensure your systems remain fast, responsive, and ready for any level of demand.",
-    icon: <IcoCloud />,
+    title: "Entropy Is Optional",
+    copy: "Products drift apart the way handwriting does, slowly and then obviously. One token layer holds the line. A thousand screens move as one, no matter how many brands and platforms you add.",
+    icon: <IcoAlign />,
   },
   {
-    title: "Data Mining",
-    copy: "Transform raw information into actionable intelligence. We build the pipelines and vector stores that power your organization’s future.",
-    icon: <IcoData />,
+    title: "One Language for All",
+    copy: "Design says one thing and code hears another. We removed the translation. A decision lives once and reads the same to designers, engineers and the AI building beside them.",
+    icon: <IcoLanguage />,
   },
 ];

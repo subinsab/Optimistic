@@ -39,7 +39,7 @@ export default function Footer() {
         <div className={styles.brandCol}>
           <Logo />
           <p className={styles.tagline}>
-            A design system built for what&apos;s next — AI-friendly,
+            A design system built for what&apos;s next. AI-friendly,
             plug-and-play, and ready to ship.
           </p>
         </div>

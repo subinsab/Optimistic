@@ -1,0 +1,61 @@
+/* mirrors the nav CTA (SiteNav.module.css .cta family) */
+.cta {
+  appearance: none;
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-body);
+  font-weight: 500;
+  white-space: nowrap;
+  color: #121212;
+  background: #e9e9e7;
+  height: 40px;
+  padding: 0 8px 0 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: transform var(--dur-2) var(--ease-out), background var(--dur-2);
+}
+.cta:hover { transform: translateY(-1px); background: #fff; }
+.ctaArrow {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 6px;
+  background: #121212;
+  color: #f4f4f5;
+  transition: background 0.3s var(--ease-out), border-radius 0.3s var(--ease-out);
+}
+.pxArrow { display: block; }
+.pxArrow rect {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.cta:hover .ctaArrow {
+  background: var(--accent);
+  border-radius: 10px;
+}
+.cta:active .ctaArrow { transform: scale(0.86); }
+@media (prefers-reduced-motion: no-preference) {
+  .cta:hover .pxArrow rect {
+    animation: pxScatter 0.9s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .cta:hover .ctaArrow { animation: chipPop 0.45s var(--ease-out); }
+}
+@keyframes pxScatter {
+  0%, 100% { transform: translate(0, 0); opacity: 1; }
+  35% { transform: translate(var(--dx, 0), var(--dy, 0)); opacity: 0.35; }
+  70% { transform: translate(0, 0); opacity: 1; }
+}
+@keyframes chipPop {
+  0% { transform: scale(1) rotate(0deg); }
+  40% { transform: scale(1.18) rotate(-10deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}

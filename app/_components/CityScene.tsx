@@ -5,7 +5,9 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 /* ════════════════════════════════════════════════════════════════
-   Live isometric voxel city — colored, non-square (wider in X)
+   Live voxel city — monochrome architectural miniature.
+   One-point perspective down the central avenue; Empire-style
+   landmark dead center, skyline height falls off radially.
    ════════════════════════════════════════════════════════════════ */
 const GZ = 14;                       // rows (depth, z)
 const GX = Math.round(GZ * 1.3);     // columns (width, x) — ~30% wider
@@ -18,15 +20,17 @@ const PLOTSZ = Array.from({ length: GZ }, (_, i) => (i + 0.5 - GZ / 2) * P);
 const WRAPX = HALFX + 6, WRAPZ = HALFZ + 6;
 const SPANX = GX * P + P, SPANZ = GZ * P + P;
 
-/* monochrome architectural palette — grayscale only (orange kept as brand accent) */
+/* monochrome architectural palette — grayscale only; warmth lives in
+   the sparse lit windows + street lamps, not in surfaces */
 const C = {
-  base: "#3b3d42", baseSide: "#25262a", road: "#191a1d", line: "#b6b8bc",
-  cream: "#d4d6da", white: "#e6e8ea", paleBlue: "#a4a6ac", slate: "#2a2c31", beige: "#bec0c4",
-  glass: "#17181c", glassBlue: "#2b2d32", roof: "#7c7e85", entrance: "#8a8c92",
-  leaf: "#54585e", leaf2: "#474b51", trunk: "#3a3c40", grass: "#3d4045", path: "#7c7e85", skin: "#9a9ca2",
+  base: "#2b2d31", baseSide: "#1c1d21", road: "#17181c", line: "#8f9298",
+  cream: "#47494e", white: "#55575c", paleBlue: "#3a3c41", slate: "#232529", beige: "#3f4146",
+  glass: "#131418", glassBlue: "#1f2126", roof: "#4f5157", entrance: "#5a5c62",
+  leaf: "#383b40", leaf2: "#2f3237", trunk: "#2b2d31", grass: "#2e3034", path: "#4f5157", skin: "#9a9ca2",
 };
-// building crowns — mostly grayscale, one subtle orange accent
+// building crowns / people tops — grayscale, one muted warm accent
 const TOPS = ["#c47a2e", "#7a7d84", "#8a8d94", "#5c5f65", "#6a6d73", "#9a9da3"];
+const LIT = "#ffdcae"; // warm lit-window tint (multiplied by facade color)
 
 const dummy = new THREE.Object3D();
 const tmp = new THREE.Color();
@@ -41,27 +45,55 @@ function signal(t: number) {
   return { x: false, z: false, amber: true };
 }
 
-function makeGridTex() {
-  const cv = document.createElement("canvas"); cv.width = 32; cv.height = 32;
-  const x = cv.getContext("2d")!;
-  x.fillStyle = "#ffffff"; x.fillRect(0, 0, 32, 32);
-  x.fillStyle = "#1b1c1f"; x.fillRect(6, 6, 20, 20);
-  x.strokeStyle = "#b9bcc4"; x.lineWidth = 2; x.strokeRect(6, 6, 20, 20);
-  const t = new THREE.CanvasTexture(cv);
+function texSettings(t: THREE.CanvasTexture) {
   t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
   t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.generateMipmaps = false;
   return t;
 }
+
+/* scattered-window facade tile: small windows at random cells with
+   positional jitter — irregular, not a uniform grid. White bg — the
+   texture multiplies with the (light grey) facade color. */
+function makeGridTex(cols = 6, rows = 9, litP = 0.04, fillP = 0.34) {
+  const cs = 12;
+  const cv = document.createElement("canvas"); cv.width = cols * cs; cv.height = rows * cs;
+  const x = cv.getContext("2d")!;
+  x.fillStyle = "#ffffff"; x.fillRect(0, 0, cv.width, cv.height);
+  for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
+    if (Math.random() > fillP) continue;
+    const w = 4 + ((Math.random() * 2) | 0), h = 4 + ((Math.random() * 2) | 0);
+    const px = i * cs + 1 + Math.random() * (cs - w - 2);
+    const py = j * cs + 1 + Math.random() * (cs - h - 2);
+    x.fillStyle = Math.random() < litP ? LIT : "#1b1c1f";
+    x.fillRect(px | 0, py | 0, w, h);
+  }
+  return texSettings(new THREE.CanvasTexture(cv));
+}
+/* vertical pilaster strip for generic towers */
 function makeStripTex() {
   const cv = document.createElement("canvas"); cv.width = 32; cv.height = 8;
   const x = cv.getContext("2d")!;
   x.fillStyle = "#ffffff"; x.fillRect(0, 0, 32, 8);
-  x.fillStyle = "#1b1c1f"; x.fillRect(8, 0, 16, 8);
+  x.fillStyle = "#16181c"; x.fillRect(8, 0, 16, 8);
   x.strokeStyle = "#b9bcc4"; x.lineWidth = 2; x.strokeRect(8, 0, 16, 8);
-  const t = new THREE.CanvasTexture(cv);
-  t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping;
-  t.magFilter = THREE.NearestFilter; t.minFilter = THREE.NearestFilter; t.generateMipmaps = false;
-  return t;
+  return texSettings(new THREE.CanvasTexture(cv));
+}
+/* pre-baked dark-tower facade (own colors, material stays white — lit
+   windows survive on dark bodies where a multiply map would crush them) */
+function makeDarkTowerTex(cols = 5, rows = 8, litP = 0.03, fillP = 0.34) {
+  const cs = 12;
+  const cv = document.createElement("canvas"); cv.width = cols * cs; cv.height = rows * cs;
+  const x = cv.getContext("2d")!;
+  x.fillStyle = "#26282e"; x.fillRect(0, 0, cv.width, cv.height);
+  for (let i = 0; i < cols; i++) for (let j = 0; j < rows; j++) {
+    if (Math.random() > fillP) continue;
+    const w = 4 + ((Math.random() * 2) | 0), h = 4 + ((Math.random() * 2) | 0);
+    const px = i * cs + 1 + Math.random() * (cs - w - 2);
+    const py = j * cs + 1 + Math.random() * (cs - h - 2);
+    x.fillStyle = Math.random() < litP ? "#b8713a" : "#15171b";
+    x.fillRect(px | 0, py | 0, w, h);
+  }
+  return texSettings(new THREE.CanvasTexture(cv));
 }
 
 function box(args: [number, number, number], pos: [number, number, number], color: string, key?: number) {
@@ -112,7 +144,7 @@ function Ground() {
   return (
     <group>
       {/* huge ground that fills the whole viewport floor (fog fades it to bg) */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.12, 0]}><planeGeometry args={[5000, 5000]} /><meshStandardMaterial color="#15161b" roughness={1} /></mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.12, 0]}><planeGeometry args={[5000, 5000]} /><meshStandardMaterial color="#0e0f12" roughness={1} /></mesh>
       <mesh position={[0, -2, 0]} receiveShadow><boxGeometry args={[SPANX, 4, SPANZ]} /><meshStandardMaterial color={C.base} roughness={1} /></mesh>
       <mesh position={[0, -4.2, 0]}><boxGeometry args={[SPANX - 2, 0.6, SPANZ - 2]} /><meshStandardMaterial color={C.baseSide} roughness={1} /></mesh>
       {ROADSZ.map((c, i) => (
@@ -128,8 +160,19 @@ function Ground() {
 }
 
 /* ── building types ───────────────────────────────────────────── */
+/* windows on the 4 side faces only — roof (+y) and underside (-y) stay plain
+   (BoxGeometry material order: 0 +x, 1 -x, 2 +y, 3 -y, 4 +z, 5 -z) */
 function facade(args: [number, number, number], pos: [number, number, number], color: string, tex: THREE.Texture, key?: number) {
-  return <mesh key={key} position={pos} castShadow receiveShadow><boxGeometry args={args} /><meshStandardMaterial map={tex} color={color} roughness={0.88} metalness={0.04} /></mesh>;
+  return (
+    <mesh key={key} position={pos} castShadow receiveShadow>
+      <boxGeometry args={args} />
+      {[0, 1, 4, 5].map((f) => (
+        <meshStandardMaterial key={f} attach={`material-${f}`} map={tex} color={color} roughness={0.88} metalness={0.04} />
+      ))}
+      <meshStandardMaterial attach="material-2" color={color} roughness={0.9} metalness={0.04} />
+      <meshStandardMaterial attach="material-3" color={color} roughness={0.9} metalness={0.04} />
+    </mesh>
+  );
 }
 const entranceParts = (fw: number, key = 80) => [
   box([2.6, 2.4, 1.2], [0, 1.2, fw / 2 + 0.2], C.entrance, key),
@@ -153,8 +196,8 @@ function bShop(b: Bld) {
   const uw = (b.fw + 1.6) / n;
   const dep = Math.min(uw * 0.95, 3.8);
   const h = rand(2.8, 3.6);
-  const bodyCols = [C.cream, C.white, C.beige, "#c9ccd2", C.paleBlue];
-  const awns = ["#6a6d73", "#5a5d63", "#7c7f86", "#8a8d94"];
+  const bodyCols = [C.cream, C.white, C.beige, "#50525a", C.paleBlue];
+  const awns = ["#45484e", "#3c3f45", "#4f5258", "#565960"];
   const out: React.ReactNode[] = [];
   for (let u = 0; u < n; u++) {
     const cx = (u - (n - 1) / 2) * uw, col = pick(bodyCols), awn = pick(awns), fz = dep / 2, key = u * 20;
@@ -162,33 +205,76 @@ function bShop(b: Bld) {
     out.push(box([uw * 0.86, 0.6, 0.12], [cx, h * 0.78, fz + 0.05], "#2a2c31", key + 1));
     out.push(box([uw * 0.3, 0.55, uw * 0.3], [cx + uw * 0.16, h + 0.28, -dep * 0.16], C.roof, key + 2));
     const sn = 4;
-    for (let k = 0; k < sn; k++) { const w = (uw * 0.86) / sn; out.push(box([w, 0.24, 0.9], [cx + (k - (sn - 1) / 2) * w, h * 0.6, fz + 0.45], k % 2 ? "#d4d6da" : awn, key + 3 + k)); }
+    for (let k = 0; k < sn; k++) { const w = (uw * 0.86) / sn; out.push(box([w, 0.24, 0.9], [cx + (k - (sn - 1) / 2) * w, h * 0.6, fz + 0.45], k % 2 ? "#6f7278" : awn, key + 3 + k)); }
     out.push(box([0.7, 0.5, 0.55], [cx - uw * 0.2, 0.26, fz + 0.35], pick(awns), key + 9));
   }
   return out;
 }
 function BuildingsVaried({ list }: { list: Bld[] }) {
-  const grid = useMemo(() => { const t = makeGridTex(); t.repeat.set(3, 5); return t; }, []);
+  // a few grid variants so the sparse lit windows don't repeat building to building
+  const grids = useMemo(() => [0, 1, 2].map(() => { const t = makeGridTex(); t.repeat.set(1, 1); return t; }), []);
   const strip = useMemo(() => { const t = makeStripTex(); t.repeat.set(6, 1); return t; }, []);
   const nodes = useMemo(() => list.map((b, i) => {
+    const grid = grids[i % grids.length];
     const parts = b.type === "tower" ? bTower(b, strip) : b.type === "office" ? bOffice(b, grid) : b.type === "shop" ? bShop(b) : bSmall(b, grid);
     return <group key={i} position={[b.x, 0, b.z]} rotation={[0, b.rot, 0]}>{parts}</group>;
-  }), [list, grid, strip]);
+  }), [list, grids, strip]);
   return <>{nodes}</>;
 }
 
 /* ── skyline landmarks ────────────────────────────────────────── */
+/* Empire-style centered landmark: setback tiers + crown + lit spire */
 function Landmark({ x, z }: { x: number; z: number }) {
+  const tex = useMemo(() => { const t = makeGridTex(6, 10, 0.05); t.repeat.set(1, 1); return t; }, []);
+  // [width, height] per tier, stacked
+  const tiers: [number, number][] = [[17, 16], [14, 13], [11, 14], [8, 12], [5.5, 8]];
+  let y = 0;
+  const stack = tiers.map(([w, h], i) => {
+    const el = facade([w, h, w], [0, y + h / 2, 0], C.white, tex, i);
+    y += h;
+    return el;
+  });
   return (
     <group position={[x, 0, z]}>
-      {box([13, 22, 13], [0, 11, 0], C.cream)}{box([10, 14, 10], [0, 25, 0], C.cream)}{box([7, 12, 7], [0, 36, 0], C.cream)}
-      {box([3.4, 5, 3.4], [0, 44, 0], C.cream)}{box([0.5, 6, 0.5], [0, 49, 0], C.roof)}
-      {box([13.05, 18, 2.2], [0, 11, 6.2], C.glassBlue)}{box([2.2, 18, 13.05], [6.2, 11, 0], C.glassBlue)}
+      {/* plaza base (tower straddles the central avenue) */}
+      {box([21, 1.2, 21], [0, 0.6, 0], C.baseSide, 90)}
+      {stack}
+      {/* crown + spire with warm beacon */}
+      {box([3.6, 4, 3.6], [0, y + 2, 0], C.white, 60)}
+      {box([1.8, 2.6, 1.8], [0, y + 5.3, 0], C.roof, 61)}
+      {box([0.8, 9, 0.8], [0, y + 11.1, 0], C.roof, 62)}
+      <mesh position={[0, y + 15.9, 0]}>
+        <boxGeometry args={[0.9, 0.9, 0.9]} />
+        <meshStandardMaterial color="#ffcf8a" emissive="#ffcf8a" emissiveIntensity={1.4} />
+      </mesh>
     </group>
   );
 }
+/* dark flanking tower: baked lit-window facade + setback top */
 function SlateTower({ x, z, h = 34 }: { x: number; z: number; h?: number }) {
-  return (<group position={[x, 0, z]}>{box([10, h, 10], [0, h / 2, 0], C.slate)}{box([3.6, 1.6, 3.6], [0, h + 0.8, 0], C.roof)}</group>);
+  const tex = useMemo(() => { const t = makeDarkTowerTex(); t.repeat.set(1, Math.max(1, Math.round(h / 16))); return t; }, [h]);
+  const w = 8.5, tw = 6, th = h * 0.2;
+  return (
+    <group position={[x, 0, z]}>
+      <mesh castShadow receiveShadow position={[0, h / 2, 0]}>
+        <boxGeometry args={[w, h, w]} />
+        {[0, 1, 4, 5].map((f) => (
+          <meshStandardMaterial key={f} attach={`material-${f}`} map={tex} color="#ffffff" roughness={0.88} metalness={0.04} />
+        ))}
+        <meshStandardMaterial attach="material-2" color="#2c2e34" roughness={0.9} metalness={0.04} />
+        <meshStandardMaterial attach="material-3" color="#2c2e34" roughness={0.9} metalness={0.04} />
+      </mesh>
+      <mesh castShadow position={[0, h + th / 2, 0]}>
+        <boxGeometry args={[tw, th, tw]} />
+        {[0, 1, 4, 5].map((f) => (
+          <meshStandardMaterial key={f} attach={`material-${f}`} map={tex} color="#ffffff" roughness={0.88} metalness={0.04} />
+        ))}
+        <meshStandardMaterial attach="material-2" color="#2c2e34" roughness={0.9} metalness={0.04} />
+        <meshStandardMaterial attach="material-3" color="#2c2e34" roughness={0.9} metalness={0.04} />
+      </mesh>
+      {box([3.6, 1.6, 3.6], [0, h + th + 0.8, 0], C.roof)}
+    </group>
+  );
 }
 
 /* ── park ─────────────────────────────────────────────────────── */
@@ -207,19 +293,6 @@ function Park({ x, z }: { x: number; z: number }) {
       <mesh position={[x, 4, z]} castShadow><boxGeometry args={[1.6, 7, 1.6]} /><meshStandardMaterial color={C.white} roughness={0.85} /></mesh>
       <mesh position={[x, 7.8, z]} castShadow><boxGeometry args={[0.7, 1.2, 0.7]} /><meshStandardMaterial color={C.white} roughness={0.85} /></mesh>
       <InstGroup objects={hedges} parts={[{ size: [2, 0.8, 1], off: [0, 0, 0], color: C.leaf2 }]} />
-    </group>
-  );
-}
-
-/* ── flyover ──────────────────────────────────────────────────── */
-const FLYZ = ROADSZ[ROADSZ.length - 2];
-const FLYY = 7.6;
-function Flyover() {
-  const pillars = useMemo<Obj[]>(() => { const o: Obj[] = []; for (let a = -HALFX + 10; a < HALFX; a += 16) o.push({ pos: [a, 0, FLYZ], rotY: 0 }); return o; }, []);
-  return (
-    <group>
-      <mesh position={[0, 7, FLYZ]} castShadow receiveShadow><boxGeometry args={[SPANX, 1.2, 6]} /><meshStandardMaterial color={C.base} roughness={1} /></mesh>
-      <InstGroup objects={pillars} parts={[{ size: [1.6, 7, 1.6], off: [0, 3.5, 0], color: C.baseSide }]} shadow />
     </group>
   );
 }
@@ -282,13 +355,13 @@ function Car({ c }: { c: string }) { return (<group>{box([3, 0.9, 2], [0, 0.6, 0
 function Bus({ c }: { c: string }) { return (<group>{box([6, 2.4, 2], [0, 1.5, 0], c)}{box([6.05, 0.7, 2.06], [0, 2.0, 0], C.glass)}{tyres4(2.0, 0.98, 0.7, 0.34)}</group>); }
 function Auto() { return (<group>{box([2.6, 1.2, 1.8], [0, 0.95, 0], C.leaf)}{box([2.6, 0.9, 1.85], [0, 1.55, 0], "#8a8d94")}{box([2.7, 0.5, 1.9], [0, 2.15, 0], "#1a1a1a")}{box([0.5, 0.2, 0.2], [1.35, 0.75, 0.45], C.line)}{box([0.55, 0.55, 0.3], [1.0, 0.27, 0], TYRE, 70)}{box([0.55, 0.55, 0.3], [-0.85, 0.27, 0.85], TYRE, 71)}{box([0.55, 0.55, 0.3], [-0.85, 0.27, -0.85], TYRE, 72)}</group>); }
 function Van({ c }: { c: string }) { return (<group>{box([3.4, 1.8, 2], [0, 1.2, 0], c)}{box([3.45, 0.7, 2.05], [0.3, 1.7, 0], C.glass)}{tyres4(1.1, 0.98, 0.56, 0.3)}</group>); }
-function Moto() { return (<group>{box([2, 0.5, 0.55], [0, 0.7, 0], "#26262c")}{box([0.7, 0.85, 0.5], [-0.45, 1.15, 0], C.slate)}{box([0.62, 0.62, 0.26], [0.8, 0.31, 0], TYRE, 70)}{box([0.62, 0.62, 0.26], [-0.8, 0.31, 0], TYRE, 71)}</group>); }
+function Moto({ c }: { c: string }) { return (<group>{box([1.9, 0.5, 0.55], [0, 0.62, 0], c)}{box([0.65, 0.6, 0.5], [-0.35, 1.1, 0], C.glass)}{box([0.35, 0.16, 0.16], [1.0, 0.55, 0], C.line)}{box([0.56, 0.56, 0.24], [0.72, 0.28, 0], TYRE, 70)}{box([0.56, 0.56, 0.24], [-0.72, 0.28, 0], TYRE, 71)}</group>); }
 
-type Veh = { kind: string; len: number; axis: "x" | "z"; lane: number; dir: number; pos: number; spd: number; color: string; y: number; elevated: boolean; laneId: string };
+type Veh = { kind: string; len: number; axis: "x" | "z"; lane: number; dir: number; pos: number; spd: number; color: string; laneId: string };
 const VLEN: Record<string, number> = { car: 3, bus: 6, van: 3.4, auto: 2.6, moto: 2 };
 const ROADDIR = (i: number) => (i % 2 === 0 ? 1 : -1);
-const VCOLS = ["#e6e8ea", "#8a8d94", "#b9bcc4", "#3a3d45", "#cfd2da", "#6c6f75", "#7e8087", "#9a9da3", "#5e6167", "#a6a8ae", "#e8e8ea"];
-const BUS_COLS = ["#7c7f86", "#5e6167"];
+const VCOLS = ["#9a9da3", "#6c6f75", "#84878d", "#3a3d45", "#75787e", "#54575d", "#5e6167", "#484b51", "#8a8d93", "#a0a2a8", "#64676d"];
+const BUS_COLS = ["#54575d", "#464950"];
 const vcolor = (kind: string) => (kind === "bus" ? pick(BUS_COLS) : pick(VCOLS));
 
 function Traffic() {
@@ -304,17 +377,12 @@ function Traffic() {
         const r = Math.random();
         const kind = r < 0.1 ? "bus" : r < 0.18 ? "van" : r < 0.32 ? "auto" : r < 0.46 ? "moto" : "car";
         const len = VLEN[kind];
-        list.push({ kind, len, axis, lane, dir, pos: p, spd: kind === "bus" ? rand(2.6, 3.4) : rand(3.4, 5), color: vcolor(kind), y: 0, elevated: false, laneId });
+        list.push({ kind, len, axis, lane, dir, pos: p, spd: kind === "bus" ? rand(2.6, 3.4) : rand(3.4, 5), color: vcolor(kind), laneId });
         p += len + rand(22, 40);
       }
     };
     for (let ri = 0; ri < ROADSZ.length; ri += 2) spawnLane("x", ri); // x-travel on horizontal roads
     for (let ri = 0; ri < ROADSX.length; ri += 2) spawnLane("z", ri); // z-travel on vertical roads
-    [1.3, -1.3].forEach((off, d2) => {
-      const dir = d2 === 0 ? 1 : -1; const laneId = `fly-${d2}`;
-      let p = -HALFX + rand(0, 14);
-      while (p < HALFX) { const kind = Math.random() < 0.2 ? "bus" : "car"; list.push({ kind, len: VLEN[kind], axis: "x", lane: FLYZ + off, dir, pos: p, spd: rand(4, 6), color: vcolor(kind), y: FLYY, elevated: true, laneId }); p += VLEN[kind] + rand(12, 22); }
-    });
     const groups: Record<string, number[]> = {};
     list.forEach((v, i) => { (groups[v.laneId] ||= []).push(i); });
     return { list, groups };
@@ -323,7 +391,7 @@ function Traffic() {
   useFrame(({ clock }, dt) => {
     const d = Math.min(dt, 0.05); const s = signal(clock.elapsedTime);
     list.forEach((v) => {
-      const go = v.elevated ? true : v.axis === "x" ? s.x : s.z;
+      const go = v.axis === "x" ? s.x : s.z;
       const cross = v.axis === "x" ? ROADSX : ROADSZ; // perpendicular crossings
       let next = v.pos + v.dir * v.spd * d;
       if (!go) {
@@ -343,8 +411,8 @@ function Traffic() {
       const g = refs.current[i]; if (!g) return;
       const wrap = v.axis === "x" ? WRAPX : WRAPZ;
       if (v.pos > wrap) v.pos = -wrap; if (v.pos < -wrap) v.pos = wrap;
-      if (v.axis === "x") { g.position.set(v.pos, v.y, v.lane); g.rotation.y = v.dir > 0 ? 0 : Math.PI; }
-      else { g.position.set(v.lane, v.y, v.pos); g.rotation.y = v.dir > 0 ? -Math.PI / 2 : Math.PI / 2; }
+      if (v.axis === "x") { g.position.set(v.pos, 0, v.lane); g.rotation.y = v.dir > 0 ? 0 : Math.PI; }
+      else { g.position.set(v.lane, 0, v.pos); g.rotation.y = v.dir > 0 ? -Math.PI / 2 : Math.PI / 2; }
     });
   });
 
@@ -352,26 +420,26 @@ function Traffic() {
     <group>
       {list.map((v, i) => (
         <group key={i} ref={(el) => { refs.current[i] = el; }}>
-          {v.kind === "car" && <Car c={v.color} />}{v.kind === "bus" && <Bus c={v.color} />}{v.kind === "auto" && <Auto />}{v.kind === "van" && <Van c={v.color} />}{v.kind === "moto" && <Moto />}
+          {v.kind === "car" && <Car c={v.color} />}{v.kind === "bus" && <Bus c={v.color} />}{v.kind === "auto" && <Auto />}{v.kind === "van" && <Van c={v.color} />}{v.kind === "moto" && <Moto c={v.color} />}
         </group>
       ))}
     </group>
   );
 }
 
-/* ── traffic light (two-sided, cycles) ────────────────────────── */
+/* ── traffic light (two-sided, cycles — monochrome, reads as blinking dots) ── */
 function TrafficLight({ x, z }: { x: number; z: number }) {
   const r = useRef<THREE.MeshStandardMaterial>(null), a = useRef<THREE.MeshStandardMaterial>(null), g = useRef<THREE.MeshStandardMaterial>(null);
   const r2 = useRef<THREE.MeshStandardMaterial>(null), a2 = useRef<THREE.MeshStandardMaterial>(null), g2 = useRef<THREE.MeshStandardMaterial>(null);
   useFrame(({ clock }) => {
     const s = signal(clock.elapsedTime); const st = s.x ? 0 : s.amber ? 1 : 2;
-    const set = (m: React.RefObject<THREE.MeshStandardMaterial | null>, on: boolean) => { if (m.current) m.current.emissiveIntensity = on ? 1.6 : 0.05; };
+    const set = (m: React.RefObject<THREE.MeshStandardMaterial | null>, on: boolean) => { if (m.current) m.current.emissiveIntensity = on ? 1.2 : 0.05; };
     set(g, st === 0); set(g2, st === 0); set(a, st === 1); set(a2, st === 1); set(r, st === 2); set(r2, st === 2);
   });
   return (
     <group position={[x, 0, z]}>
       {box([0.4, 0.3, 0.4], [0, 0.15, 0], "#2a2d35")}
-      <mesh position={[0, 2, 0]} castShadow><boxGeometry args={[0.4, 3.6, 0.4]} /><meshStandardMaterial color="#c4c7cd" roughness={0.6} /></mesh>
+      <mesh position={[0, 2, 0]} castShadow><boxGeometry args={[0.4, 3.6, 0.4]} /><meshStandardMaterial color="#7c7f85" roughness={0.6} /></mesh>
       {box([0.7, 1.5, 0.5], [0, 4.4, 0], "#1a1d26")}
       <mesh position={[0, 4.85, 0.28]}><boxGeometry args={[0.26, 0.26, 0.18]} /><meshStandardMaterial ref={r} color="#4a4c52" emissive="#cfd2d8" emissiveIntensity={0.05} /></mesh>
       <mesh position={[0, 4.4, 0.28]}><boxGeometry args={[0.26, 0.26, 0.18]} /><meshStandardMaterial ref={a} color="#4a4c52" emissive="#cfd2d8" emissiveIntensity={0.05} /></mesh>
@@ -386,31 +454,50 @@ function TrafficLight({ x, z }: { x: number; z: number }) {
 /* ── compose ──────────────────────────────────────────────────── */
 function City() {
   const data = useMemo(() => {
-    const cixX = Math.floor(GX / 2), backZ = 2;
-    const parkX = PLOTSX[cixX], parkZ = PLOTSZ[Math.floor(GZ / 2)];
+    /* downtown axis: the landmark straddles the central avenue (x=0)
+       at the back; skyline falls off radially from there */
+    const backZ = 2;
+    const dtX = 0, dtI = GX / 2 - 0.5;         // downtown center in plot-index space
+    const lmZ = PLOTSZ[backZ];
+    const parkX = PLOTSX[Math.floor(GX / 2) - 3], parkZ = PLOTSZ[Math.floor(GZ / 2) + 2];
+    const li = Math.floor(GX / 2) - 1, ri = Math.floor(GX / 2); // plots straddled by the landmark
     const bespoke: { t: string; x: number; z: number; h: number }[] = [
-      { t: "landmark", x: PLOTSX[cixX], z: PLOTSZ[backZ], h: 50 },
-      { t: "slate", x: PLOTSX[cixX - 1], z: PLOTSZ[backZ], h: rand(30, 40) },
-      { t: "slate", x: PLOTSX[cixX + 1], z: PLOTSZ[backZ], h: rand(30, 40) },
-      { t: "slate", x: PLOTSX[cixX - 1], z: PLOTSZ[backZ + 1], h: rand(26, 38) },
-      { t: "slate", x: PLOTSX[cixX + 1], z: PLOTSZ[backZ + 1], h: rand(26, 38) },
-      { t: "slate", x: PLOTSX[cixX], z: PLOTSZ[backZ + 1], h: rand(28, 42) },
-      { t: "slate", x: PLOTSX[cixX + 2], z: PLOTSZ[backZ + 1], h: rand(24, 34) },
+      { t: "landmark", x: dtX, z: lmZ, h: 58 },
+      // symmetric flanking ring, heights descending outward
+      { t: "slate", x: PLOTSX[li - 1], z: lmZ, h: rand(38, 44) },
+      { t: "slate", x: PLOTSX[ri + 1], z: lmZ, h: rand(38, 44) },
+      { t: "slate", x: PLOTSX[li - 2], z: lmZ, h: rand(28, 34) },
+      { t: "slate", x: PLOTSX[ri + 2], z: lmZ, h: rand(28, 34) },
+      { t: "slate", x: PLOTSX[li], z: PLOTSZ[backZ + 1], h: rand(32, 38) },
+      { t: "slate", x: PLOTSX[ri], z: PLOTSZ[backZ + 1], h: rand(32, 38) },
+      { t: "slate", x: PLOTSX[li - 1], z: PLOTSZ[backZ + 1], h: rand(24, 30) },
+      { t: "slate", x: PLOTSX[ri + 1], z: PLOTSZ[backZ + 1], h: rand(24, 30) },
     ];
-    const taken = new Set<string>([`${cixX},${Math.floor(GZ / 2)}`,
-      `${cixX},${backZ}`, `${cixX - 1},${backZ}`, `${cixX + 1},${backZ}`, `${cixX - 1},${backZ + 1}`, `${cixX + 1},${backZ + 1}`, `${cixX},${backZ + 1}`, `${cixX + 2},${backZ + 1}`]);
-    const cols = [C.cream, C.white, C.paleBlue, C.beige, C.white, "#c9ccd2", C.cream];
+    const taken = new Set<string>([
+      `${li},${backZ}`, `${ri},${backZ}`,               // under the landmark
+      `${li - 1},${backZ}`, `${ri + 1},${backZ}`, `${li - 2},${backZ}`, `${ri + 2},${backZ}`,
+      `${li},${backZ + 1}`, `${ri},${backZ + 1}`, `${li - 1},${backZ + 1}`, `${ri + 1},${backZ + 1}`,
+      `${Math.floor(GX / 2) - 3},${Math.floor(GZ / 2) + 2}`, // park
+    ]);
+    const cols = [C.cream, C.white, C.paleBlue, C.beige, C.white, "#50525a", C.cream];
     const rots = [0, Math.PI / 2, Math.PI, -Math.PI / 2];
     const buildings: Bld[] = [];
     const greens: { x: number; z: number }[] = [];
     for (let i = 0; i < GX; i++) for (let j = 0; j < GZ; j++) {
       if (taken.has(`${i},${j}`)) continue;
-      if (Math.random() < 0.08) { greens.push({ x: PLOTSX[i], z: PLOTSZ[j] }); continue; }
-      const distC = Math.hypot(i - cixX, j - backZ);
-      const tall = distC < 3 && Math.random() < 0.45;
-      const type: Bld["type"] = tall ? "tower" : Math.random() < 0.5 ? "shop" : Math.random() < 0.34 ? "office" : "small";
-      const h = type === "shop" ? rand(3, 4.5) : tall ? rand(18, 28) : distC < 4 ? rand(11, 17) : rand(7, 13);
-      buildings.push({ x: PLOTSX[i], z: PLOTSZ[j], fw: rand(6.5, 9), h, col: pick(cols), type, rot: pick(rots) });
+      const distC = Math.hypot(i - dtI, j - backZ);
+      if (distC > 4 && Math.random() < 0.08) { greens.push({ x: PLOTSX[i], z: PLOTSZ[j] }); continue; }
+      /* radial falloff: tall core → mid ring → low edges */
+      const tall = distC < 3.2 && Math.random() < 0.6;
+      const type: Bld["type"] = tall ? "tower"
+        : distC < 4.5 ? (Math.random() < 0.55 ? "office" : "small")
+        : Math.random() < 0.5 ? "shop" : Math.random() < 0.34 ? "office" : "small";
+      const h = type === "shop" ? rand(3, 4.5)
+        : tall ? rand(18, 26)
+        : distC < 4.5 ? rand(11, 16)
+        : distC < 7 ? rand(7, 13)
+        : rand(4.5, 9);
+      buildings.push({ x: PLOTSX[i], z: PLOTSZ[j], fw: rand(5.5, 7.5), h, col: pick(cols), type, rot: pick(rots) });
     }
     const foot = (): Obj => { const horiz = Math.random() < 0.5; if (horiz) { const e = pick(ROADSZ) + (Math.random() < 0.5 ? 3.2 : -3.2); return { pos: [rand(-HALFX, HALFX), 0, e], rotY: rand(0, 6.28) }; } const e = pick(ROADSX) + (Math.random() < 0.5 ? 3.2 : -3.2); return { pos: [e, 0, rand(-HALFZ, HALFZ)], rotY: rand(0, 6.28) }; };
     const small: Obj[] = Array.from({ length: 3000 }, foot);
@@ -420,25 +507,34 @@ function City() {
     for (let k = 0; k < 40; k++) big.push({ pos: [parkX + rand(-9, 9), 0, parkZ + rand(-9, 9)], rotY: rand(0, 6.28) });
     greens.forEach((g) => { for (let t = 0; t < 2; t++) big.push({ pos: [g.x + rand(-6, 6), 0, g.z + rand(-6, 6)], rotY: rand(0, 6.28) }); });
     for (let k = 0; k < 70; k++) big.push(foot());
+    /* rooftop clutter: water tanks + AC units on mid/tall roofs */
+    const roofProps: Obj[] = [];
+    buildings.forEach((b) => {
+      if (b.type === "shop" || b.h < 8 || Math.random() > 0.7) return;
+      roofProps.push({ pos: [b.x + rand(-1.8, 1.8), b.h, b.z + rand(-1.8, 1.8)], rotY: rand(0, 6.28) });
+    });
     const streetLights: Obj[] = Array.from({ length: 50 }, foot);
     const trafficLights: { x: number; z: number }[] = [];
     for (let ix = 0; ix < ROADSX.length; ix += 4) for (let jz = 0; jz < ROADSZ.length; jz += 4) trafficLights.push({ x: ROADSX[ix] + 2.5, z: ROADSZ[jz] + 2.5 });
-    return { bespoke, buildings, greens, small, big, streetLights, trafficLights, parkX, parkZ };
+    return { bespoke, buildings, greens, small, big, roofProps, streetLights, trafficLights, parkX, parkZ };
   }, []);
 
   return (
     <group>
       <Ground />
-      <Flyover />
       <Park x={data.parkX} z={data.parkZ} />
       {data.greens.map((g, i) => (<mesh key={i} position={[g.x, 0.2, g.z]} receiveShadow><boxGeometry args={[13, 0.4, 13]} /><meshStandardMaterial color={C.grass} roughness={1} /></mesh>))}
       <BuildingsVaried list={data.buildings} />
       {data.bespoke.map((b, i) => (b.t === "landmark" ? <Landmark key={i} x={b.x} z={b.z} /> : <SlateTower key={i} x={b.x} z={b.z} h={b.h} />))}
       <Trees small={data.small} big={data.big} />
+      <InstGroup objects={data.roofProps} parts={[
+        { size: [1.1, 1.6, 1.1], off: [0.9, 0.8, 0.6], color: "#6a6d73" },   // water tank
+        { size: [1.4, 0.6, 1.0], off: [-1.0, 0.3, -0.7], color: "#55585e" }, // AC unit
+      ]} />
       <InstGroup objects={data.streetLights} parts={[
         { size: [0.4, 4, 0.4], off: [0, 2, 0], color: "#3a3d45" },
         { size: [1.2, 0.3, 0.4], off: [0.55, 3.9, 0], color: "#3a3d45" },
-        { size: [0.5, 0.35, 0.5], off: [1.1, 3.75, 0], color: "#d98a3a", emissive: 1.15 },
+        { size: [0.5, 0.35, 0.5], off: [1.1, 3.75, 0], color: "#ffcf8a", emissive: 1.2 },
       ]} />
       {data.trafficLights.map((t, i) => <TrafficLight key={i} x={t.x} z={t.z} />)}
       <People count={140} />
@@ -461,27 +557,32 @@ export default function CityScene() {
   return (
     <div ref={wrapRef} style={{ position: "absolute", inset: 0 }}>
     <Canvas
-      shadows
+      shadows="percentage"
       frameloop={active ? "always" : "never"}
       dpr={[1, 1.7]}
       camera={{ position: [0, 118, 188], fov: 58, near: 1, far: 2400 }}
       gl={{ antialias: true, alpha: false }}
       style={{ position: "absolute", inset: 0 }}
-      onCreated={({ scene, camera }) => {
+      onCreated={({ scene, camera, gl }) => {
+        gl.shadowMap.type = THREE.PCFShadowMap; // PCFSoftShadowMap is deprecated in this three build
         scene.background = new THREE.Color("#0b0b0b");
-        scene.fog = new THREE.Fog("#0b0b0b", 300, 940);
-        camera.lookAt(0, 10, -70);
+        scene.fog = new THREE.Fog("#0b0b0b", 280, 840); // atmospheric depth — far horizon melts into black
+        camera.lookAt(0, 34, -76);                      // one-point axis through the spire; horizon sits in the lower half
       }}
     >
-      <ambientLight intensity={0.62} color="#c6c8cc" />
+      {/* neutral studio light, slightly warm key — miniature-model look */}
+      <ambientLight intensity={0.56} color="#b8bcc4" />
+      {/* soft light pool over the foreground focus zone — the center of the
+         frame reads brighter while the periphery melts into the mask/fog */}
+      <pointLight position={[0, 95, 90]} intensity={2.5} distance={250} decay={0} color="#e8e4da" />
       <directionalLight
-        position={[240, 340, 180]} intensity={1.2} color="#f2f2f4" castShadow
+        position={[240, 340, 180]} intensity={1.4} color="#fff3e2" castShadow
         shadow-mapSize-width={2048} shadow-mapSize-height={2048}
         shadow-camera-near={1} shadow-camera-far={1050}
         shadow-camera-left={-260} shadow-camera-right={260} shadow-camera-top={260} shadow-camera-bottom={-260}
         shadow-bias={-0.0004}
       />
-      <directionalLight position={[-200, 130, -140]} intensity={0.34} color="#84868c" />
+      <directionalLight position={[-200, 130, -140]} intensity={0.36} color="#8e929c" />
       <City />
     </Canvas>
     </div>

@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color System — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+
+/* ── TAB BAR ─────────────────────────────────────── */
+.tab-bar {
+  display: flex;
+  gap: 0;
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  padding: 0 56px;
+  position: sticky;
+  top: var(--topbar-h);
+  z-index: 50;
+}
+.tab-pill {
+  padding: 14px 20px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-3);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color .15s, border-color .15s;
+  margin-bottom: -1px;
+  font-family: var(--font);
+  letter-spacing: -.01em;
+}
+.tab-pill:hover { color: var(--text-1); }
+.tab-pill.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.tab-pane { display: none; }
+.tab-pane.active { display: block; }
+
+/* ── PALETTE LAYOUT ──────────────────────────────── */
+.palette-wrap { padding: 40px 56px 0; }
+.palette-group { margin-bottom: 40px; }
+.palette-group-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.palette-group-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.palette-group-count {
+  font-size: 10px;
+  color: var(--text-4);
+  font-family: var(--mono);
+}
+
+.palette-table { width: 100%; border-collapse: collapse; }
+.palette-row { display: grid; grid-template-columns: 100px repeat(10, 1fr); gap: 3px; align-items: center; margin-bottom: 3px; }
+.palette-name-cell {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-2);
+  padding-right: 8px;
+  white-space: nowrap;
+}
+.swatch-col { display: flex; flex-direction: column; gap: 3px; }
+.swatch {
+  height: 36px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  transition: transform .12s, box-shadow .12s;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 3px;
+}
+.swatch:hover { transform: scaleY(1.12); box-shadow: 0 4px 14px rgba(0,0,0,.18); z-index: 2; }
+.swatch-step {
+  font-family: var(--mono);
+  font-size: 8.5px;
+  color: var(--text-4);
+  text-align: center;
+  margin-top: 3px;
+}
+.swatch-is-key { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 5px; }
+
+/* Swatch tooltip */
+.swatch-wrap { position: relative; }
+.swatch-tip {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111;
+  color: #fff;
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s;
+  z-index: 99;
+}
+.swatch-wrap:hover .swatch-tip { opacity: 1; }
+
+/* ── SEMANTIC TOKEN TABLES ───────────────────────── */
+.semantic-wrap { padding: 40px 56px 0; }
+.sem-group { margin-bottom: 36px; }
+.sem-group-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+.sem-group-title {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -.015em;
+  color: var(--text-1);
+}
+.sem-group-desc { font-size: 13px; color: var(--text-3); margin-bottom: 12px; max-width: 520px; line-height: 1.5; }
+
+.token-table {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.token-head { display: grid; grid-template-columns: 36px 220px 130px 100px 1fr; padding: 8px 16px; background: var(--bg-inset); border-bottom: 1px solid var(--border); }
+.token-head span { font-size: 10px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); }
+.token-row { display: grid; grid-template-columns: 36px 220px 130px 100px 1fr; padding: 9px 16px; border-bottom: 1px solid var(--border); align-items: center; transition: background .1s; }
+.token-row:last-child { border-bottom: none; }
+.token-row:hover { background: var(--bg-hover); }
+.tok-swatch { width: 22px; height: 22px; border-radius: 4px; flex-shrink: 0; }
+.tok-name { font-family: var(--mono); font-size: 11.5px; color: var(--accent-text); }
+.tok-ref { font-size: 12px; color: var(--text-3); }
+.tok-hex { font-family: var(--mono); font-size: 11.5px; color: var(--text-2); cursor: pointer; padding: 2px 6px; border-radius: 4px; }
+.tok-hex:hover { background: var(--bg-inset); color: var(--text-1); }
+.tok-desc { font-size: 12px; color: var(--text-3); }
+
+/* ── FEEDBACK SEMANTIC ───────────────────────────── */
+.feedback-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 0; }
+.fb-card {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.fb-bar { height: 6px; }
+.fb-body { padding: 16px; }
+.fb-card-title { font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+.fb-rows { display: flex; flex-direction: column; gap: 6px; }
+.fb-row { display: flex; align-items: center; gap: 8px; }
+.fb-dot { width: 18px; height: 18px; border-radius: 4px; flex-shrink: 0; }
+.fb-tok { font-family: var(--mono); font-size: 10px; color: var(--text-3); flex: 1; }
+.fb-hex { font-family: var(--mono); font-size: 10px; color: var(--text-4); cursor: pointer; }
+.fb-hex:hover { color: var(--text-1); }
+
+/* ── CHART COLORS ────────────────────────────────── */
+.chart-wrap { padding: 40px 56px 80px; }
+.chart-section-title { font-size: 22px; font-weight: 700; letter-spacing: -.015em; color: var(--text-1); margin-bottom: 4px; }
+.chart-section-desc { font-size: 14px; color: var(--text-3); margin-bottom: 32px; max-width: 540px; line-height: 1.6; }
+.chart-group { margin-bottom: 36px; }
+.chart-group-label { font-size: 11px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); margin-bottom: 12px; display: block; }
+.chart-row { display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; align-items: flex-end; }
+.chart-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+.chart-swatch-box { width: 44px; height: 38px; border-radius: 6px; transition: transform .12s; }
+.chart-swatch:hover .chart-swatch-box { transform: scale(1.08); }
+.chart-swatch-label { font-family: var(--mono); font-size: 9px; color: var(--text-4); }
+
+/* ── HERO ────────────────────────────────────────── */
+.color-hero {
+  background: var(--bg-panel);
+  border-bottom: 1px solid var(--border);
+  padding: 48px 56px 40px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  align-items: center;
+}
+
+/* Download CTA card */
+.dl-card {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon {
+  width: 40px; height: 40px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-card-desc strong { color: var(--text-1); font-weight: 600; }
+.dl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background .15s, transform .1s;
+  font-family: var(--font);
+}
+.dl-btn:hover { background: #FD5E32; transform: translateY(-1px); }
+.dl-btn:active { transform: translateY(0); }
+
+/* ── TOAST ───────────────────────────────────────── */
+#toast {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: #111; color: #fff;
+  padding: 9px 18px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-family: var(--mono);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s, transform .2s;
+  z-index: 9999;
+  white-space: nowrap;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ── RESPONSIVE ──────────────────────────────────── */
+@media (max-width: 1099px) {
+  .palette-row { grid-template-columns: 80px repeat(10, 1fr); }
+}
+@media (max-width: 1099px) {
+  .color-hero { grid-template-columns: 1fr 280px; }
+}
+@media (max-width: 809px) {
+  .tab-bar { padding: 0 20px; }
+  .palette-wrap, .semantic-wrap, .chart-wrap { padding-left: 20px; padding-right: 20px; }
+  .color-hero { padding: 32px 20px 28px; grid-template-columns: 1fr; }
+  .palette-row { grid-template-columns: 64px repeat(10, 1fr); gap: 2px; }
+  .palette-name-cell { font-size: 10px; }
+  .swatch { height: 28px; }
+  .token-head, .token-row { grid-template-columns: 28px 1fr 90px 80px; }
+  .token-head span:last-child, .tok-desc { display: none; }
+  .feedback-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .palette-row { grid-template-columns: 52px repeat(10, 1fr); gap: 1px; }
+  .swatch { height: 24px; border-radius: 3px; }
+  .feedback-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Color System</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item active" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="combobox.html">Combobox</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub" href="form-layout.html">Forms</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- HERO -->
+  <div class="color-hero">
+    <div>
+      <span class="page-eyebrow">02 / Color System</span>
+      <h1 class="page-title">Color</h1>
+      <p class="page-desc" style="margin-bottom:20px">"When trust meets energy. Orange signals action, lime signals growth, sky signals clarity — three brand colors, infinite product decisions."</p>
+      <div class="page-meta">
+        <span class="meta-chip">15 Core Palettes</span>
+        <span class="meta-chip">150 Color Steps</span>
+        <span class="meta-chip">40+ Semantic Tokens</span>
+        <span class="meta-chip">Chart Color System</span>
+      </div>
+    </div>
+
+    <!-- Download CTA -->
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">yubi-market-colors.md</div>
+          <div class="dl-file-meta">Markdown · 15 palettes · 40+ tokens · CSS vars</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">Upload this file to <strong>Claude</strong> to instantly reference every color token, hex value, and usage rule — no copy-pasting needed.</p>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" class="dl-btn" href="downloads/colors.md" download="yubi-market-colors.md">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7,10 12,15 17,10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download colors.md
+      </a>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar">
+    <button class="tab-pill active" id="tab-btn-core" onclick="switchTab('core')">Core Colors</button>
+    <button class="tab-pill" id="tab-btn-semantic" onclick="switchTab('semantic')">Semantic Colors</button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB: CORE COLORS
+  ══════════════════════════════════════════════ -->
+  <div class="tab-pane active" id="tab-core">
+    <div class="palette-wrap" id="palette-container">
+      <!-- Rendered by JS -->
+    </div>
+    <div style="height:60px"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       TAB: SEMANTIC COLORS
+  ══════════════════════════════════════════════ -->
+  <div class="tab-pane" id="tab-semantic">
+
+    <div class="semantic-wrap">
+
+      <!-- ACTION -->
+      <div class="sem-group" id="sem-action">
+        <div class="sem-group-header">
+          <h2 class="sem-group-title">Action</h2>
+        </div>
+        <p class="sem-group-desc">Tokens for interactive elements — buttons, links, toggles. Always reference these instead of raw primitives for interactive states.</p>
+        <div class="token-table">
+          <div class="token-head"><span></span><span>Token</span><span>Primitive</span><span>Hex</span><span>Usage</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FD7149"></div><span class="tok-name">color.action.brand.default</span><span class="tok-ref">brand.500</span><span class="tok-hex" onclick="copyHex('#FD7149')">#FD7149</span><span class="tok-desc">Primary CTA, active nav, key actions</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FD5E32"></div><span class="tok-name">color.action.brand.hover</span><span class="tok-ref">brand.600</span><span class="tok-hex" onclick="copyHex('#FD5E32')">#FD5E32</span><span class="tok-desc">Brand button hover state</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FC3A04"></div><span class="tok-name">color.action.brand.active</span><span class="tok-ref">brand.700</span><span class="tok-hex" onclick="copyHex('#FC3A04')">#FC3A04</span><span class="tok-desc">Brand button pressed / active state</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FFC9AD;border:1px solid #e7e7e7"></div><span class="tok-name">color.action.brand.disabled</span><span class="tok-ref">brand.200</span><span class="tok-hex" onclick="copyHex('#FFC9AD')">#FFC9AD</span><span class="tok-desc">Disabled brand elements</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FFF3EE;border:1px solid #e7e7e7"></div><span class="tok-name">color.action.brand.subtle</span><span class="tok-ref">brand.50</span><span class="tok-hex" onclick="copyHex('#FFF3EE')">#FFF3EE</span><span class="tok-desc">Brand ghost button bg, tinted containers</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#E3E8EF;border:1px solid #e7e7e7"></div><span class="tok-name">color.action.secondary.default</span><span class="tok-ref">neutral.200</span><span class="tok-hex" onclick="copyHex('#E3E8EF')">#E3E8EF</span><span class="tok-desc">Secondary button background</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#CDD5DF"></div><span class="tok-name">color.action.secondary.hover</span><span class="tok-ref">neutral.300</span><span class="tok-hex" onclick="copyHex('#CDD5DF')">#CDD5DF</span><span class="tok-desc">Secondary button hover</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#CD3546"></div><span class="tok-name">color.action.danger.default</span><span class="tok-ref">red.600</span><span class="tok-hex" onclick="copyHex('#CD3546')">#CD3546</span><span class="tok-desc">Destructive actions (delete, revoke)</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#A81C31"></div><span class="tok-name">color.action.danger.hover</span><span class="tok-ref">red.700</span><span class="tok-hex" onclick="copyHex('#A81C31')">#A81C31</span><span class="tok-desc">Destructive button hover</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FFF1F1;border:1px solid #e7e7e7"></div><span class="tok-name">color.action.danger.subtle</span><span class="tok-ref">red.50</span><span class="tok-hex" onclick="copyHex('#FFF1F1')">#FFF1F1</span><span class="tok-desc">Danger ghost bg, error container</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#4065C5"></div><span class="tok-name">color.action.special.default</span><span class="tok-ref">blue.600</span><span class="tok-hex" onclick="copyHex('#4065C5')">#4065C5</span><span class="tok-desc">Special / alternate primary actions</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#2563EB"></div><span class="tok-name">color.action.special.hover</span><span class="tok-ref">blue.700</span><span class="tok-hex" onclick="copyHex('#2563EB')">#2563EB</span><span class="tok-desc">Special action hover</span></div>
+        </div>
+      </div>
+
+      <!-- BACKGROUND -->
+      <div class="sem-group" id="sem-bg">
+        <div class="sem-group-header">
+          <h2 class="sem-group-title">Background</h2>
+        </div>
+        <p class="sem-group-desc">Surface tokens define every layer of the product. Use these tokens rather than primitives to maintain elevation hierarchy.</p>
+        <div class="token-table">
+          <div class="token-head"><span></span><span>Token</span><span>Primitive</span><span>Hex</span><span>Usage</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#F8FAFC;border:1px solid #e7e7e7"></div><span class="tok-name">color.bg.page</span><span class="tok-ref">neutral.50</span><span class="tok-hex" onclick="copyHex('#F8FAFC')">#F8FAFC</span><span class="tok-desc">App / page background (outermost layer)</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FFFFFF;border:1px solid #e7e7e7"></div><span class="tok-name">color.bg.panel</span><span class="tok-ref">neutral.0</span><span class="tok-hex" onclick="copyHex('#FFFFFF')">#FFFFFF</span><span class="tok-desc">Cards, sheets, dialogs, drawers</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#F1F5F9;border:1px solid #e7e7e7"></div><span class="tok-name">color.bg.inset</span><span class="tok-ref">neutral.100</span><span class="tok-hex" onclick="copyHex('#F1F5F9')">#F1F5F9</span><span class="tok-desc">Code blocks, input backgrounds, sunken areas</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#E3E8EF;border:1px solid #e7e7e7"></div><span class="tok-name">color.bg.subtle</span><span class="tok-ref">neutral.200</span><span class="tok-hex" onclick="copyHex('#E3E8EF')">#E3E8EF</span><span class="tok-desc">Hover states, zebra rows, inactive tabs</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FFF3EE;border:1px solid #e7e7e7"></div><span class="tok-name">color.bg.brand.subtle</span><span class="tok-ref">brand.50</span><span class="tok-hex" onclick="copyHex('#FFF3EE')">#FFF3EE</span><span class="tok-desc">Brand-tinted highlight, active nav item bg</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FD7149"></div><span class="tok-name">color.bg.brand.bold</span><span class="tok-ref">brand.500</span><span class="tok-hex" onclick="copyHex('#FD7149')">#FD7149</span><span class="tok-desc">Brand header zones, filled brand elements</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#EFF6FF;border:1px solid #e7e7e7"></div><span class="tok-name">color.bg.special.subtle</span><span class="tok-ref">blue.50</span><span class="tok-hex" onclick="copyHex('#EFF6FF')">#EFF6FF</span><span class="tok-desc">Special/info tinted containers</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#4065C5"></div><span class="tok-name">color.bg.special.bold</span><span class="tok-ref">blue.600</span><span class="tok-hex" onclick="copyHex('#4065C5')">#4065C5</span><span class="tok-desc">Special filled header zones</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:rgba(0,0,0,.45)"></div><span class="tok-name">color.bg.overlay</span><span class="tok-ref">—</span><span class="tok-hex" onclick="copyHex('rgba(0,0,0,.45)')">rgba(0,0,0,.45)</span><span class="tok-desc">Modal / drawer backdrop scrim</span></div>
+        </div>
+      </div>
+
+      <!-- TEXT -->
+      <div class="sem-group" id="sem-text">
+        <div class="sem-group-header">
+          <h2 class="sem-group-title">Text</h2>
+        </div>
+        <p class="sem-group-desc">Typography color tokens. Always pair text tokens with the correct background — never use a light text token on a light surface.</p>
+        <div class="token-table">
+          <div class="token-head"><span></span><span>Token</span><span>Primitive</span><span>Hex</span><span>Usage</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#121926"></div><span class="tok-name">color.text.primary</span><span class="tok-ref">neutral.900</span><span class="tok-hex" onclick="copyHex('#121926')">#121926</span><span class="tok-desc">Headlines, labels, primary body text</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#697586"></div><span class="tok-name">color.text.secondary</span><span class="tok-ref">neutral.500</span><span class="tok-hex" onclick="copyHex('#697586')">#697586</span><span class="tok-desc">Supporting text, descriptions, meta</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#9AA3B2"></div><span class="tok-name">color.text.muted</span><span class="tok-ref">neutral.400</span><span class="tok-hex" onclick="copyHex('#9AA3B2')">#9AA3B2</span><span class="tok-desc">Captions, placeholders, timestamps</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#CDD5DF;border:1px solid #e7e7e7"></div><span class="tok-name">color.text.disabled</span><span class="tok-ref">neutral.300</span><span class="tok-hex" onclick="copyHex('#CDD5DF')">#CDD5DF</span><span class="tok-desc">Disabled form fields, inactive options</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FFFFFF;border:1px solid #e7e7e7"></div><span class="tok-name">color.text.inverse</span><span class="tok-ref">neutral.0</span><span class="tok-hex" onclick="copyHex('#FFFFFF')">#FFFFFF</span><span class="tok-desc">Text on dark / brand backgrounds</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FD7149"></div><span class="tok-name">color.text.brand</span><span class="tok-ref">brand.500</span><span class="tok-hex" onclick="copyHex('#FD7149')">#FD7149</span><span class="tok-desc">Brand-highlighted text, active labels</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#4065C5"></div><span class="tok-name">color.text.link</span><span class="tok-ref">blue.600</span><span class="tok-hex" onclick="copyHex('#4065C5')">#4065C5</span><span class="tok-desc">Hyperlinks, inline navigation</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#3F902B"></div><span class="tok-name">color.text.success</span><span class="tok-ref">green.600</span><span class="tok-hex" onclick="copyHex('#3F902B')">#3F902B</span><span class="tok-desc">Positive status text</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#CD3546"></div><span class="tok-name">color.text.error</span><span class="tok-ref">red.600</span><span class="tok-hex" onclick="copyHex('#CD3546')">#CD3546</span><span class="tok-desc">Error messages, validation failures</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#B85008"></div><span class="tok-name">color.text.warning</span><span class="tok-ref">yellow.700</span><span class="tok-hex" onclick="copyHex('#B85008')">#B85008</span><span class="tok-desc">Warning messages (AA-safe on white)</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#4065C5"></div><span class="tok-name">color.text.info</span><span class="tok-ref">blue.600</span><span class="tok-hex" onclick="copyHex('#4065C5')">#4065C5</span><span class="tok-desc">Informational text, hints</span></div>
+        </div>
+      </div>
+
+      <!-- BORDER -->
+      <div class="sem-group" id="sem-border">
+        <div class="sem-group-header">
+          <h2 class="sem-group-title">Border</h2>
+        </div>
+        <p class="sem-group-desc">Border and divider tokens. Use <code>color.border.focus</code> exclusively for keyboard focus outlines — never custom focus rings.</p>
+        <div class="token-table">
+          <div class="token-head"><span></span><span>Token</span><span>Primitive</span><span>Hex</span><span>Usage</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#E3E8EF;border:1px solid #ccc"></div><span class="tok-name">color.border.default</span><span class="tok-ref">neutral.200</span><span class="tok-hex" onclick="copyHex('#E3E8EF')">#E3E8EF</span><span class="tok-desc">Card borders, dividers, hairlines</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#CDD5DF;border:1px solid #ccc"></div><span class="tok-name">color.border.strong</span><span class="tok-ref">neutral.300</span><span class="tok-hex" onclick="copyHex('#CDD5DF')">#CDD5DF</span><span class="tok-desc">Input borders, emphasized dividers</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#81AFF2"></div><span class="tok-name">color.border.focus</span><span class="tok-ref">sky.400</span><span class="tok-hex" onclick="copyHex('#81AFF2')">#81AFF2</span><span class="tok-desc">Keyboard focus ring — accessibility required</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#FD7149"></div><span class="tok-name">color.border.brand</span><span class="tok-ref">brand.500</span><span class="tok-hex" onclick="copyHex('#FD7149')">#FD7149</span><span class="tok-desc">Active tab underline, brand accent borders</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#3F902B"></div><span class="tok-name">color.border.success</span><span class="tok-ref">green.600</span><span class="tok-hex" onclick="copyHex('#3F902B')">#3F902B</span><span class="tok-desc">Success state input border</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#CD3546"></div><span class="tok-name">color.border.error</span><span class="tok-ref">red.600</span><span class="tok-hex" onclick="copyHex('#CD3546')">#CD3546</span><span class="tok-desc">Error state input border</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#F79009"></div><span class="tok-name">color.border.warning</span><span class="tok-ref">yellow.500</span><span class="tok-hex" onclick="copyHex('#F79009')">#F79009</span><span class="tok-desc">Warning state input border</span></div>
+          <div class="token-row"><div class="tok-swatch" style="background:#4065C5"></div><span class="tok-name">color.border.info</span><span class="tok-ref">blue.600</span><span class="tok-hex" onclick="copyHex('#4065C5')">#4065C5</span><span class="tok-desc">Info state input border</span></div>
+        </div>
+      </div>
+
+      <!-- FEEDBACK -->
+      <div class="sem-group" id="sem-feedback">
+        <div class="sem-group-header">
+          <h2 class="sem-group-title">Feedback</h2>
+        </div>
+        <p class="sem-group-desc">Status-driven color sets for system communication. Always apply the full set (bg + border + icon + text) — never cherry-pick individual tokens.</p>
+        <div class="feedback-grid">
+
+          <div class="fb-card">
+            <div class="fb-bar" style="background:#3F902B"></div>
+            <div class="fb-body">
+              <div class="fb-card-title" style="color:#3F902B">Success</div>
+              <div class="fb-rows">
+                <div class="fb-row"><div class="fb-dot" style="background:#F0FDF4;border:1px solid #e7e7e7"></div><span class="fb-tok">color.feedback.success.bg</span><span class="fb-hex" onclick="copyHex('#F0FDF4')">#F0FDF4</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#B8F5D0"></div><span class="fb-tok">color.feedback.success.border</span><span class="fb-hex" onclick="copyHex('#B8F5D0')">#B8F5D0</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#3F902B"></div><span class="fb-tok">color.feedback.success.icon</span><span class="fb-hex" onclick="copyHex('#3F902B')">#3F902B</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#166534"></div><span class="fb-tok">color.feedback.success.text</span><span class="fb-hex" onclick="copyHex('#166534')">#166534</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fb-card">
+            <div class="fb-bar" style="background:#CD3546"></div>
+            <div class="fb-body">
+              <div class="fb-card-title" style="color:#CD3546">Error</div>
+              <div class="fb-rows">
+                <div class="fb-row"><div class="fb-dot" style="background:#FFF1F1;border:1px solid #e7e7e7"></div><span class="fb-tok">color.feedback.error.bg</span><span class="fb-hex" onclick="copyHex('#FFF1F1')">#FFF1F1</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#FFBFBF"></div><span class="fb-tok">color.feedback.error.border</span><span class="fb-hex" onclick="copyHex('#FFBFBF')">#FFBFBF</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#CD3546"></div><span class="fb-tok">color.feedback.error.icon</span><span class="fb-hex" onclick="copyHex('#CD3546')">#CD3546</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#871426"></div><span class="fb-tok">color.feedback.error.text</span><span class="fb-hex" onclick="copyHex('#871426')">#871426</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fb-card">
+            <div class="fb-bar" style="background:#F79009"></div>
+            <div class="fb-body">
+              <div class="fb-card-title" style="color:#B85008">Warning</div>
+              <div class="fb-rows">
+                <div class="fb-row"><div class="fb-dot" style="background:#FFFBEB;border:1px solid #e7e7e7"></div><span class="fb-tok">color.feedback.warning.bg</span><span class="fb-hex" onclick="copyHex('#FFFBEB')">#FFFBEB</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#FEDF84"></div><span class="fb-tok">color.feedback.warning.border</span><span class="fb-hex" onclick="copyHex('#FEDF84')">#FEDF84</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#F79009"></div><span class="fb-tok">color.feedback.warning.icon</span><span class="fb-hex" onclick="copyHex('#F79009')">#F79009</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#7A3010"></div><span class="fb-tok">color.feedback.warning.text</span><span class="fb-hex" onclick="copyHex('#7A3010')">#7A3010</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fb-card">
+            <div class="fb-bar" style="background:#4065C5"></div>
+            <div class="fb-body">
+              <div class="fb-card-title" style="color:#4065C5">Info</div>
+              <div class="fb-rows">
+                <div class="fb-row"><div class="fb-dot" style="background:#EFF6FF;border:1px solid #e7e7e7"></div><span class="fb-tok">color.feedback.info.bg</span><span class="fb-hex" onclick="copyHex('#EFF6FF')">#EFF6FF</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#BFDBFE"></div><span class="fb-tok">color.feedback.info.border</span><span class="fb-hex" onclick="copyHex('#BFDBFE')">#BFDBFE</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#4065C5"></div><span class="fb-tok">color.feedback.info.icon</span><span class="fb-hex" onclick="copyHex('#4065C5')">#4065C5</span></div>
+                <div class="fb-row"><div class="fb-dot" style="background:#1E3A8A"></div><span class="fb-tok">color.feedback.info.text</span><span class="fb-hex" onclick="copyHex('#1E3A8A')">#1E3A8A</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div><!-- /semantic-wrap -->
+
+    <!-- CHART COLORS -->
+    <div class="chart-wrap" id="sem-chart">
+      <h2 class="chart-section-title">Chart Colors</h2>
+      <p class="chart-section-desc">A curated palette for data visualization. Categorical colors are perceptually distinct. Sequential scales support gradient encoding. Feedback colors mirror the semantic system.</p>
+
+      <!-- Categorical -->
+      <div class="chart-group">
+        <span class="chart-group-label">Categorical Colours</span>
+        <p style="font-size:13px;color:var(--text-3);margin-bottom:14px;max-width:500px;">For discrete data series. Each color is perceptually distinct and maintains contrast in both light and dark modes.</p>
+        <div class="chart-row">
+          <div class="chart-swatch" onclick="copyHex('#FD7149')"><div class="chart-swatch-box" style="background:#FD7149"></div><span class="chart-swatch-label">Brand</span></div>
+          <div class="chart-swatch" onclick="copyHex('#4065C5')"><div class="chart-swatch-box" style="background:#4065C5"></div><span class="chart-swatch-label">Special</span></div>
+          <div class="chart-swatch" onclick="copyHex('#3F902B')"><div class="chart-swatch-box" style="background:#3F902B"></div><span class="chart-swatch-label">Green</span></div>
+          <div class="chart-swatch" onclick="copyHex('#F79009')"><div class="chart-swatch-box" style="background:#F79009"></div><span class="chart-swatch-label">Amber</span></div>
+          <div class="chart-swatch" onclick="copyHex('#9333EA')"><div class="chart-swatch-box" style="background:#9333EA"></div><span class="chart-swatch-label">Purple</span></div>
+          <div class="chart-swatch" onclick="copyHex('#0D9488')"><div class="chart-swatch-box" style="background:#0D9488"></div><span class="chart-swatch-label">Teal</span></div>
+          <div class="chart-swatch" onclick="copyHex('#E0178B')"><div class="chart-swatch-box" style="background:#E0178B"></div><span class="chart-swatch-label">Pink</span></div>
+          <div class="chart-swatch" onclick="copyHex('#6366F1')"><div class="chart-swatch-box" style="background:#6366F1"></div><span class="chart-swatch-label">Indigo</span></div>
+          <div class="chart-swatch" onclick="copyHex('#14B8A6')"><div class="chart-swatch-box" style="background:#14B8A6"></div><span class="chart-swatch-label">Cyan</span></div>
+          <div class="chart-swatch" onclick="copyHex('#C01E1E')"><div class="chart-swatch-box" style="background:#C01E1E"></div><span class="chart-swatch-label">Maroon</span></div>
+        </div>
+        <div class="chart-row" style="margin-top:6px">
+          <div class="chart-swatch" onclick="copyHex('#FD5E32')"><div class="chart-swatch-box" style="background:#FD5E32"></div><span class="chart-swatch-label">Brand–2</span></div>
+          <div class="chart-swatch" onclick="copyHex('#60A5FA')"><div class="chart-swatch-box" style="background:#60A5FA"></div><span class="chart-swatch-label">Sky</span></div>
+          <div class="chart-swatch" onclick="copyHex('#22C55E')"><div class="chart-swatch-box" style="background:#22C55E"></div><span class="chart-swatch-label">Mint</span></div>
+          <div class="chart-swatch" onclick="copyHex('#DCDC5B')"><div class="chart-swatch-box" style="background:#DCDC5B"></div><span class="chart-swatch-label">Lime</span></div>
+          <div class="chart-swatch" onclick="copyHex('#C084FC')"><div class="chart-swatch-box" style="background:#C084FC"></div><span class="chart-swatch-label">Violet</span></div>
+          <div class="chart-swatch" onclick="copyHex('#5EEAD4')"><div class="chart-swatch-box" style="background:#5EEAD4"></div><span class="chart-swatch-label">Aqua</span></div>
+          <div class="chart-swatch" onclick="copyHex('#FF7DC0')"><div class="chart-swatch-box" style="background:#FF7DC0"></div><span class="chart-swatch-label">Rose</span></div>
+          <div class="chart-swatch" onclick="copyHex('#818CF8')"><div class="chart-swatch-box" style="background:#818CF8"></div><span class="chart-swatch-label">Periwinkle</span></div>
+          <div class="chart-swatch" onclick="copyHex('#FCC840')"><div class="chart-swatch-box" style="background:#FCC840"></div><span class="chart-swatch-label">Gold</span></div>
+          <div class="chart-swatch" onclick="copyHex('#697586')"><div class="chart-swatch-box" style="background:#697586"></div><span class="chart-swatch-label">Slate</span></div>
+        </div>
+      </div>
+
+      <!-- Sequential -->
+      <div class="chart-group">
+        <span class="chart-group-label">Sequential Colours</span>
+        <p style="font-size:13px;color:var(--text-3);margin-bottom:14px;max-width:500px;">For continuous / quantitative data. Use one scale per chart — never mix sequential scales in the same visualization.</p>
+
+        <div style="margin-bottom:12px">
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Brand (Orange)</div>
+          <div class="chart-row">
+            <div class="chart-swatch" onclick="copyHex('#FFF3EE')"><div class="chart-swatch-box" style="background:#FFF3EE;border:1px solid #e7e7e7"></div><span class="chart-swatch-label">50</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FFC9AD')"><div class="chart-swatch-box" style="background:#FFC9AD"></div><span class="chart-swatch-label">200</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FFAA80')"><div class="chart-swatch-box" style="background:#FFAA80"></div><span class="chart-swatch-label">300</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FD8A5E')"><div class="chart-swatch-box" style="background:#FD8A5E"></div><span class="chart-swatch-label">400</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FD7149')"><div class="chart-swatch-box" style="background:#FD7149"></div><span class="chart-swatch-label">500</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FD5E32')"><div class="chart-swatch-box" style="background:#FD5E32"></div><span class="chart-swatch-label">600</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FC3A04')"><div class="chart-swatch-box" style="background:#FC3A04"></div><span class="chart-swatch-label">700</span></div>
+            <div class="chart-swatch" onclick="copyHex('#C92E00')"><div class="chart-swatch-box" style="background:#C92E00"></div><span class="chart-swatch-label">800</span></div>
+            <div class="chart-swatch" onclick="copyHex('#9A2300')"><div class="chart-swatch-box" style="background:#9A2300"></div><span class="chart-swatch-label">900</span></div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px">
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Special (Blue)</div>
+          <div class="chart-row">
+            <div class="chart-swatch" onclick="copyHex('#EFF6FF')"><div class="chart-swatch-box" style="background:#EFF6FF;border:1px solid #e7e7e7"></div><span class="chart-swatch-label">50</span></div>
+            <div class="chart-swatch" onclick="copyHex('#BFDBFE')"><div class="chart-swatch-box" style="background:#BFDBFE"></div><span class="chart-swatch-label">200</span></div>
+            <div class="chart-swatch" onclick="copyHex('#93C5FD')"><div class="chart-swatch-box" style="background:#93C5FD"></div><span class="chart-swatch-label">300</span></div>
+            <div class="chart-swatch" onclick="copyHex('#60A5FA')"><div class="chart-swatch-box" style="background:#60A5FA"></div><span class="chart-swatch-label">400</span></div>
+            <div class="chart-swatch" onclick="copyHex('#3B82F6')"><div class="chart-swatch-box" style="background:#3B82F6"></div><span class="chart-swatch-label">500</span></div>
+            <div class="chart-swatch" onclick="copyHex('#4065C5')"><div class="chart-swatch-box" style="background:#4065C5"></div><span class="chart-swatch-label">600</span></div>
+            <div class="chart-swatch" onclick="copyHex('#1D4ED8')"><div class="chart-swatch-box" style="background:#1D4ED8"></div><span class="chart-swatch-label">700</span></div>
+            <div class="chart-swatch" onclick="copyHex('#1E40AF')"><div class="chart-swatch-box" style="background:#1E40AF"></div><span class="chart-swatch-label">800</span></div>
+            <div class="chart-swatch" onclick="copyHex('#1E3A8A')"><div class="chart-swatch-box" style="background:#1E3A8A"></div><span class="chart-swatch-label">900</span></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Success (Green)</div>
+          <div class="chart-row">
+            <div class="chart-swatch" onclick="copyHex('#F0FDF4')"><div class="chart-swatch-box" style="background:#F0FDF4;border:1px solid #e7e7e7"></div><span class="chart-swatch-label">50</span></div>
+            <div class="chart-swatch" onclick="copyHex('#B8F5D0')"><div class="chart-swatch-box" style="background:#B8F5D0"></div><span class="chart-swatch-label">200</span></div>
+            <div class="chart-swatch" onclick="copyHex('#82ECA8')"><div class="chart-swatch-box" style="background:#82ECA8"></div><span class="chart-swatch-label">300</span></div>
+            <div class="chart-swatch" onclick="copyHex('#4ADE80')"><div class="chart-swatch-box" style="background:#4ADE80"></div><span class="chart-swatch-label">400</span></div>
+            <div class="chart-swatch" onclick="copyHex('#22C55E')"><div class="chart-swatch-box" style="background:#22C55E"></div><span class="chart-swatch-label">500</span></div>
+            <div class="chart-swatch" onclick="copyHex('#3F902B')"><div class="chart-swatch-box" style="background:#3F902B"></div><span class="chart-swatch-label">600</span></div>
+            <div class="chart-swatch" onclick="copyHex('#15803D')"><div class="chart-swatch-box" style="background:#15803D"></div><span class="chart-swatch-label">700</span></div>
+            <div class="chart-swatch" onclick="copyHex('#166534')"><div class="chart-swatch-box" style="background:#166534"></div><span class="chart-swatch-label">800</span></div>
+            <div class="chart-swatch" onclick="copyHex('#14532D')"><div class="chart-swatch-box" style="background:#14532D"></div><span class="chart-swatch-label">900</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feedback Chart -->
+      <div class="chart-group">
+        <span class="chart-group-label">Feedback Colours</span>
+        <p style="font-size:13px;color:var(--text-3);margin-bottom:14px;max-width:500px;">Status-colored chart elements for progress bars, KPI indicators, and threshold visualizations.</p>
+
+        <div style="margin-bottom:8px">
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Success</div>
+          <div class="chart-row">
+            <div class="chart-swatch" onclick="copyHex('#3F902B')"><div class="chart-swatch-box" style="background:#3F902B"></div><span class="chart-swatch-label">Default</span></div>
+            <div class="chart-swatch" onclick="copyHex('#22C55E')"><div class="chart-swatch-box" style="background:#22C55E"></div><span class="chart-swatch-label">Light</span></div>
+            <div class="chart-swatch" onclick="copyHex('#82ECA8')"><div class="chart-swatch-box" style="background:#82ECA8"></div><span class="chart-swatch-label">Muted</span></div>
+            <div class="chart-swatch" onclick="copyHex('#DCFCE8')"><div class="chart-swatch-box" style="background:#DCFCE8;border:1px solid #e7e7e7"></div><span class="chart-swatch-label">Subtle</span></div>
+          </div>
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Error</div>
+          <div class="chart-row">
+            <div class="chart-swatch" onclick="copyHex('#CD3546')"><div class="chart-swatch-box" style="background:#CD3546"></div><span class="chart-swatch-label">Default</span></div>
+            <div class="chart-swatch" onclick="copyHex('#E02828')"><div class="chart-swatch-box" style="background:#E02828"></div><span class="chart-swatch-label">Light</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FF9090')"><div class="chart-swatch-box" style="background:#FF9090"></div><span class="chart-swatch-label">Muted</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FFE0E0')"><div class="chart-swatch-box" style="background:#FFE0E0;border:1px solid #e7e7e7"></div><span class="chart-swatch-label">Subtle</span></div>
+          </div>
+        </div>
+        <div style="margin-bottom:8px">
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Warning</div>
+          <div class="chart-row">
+            <div class="chart-swatch" onclick="copyHex('#F79009')"><div class="chart-swatch-box" style="background:#F79009"></div><span class="chart-swatch-label">Default</span></div>
+            <div class="chart-swatch" onclick="copyHex('#F9B812')"><div class="chart-swatch-box" style="background:#F9B812"></div><span class="chart-swatch-label">Light</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FCC840')"><div class="chart-swatch-box" style="background:#FCC840"></div><span class="chart-swatch-label">Muted</span></div>
+            <div class="chart-swatch" onclick="copyHex('#FFF0C2')"><div class="chart-swatch-box" style="background:#FFF0C2;border:1px solid #e7e7e7"></div><span class="chart-swatch-label">Subtle</span></div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:6px">Info</div>
+          <div class="chart-row">
+            <div class="chart-swatch" onclick="copyHex('#4065C5')"><div class="chart-swatch-box" style="background:#4065C5"></div><span class="chart-swatch-label">Default</span></div>
+            <div class="chart-swatch" onclick="copyHex('#3B82F6')"><div class="chart-swatch-box" style="background:#3B82F6"></div><span class="chart-swatch-label">Light</span></div>
+            <div class="chart-swatch" onclick="copyHex('#93C5FD')"><div class="chart-swatch-box" style="background:#93C5FD"></div><span class="chart-swatch-label">Muted</span></div>
+            <div class="chart-swatch" onclick="copyHex('#DBEAFE')"><div class="chart-swatch-box" style="background:#DBEAFE;border:1px solid #e7e7e7"></div><span class="chart-swatch-label">Subtle</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /chart-wrap -->
+
+  </div><!-- /tab-semantic -->
+
+</main>
+
+<div id="toast"></div>
+
+<script>
+// ── PALETTE DATA ───────────────────────────────────────────────
+const paletteGroups = [
+  {
+    title: 'Brand & Functional',
+    desc: 'Core palettes tied directly to semantic meaning. Each palette anchors a functional role — action, error, success, caution, info.',
+    palettes: [
+      { name: 'Brand', key: 500, steps: ['#FFF3EE','#FFE4D6','#FFC9AD','#FFAA80','#FD8A5E','#FD7149','#FD5E32','#FC3A04','#C92E00','#9A2300'] },
+      { name: 'Red',   key: 600, steps: ['#FFF1F1','#FFE0E0','#FFBFBF','#FF9090','#FF5C5C','#E02828','#CD3546','#A81C31','#871426','#65101C'] },
+      { name: 'Green', key: 600, steps: ['#F0FDF4','#DCFCE8','#B8F5D0','#82ECA8','#4ADE80','#22C55E','#3F902B','#15803D','#166534','#14532D'] },
+      { name: 'Yellow',key: 500, steps: ['#FFFBEB','#FFF0C2','#FEDF84','#FCC840','#F9B812','#F79009','#DC6B02','#B85008','#953D0C','#7A3010'] },
+      { name: 'Blue',  key: 600, steps: ['#EFF6FF','#DBEAFE','#BFDBFE','#93C5FD','#60A5FA','#3B82F6','#4065C5','#1D4ED8','#1E40AF','#1E3A8A'] },
+    ]
+  },
+  {
+    title: 'Extended Palette',
+    desc: 'Accent and data-visualization colors. Used for tags, badges, chart series, and non-semantic highlights.',
+    palettes: [
+      { name: 'Purple', key: 600, steps: ['#FAF5FF','#F3E8FF','#E9D5FF','#D8B4FE','#C084FC','#A855F7','#9333EA','#7E22CE','#6B21A8','#581C87'] },
+      { name: 'Pink',   key: 500, steps: ['#FFF0F7','#FFD9ED','#FFB0D9','#FF7DC0','#F545A5','#E0178B','#BC1174','#950D5D','#710B48','#540937'] },
+      { name: 'Teal',   key: 600, steps: ['#F0FDFB','#CCFBF1','#99F6E4','#5EEAD4','#2DD4BF','#14B8A6','#0D9488','#0F766E','#115E59','#134E4A'] },
+      { name: 'Cyan',   key: 600, steps: ['#ECFEFF','#CFFAFE','#A5F3FC','#67E8F9','#22D3EE','#06B6D4','#0891B2','#0E7490','#155E75','#164E63'] },
+      { name: 'Indigo', key: 600, steps: ['#EEF2FF','#E0E7FF','#C7D2FE','#A5B4FC','#818CF8','#6366F1','#4F46E5','#4338CA','#3730A3','#312E81'] },
+      { name: 'Maroon', key: 600, steps: ['#FFF0F0','#FFD6D6','#FFAAAA','#FF7070','#E04040','#C01E1E','#9E1717','#7C1212','#5C0E0E','#420B0B'] },
+      { name: 'Lime',   key: 400, steps: ['#FAFEE7','#F0FCC0','#E4F98A','#D5F054','#DCDC5B','#C5C535','#9EA32A','#7A8020','#596018','#3D4212'] },
+      { name: 'Sky',    key: 400, steps: ['#EFF8FF','#DAEEFF','#BBDFFF','#8BC9FF','#81AFF2','#5A96E8','#3A7ED8','#2667C2','#1D519B','#163C74'] },
+    ]
+  },
+  {
+    title: 'Neutrals',
+    desc: 'System neutrals for text, backgrounds, borders, and utility surfaces. Cool Gray has a slight blue tint; Warm Gray is pure.',
+    palettes: [
+      { name: 'Cool Gray', key: 500, steps: ['#F8FAFC','#F1F5F9','#E3E8EF','#CDD5DF','#9AA3B2','#697586','#4B5565','#364152','#202939','#121926'] },
+      { name: 'Warm Gray', key: 500, steps: ['#FAFAFA','#F5F5F5','#EDEDED','#D4D4D4','#A3A3A3','#737373','#525252','#404040','#262626','#171717'] },
+    ]
+  }
+];
+
+const stepLabels = [50,100,200,300,400,500,600,700,800,900];
+
+// ── RENDER PALETTES ────────────────────────────────────────────
+function renderPalettes() {
+  const container = document.getElementById('palette-container');
+  let html = '';
+
+  paletteGroups.forEach(group => {
+    html += `
+      <div class="palette-group">
+        <div class="palette-group-header">
+          <span class="palette-group-title">${group.title}</span>
+          <span class="palette-group-count">${group.palettes.length} palettes</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-3);margin-bottom:16px;max-width:560px;line-height:1.5">${group.desc}</p>`;
+
+    group.palettes.forEach(palette => {
+      html += `<div class="palette-row">
+        <div class="palette-name-cell">${palette.name}</div>`;
+
+      palette.steps.forEach((hex, i) => {
+        const step = stepLabels[i];
+        const isKey = step === palette.key;
+        const needsBorder = ['#FFF3EE','#FFF1F1','#F0FDF4','#FFFBEB','#EFF6FF','#FAF5FF','#FFF0F7','#F0FDFB','#ECFEFF','#EEF2FF','#FFF0F0','#FAFEE7','#EFF8FF','#F8FAFC','#FAFAFA','#F1F5F9'].includes(hex);
+        const border = needsBorder ? 'border:1px solid #e7e7e7;' : '';
+        html += `
+        <div class="swatch-col">
+          <div class="swatch-wrap">
+            <div class="swatch${isKey ? ' swatch-is-key' : ''}"
+                 style="background:${hex};${border}"
+                 onclick="copyHex('${hex}')"
+                 title="${hex}">
+            </div>
+            <div class="swatch-tip">${hex}</div>
+          </div>
+          <div class="swatch-step">${step}</div>
+        </div>`;
+      });
+
+      html += `</div>`;
+    });
+
+    html += `</div>`;
+  });
+
+  container.innerHTML = html;
+}
+
+// ── TABS ───────────────────────────────────────────────────────
+function switchTab(name) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('tab-btn-' + name).classList.add('active');
+}
+
+// ── COPY ───────────────────────────────────────────────────────
+function copyHex(hex) {
+  navigator.clipboard.writeText(hex).then(() => {
+    const t = document.getElementById('toast');
+    t.textContent = 'Copied ' + hex;
+    t.classList.add('show');
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }).catch(() => {});
+}
+
+// ── THEME ──────────────────────────────────────────────────────
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('ym-theme', next);
+  document.getElementById('icon-moon').style.display = isDark ? 'block' : 'none';
+  document.getElementById('icon-sun').style.display = isDark ? 'none' : 'block';
+}
+function applyTheme() {
+  const saved = localStorage.getItem('ym-theme');
+  const sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const theme = saved || sys;
+  document.documentElement.setAttribute('data-theme', theme);
+  if (theme === 'dark') {
+    document.getElementById('icon-moon').style.display = 'none';
+    document.getElementById('icon-sun').style.display = 'block';
+  }
+}
+
+// ── SIDEBAR MOBILE ─────────────────────────────────────────────
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ── INIT ───────────────────────────────────────────────────────
+applyTheme();
+renderPalettes();
+</script>
+<script src="download.js"></script>
+<script id="__dl_data">
+var __mdContent  = "# Yubi Market \u2014 Color Token Reference for Claude\n\n> **How to use:** Upload this file to Claude and say \"Use the Yubi Market color system.\" Claude will reference these exact tokens, hex values, and rules for any UI work.\n\n**Version:** 1.0.0 | **Palettes:** 15 | **Semantic tokens:** 40+ | **Last updated:** 2026-03-18\n\n---\n\n## Quick Reference \u2014 Key Values\n\n| Purpose | Token | Hex |\n|---|---|---|\n| Primary action / brand | `color.action.brand.default` | `#FD7149` |\n| Brand hover | `color.action.brand.hover` | `#FD5E32` |\n| Brand active/pressed | `color.action.brand.active` | `#FC3A04` |\n| Page background | `color.bg.page` | `#F8FAFC` |\n| Card / panel | `color.bg.panel` | `#FFFFFF` |\n| Primary text | `color.text.primary` | `#121926` |\n| Secondary text | `color.text.secondary` | `#697586` |\n| Default border | `color.border.default` | `#E3E8EF` |\n| Focus ring | `color.border.focus` | `#81AFF2` |\n| Success | `color.feedback.success.icon` | `#3F902B` |\n| Error | `color.feedback.error.icon` | `#CD3546` |\n| Warning | `color.feedback.warning.icon` | `#F79009` |\n| Info / Special | `color.action.special.default` | `#4065C5` |\n\n---\n\n## Rules Claude Must Follow\n\n1. **Always use tokens, never raw hex** in component code. Raw hex is only acceptable in the token definition itself.\n2. **Max 1 brand primary** (`#FD7149`) per interactive section \u2014 use secondary/ghost variants for supporting actions.\n3. **Warning text on white:** `yellow.500` (#F79009) fails WCAG AA for small text. Use `yellow.700` (#B85008) for body-sized warning text.\n4. **Brand orange on white** (#FD7149) is AA-Large only \u2014 don't use as small body text color.\n5. **Focus rings** must always use `color.border.focus` (`#81AFF2`). Never a custom value.\n6. **Feedback sets** must always be applied as a full set: bg + border + icon + text. Never use a single feedback color in isolation.\n7. **Neutral text** hierarchy: primary (#121926) \u2192 secondary (#697586) \u2192 muted (#9AA3B2) \u2192 disabled (#CDD5DF).\n\n---\n\n## Core Color Palettes (Primitives)\n\n### Brand \u2014 Orange\n\n| Token | Hex |\n|---|---|\n| `brand.50` | `#FFF3EE` |\n| `brand.100` | `#FFE4D6` |\n| `brand.200` | `#FFC9AD` |\n| `brand.300` | `#FFAA80` |\n| `brand.400` | `#FD8A5E` |\n| `brand.500` | `#FD7149` \u2190 primary |\n| `brand.600` | `#FD5E32` \u2190 hover |\n| `brand.700` | `#FC3A04` \u2190 active |\n| `brand.800` | `#C92E00` |\n| `brand.900` | `#9A2300` |\n\n### Red (Error)\n\n| Token | Hex |\n|---|---|\n| `red.50` | `#FFF1F1` |\n| `red.100` | `#FFE0E0` |\n| `red.200` | `#FFBFBF` |\n| `red.300` | `#FF9090` |\n| `red.400` | `#FF5C5C` |\n| `red.500` | `#E02828` |\n| `red.600` | `#CD3546` \u2190 error default |\n| `red.700` | `#A81C31` |\n| `red.800` | `#871426` |\n| `red.900` | `#65101C` |\n\n### Green (Success)\n\n| Token | Hex |\n|---|---|\n| `green.50` | `#F0FDF4` |\n| `green.100` | `#DCFCE8` |\n| `green.200` | `#B8F5D0` |\n| `green.300` | `#82ECA8` |\n| `green.400` | `#4ADE80` |\n| `green.500` | `#22C55E` |\n| `green.600` | `#3F902B` \u2190 success default |\n| `green.700` | `#15803D` |\n| `green.800` | `#166534` |\n| `green.900` | `#14532D` |\n\n### Yellow (Warning / Caution)\n\n| Token | Hex |\n|---|---|\n| `yellow.50` | `#FFFBEB` |\n| `yellow.100` | `#FFF0C2` |\n| `yellow.200` | `#FEDF84` |\n| `yellow.300` | `#FCC840` |\n| `yellow.400` | `#F9B812` |\n| `yellow.500` | `#F79009` \u2190 caution default |\n| `yellow.600` | `#DC6B02` |\n| `yellow.700` | `#B85008` \u2190 AA-safe text |\n| `yellow.800` | `#953D0C` |\n| `yellow.900` | `#7A3010` |\n\n### Blue (Info / Special)\n\n| Token | Hex |\n|---|---|\n| `blue.50` | `#EFF6FF` |\n| `blue.100` | `#DBEAFE` |\n| `blue.200` | `#BFDBFE` |\n| `blue.300` | `#93C5FD` |\n| `blue.400` | `#60A5FA` |\n| `blue.500` | `#3B82F6` |\n| `blue.600` | `#4065C5` \u2190 special default |\n| `blue.700` | `#1D4ED8` |\n| `blue.800` | `#1E40AF` |\n| `blue.900` | `#1E3A8A` |\n\n### Purple\n\n| Token | Hex |\n|---|---|\n| `purple.50` | `#FAF5FF` |\n| `purple.200` | `#E9D5FF` |\n| `purple.400` | `#C084FC` |\n| `purple.600` | `#9333EA` \u2190 default |\n| `purple.700` | `#7E22CE` |\n| `purple.900` | `#581C87` |\n\n### Pink\n\n| Token | Hex |\n|---|---|\n| `pink.50` | `#FFF0F7` |\n| `pink.300` | `#FF7DC0` |\n| `pink.500` | `#E0178B` \u2190 default |\n| `pink.700` | `#950D5D` |\n\n### Teal\n\n| Token | Hex |\n|---|---|\n| `teal.50` | `#F0FDFB` |\n| `teal.300` | `#5EEAD4` |\n| `teal.500` | `#14B8A6` |\n| `teal.600` | `#0D9488` \u2190 default |\n| `teal.800` | `#115E59` |\n\n### Cyan\n\n| Token | Hex |\n|---|---|\n| `cyan.50` | `#ECFEFF` |\n| `cyan.300` | `#67E8F9` |\n| `cyan.500` | `#06B6D4` |\n| `cyan.600` | `#0891B2` \u2190 default |\n\n### Indigo\n\n| Token | Hex |\n|---|---|\n| `indigo.50` | `#EEF2FF` |\n| `indigo.400` | `#818CF8` |\n| `indigo.500` | `#6366F1` |\n| `indigo.600` | `#4F46E5` \u2190 default |\n\n### Maroon\n\n| Token | Hex |\n|---|---|\n| `maroon.50` | `#FFF0F0` |\n| `maroon.500` | `#C01E1E` |\n| `maroon.600` | `#9E1717` \u2190 default |\n| `maroon.700` | `#7C1212` |\n\n### Lime (Brand Accent)\n\n| Token | Hex |\n|---|---|\n| `lime.50` | `#FAFEE7` |\n| `lime.400` | `#DCDC5B` \u2190 brand accent (logo) |\n| `lime.600` | `#9EA32A` |\n\n### Sky (Brand Accent / Focus)\n\n| Token | Hex |\n|---|---|\n| `sky.50` | `#EFF8FF` |\n| `sky.400` | `#81AFF2` \u2190 brand accent (logo) + focus ring |\n| `sky.600` | `#3A7ED8` |\n\n### Neutral \u2014 Cool Gray\n\n| Token | Hex | Role |\n|---|---|---|\n| `neutral.0` | `#FFFFFF` | White |\n| `neutral.50` | `#F8FAFC` | Page background |\n| `neutral.100` | `#F1F5F9` | Inset / code bg |\n| `neutral.200` | `#E3E8EF` | Card border |\n| `neutral.300` | `#CDD5DF` | Strong border |\n| `neutral.400` | `#9AA3B2` | Muted / disabled text |\n| `neutral.500` | `#697586` | Body text |\n| `neutral.600` | `#4B5565` | Supporting text |\n| `neutral.700` | `#364152` | Dark label |\n| `neutral.800` | `#202939` | Near-black |\n| `neutral.900` | `#121926` | Headline text |\n\n### Neutral \u2014 Warm Gray\n\n| Token | Hex |\n|---|---|\n| `warmgray.50` | `#FAFAFA` |\n| `warmgray.200` | `#EDEDED` |\n| `warmgray.500` | `#737373` |\n| `warmgray.700` | `#404040` |\n| `warmgray.900` | `#171717` |\n\n---\n\n## Semantic Tokens\n\n### Action\n\n| Token | Hex | Maps to |\n|---|---|---|\n| `color.action.brand.default` | `#FD7149` | brand.500 |\n| `color.action.brand.hover` | `#FD5E32` | brand.600 |\n| `color.action.brand.active` | `#FC3A04` | brand.700 |\n| `color.action.brand.disabled` | `#FFC9AD` | brand.200 |\n| `color.action.brand.subtle` | `#FFF3EE` | brand.50 |\n| `color.action.secondary.default` | `#E3E8EF` | neutral.200 |\n| `color.action.secondary.hover` | `#CDD5DF` | neutral.300 |\n| `color.action.danger.default` | `#CD3546` | red.600 |\n| `color.action.danger.hover` | `#A81C31` | red.700 |\n| `color.action.danger.subtle` | `#FFF1F1` | red.50 |\n| `color.action.special.default` | `#4065C5` | blue.600 |\n| `color.action.special.hover` | `#1D4ED8` | blue.700 |\n\n### Background\n\n| Token | Hex | Maps to |\n|---|---|---|\n| `color.bg.page` | `#F8FAFC` | neutral.50 |\n| `color.bg.panel` | `#FFFFFF` | neutral.0 |\n| `color.bg.inset` | `#F1F5F9` | neutral.100 |\n| `color.bg.subtle` | `#E3E8EF` | neutral.200 |\n| `color.bg.brand.subtle` | `#FFF3EE` | brand.50 |\n| `color.bg.brand.bold` | `#FD7149` | brand.500 |\n| `color.bg.special.subtle` | `#EFF6FF` | blue.50 |\n| `color.bg.special.bold` | `#4065C5` | blue.600 |\n| `color.bg.overlay` | `rgba(0,0,0,0.45)` | \u2014 |\n\n### Text\n\n| Token | Hex | Maps to |\n|---|---|---|\n| `color.text.primary` | `#121926` | neutral.900 |\n| `color.text.secondary` | `#697586` | neutral.500 |\n| `color.text.muted` | `#9AA3B2` | neutral.400 |\n| `color.text.disabled` | `#CDD5DF` | neutral.300 |\n| `color.text.inverse` | `#FFFFFF` | neutral.0 |\n| `color.text.brand` | `#FD7149` | brand.500 |\n| `color.text.link` | `#4065C5` | blue.600 |\n| `color.text.success` | `#3F902B` | green.600 |\n| `color.text.error` | `#CD3546` | red.600 |\n| `color.text.warning` | `#B85008` | yellow.700 |\n| `color.text.info` | `#4065C5` | blue.600 |\n\n### Border\n\n| Token | Hex | Maps to |\n|---|---|---|\n| `color.border.default` | `#E3E8EF` | neutral.200 |\n| `color.border.strong` | `#CDD5DF` | neutral.300 |\n| `color.border.focus` | `#81AFF2` | sky.400 |\n| `color.border.brand` | `#FD7149` | brand.500 |\n| `color.border.success` | `#3F902B` | green.600 |\n| `color.border.error` | `#CD3546` | red.600 |\n| `color.border.warning` | `#F79009` | yellow.500 |\n| `color.border.info` | `#4065C5` | blue.600 |\n\n---\n\n## Feedback Token Sets\n\nUse the full set together \u2014 bg + border + icon + text.\n\n### Success\n| Token | Hex |\n|---|---|\n| `color.feedback.success.bg` | `#F0FDF4` |\n| `color.feedback.success.border` | `#B8F5D0` |\n| `color.feedback.success.icon` | `#3F902B` |\n| `color.feedback.success.text` | `#166534` |\n\n### Error\n| Token | Hex |\n|---|---|\n| `color.feedback.error.bg` | `#FFF1F1` |\n| `color.feedback.error.border` | `#FFBFBF` |\n| `color.feedback.error.icon` | `#CD3546` |\n| `color.feedback.error.text` | `#871426` |\n\n### Warning\n| Token | Hex |\n|---|---|\n| `color.feedback.warning.bg` | `#FFFBEB` |\n| `color.feedback.warning.border` | `#FEDF84` |\n| `color.feedback.warning.icon` | `#F79009` |\n| `color.feedback.warning.text` | `#7A3010` |\n\n### Info\n| Token | Hex |\n|---|---|\n| `color.feedback.info.bg` | `#EFF6FF` |\n| `color.feedback.info.border` | `#BFDBFE` |\n| `color.feedback.info.icon` | `#4065C5` |\n| `color.feedback.info.text` | `#1E3A8A` |\n\n---\n\n## Chart Colors\n\n### Categorical (use in order for data series)\n1. `#FD7149` \u2014 Brand Orange\n2. `#4065C5` \u2014 Special Blue\n3. `#3F902B` \u2014 Green\n4. `#F79009` \u2014 Amber\n5. `#9333EA` \u2014 Purple\n6. `#0D9488` \u2014 Teal\n7. `#E0178B` \u2014 Pink\n8. `#6366F1` \u2014 Indigo\n9. `#14B8A6` \u2014 Cyan\n10. `#C01E1E` \u2014 Maroon\n11. `#FD5E32` \u2014 Brand\u20132\n12. `#60A5FA` \u2014 Sky\n13. `#22C55E` \u2014 Mint\n14. `#DCDC5B` \u2014 Lime\n15. `#C084FC` \u2014 Violet\n16. `#5EEAD4` \u2014 Aqua\n17. `#FF7DC0` \u2014 Rose\n18. `#818CF8` \u2014 Periwinkle\n19. `#FCC840` \u2014 Gold\n20. `#697586` \u2014 Slate\n\n### Sequential Scales\n- **Brand:** `#FFF3EE` \u2192 `#FD7149` \u2192 `#9A2300`\n- **Blue:** `#EFF6FF` \u2192 `#4065C5` \u2192 `#1E3A8A`\n- **Green:** `#F0FDF4` \u2192 `#3F902B` \u2192 `#14532D`\n\n### Feedback Chart Colors\n| State | Default | Light | Muted | Subtle |\n|---|---|---|---|---|\n| Success | `#3F902B` | `#22C55E` | `#82ECA8` | `#DCFCE8` |\n| Error | `#CD3546` | `#E02828` | `#FF9090` | `#FFE0E0` |\n| Warning | `#F79009` | `#F9B812` | `#FCC840` | `#FFF0C2` |\n| Info | `#4065C5` | `#3B82F6` | `#93C5FD` | `#DBEAFE` |\n\n---\n\n## CSS Custom Properties\n\n```css\n:root {\n  /* Brand */\n  --color-brand-50: #FFF3EE; --color-brand-100: #FFE4D6;\n  --color-brand-200: #FFC9AD; --color-brand-300: #FFAA80;\n  --color-brand-400: #FD8A5E; --color-brand-500: #FD7149;\n  --color-brand-600: #FD5E32; --color-brand-700: #FC3A04;\n  --color-brand-800: #C92E00; --color-brand-900: #9A2300;\n\n  /* Red */\n  --color-red-50: #FFF1F1; --color-red-200: #FFBFBF;\n  --color-red-400: #FF5C5C; --color-red-600: #CD3546;\n  --color-red-700: #A81C31; --color-red-800: #871426;\n\n  /* Green */\n  --color-green-50: #F0FDF4; --color-green-200: #B8F5D0;\n  --color-green-400: #4ADE80; --color-green-600: #3F902B;\n  --color-green-700: #15803D; --color-green-800: #166534;\n\n  /* Yellow */\n  --color-yellow-50: #FFFBEB; --color-yellow-200: #FEDF84;\n  --color-yellow-500: #F79009; --color-yellow-700: #B85008;\n  --color-yellow-900: #7A3010;\n\n  /* Blue */\n  --color-blue-50: #EFF6FF; --color-blue-200: #BFDBFE;\n  --color-blue-400: #60A5FA; --color-blue-600: #4065C5;\n  --color-blue-700: #1D4ED8; --color-blue-900: #1E3A8A;\n\n  /* Neutral */\n  --color-neutral-0: #FFFFFF; --color-neutral-50: #F8FAFC;\n  --color-neutral-100: #F1F5F9; --color-neutral-200: #E3E8EF;\n  --color-neutral-300: #CDD5DF; --color-neutral-400: #9AA3B2;\n  --color-neutral-500: #697586; --color-neutral-600: #4B5565;\n  --color-neutral-700: #364152; --color-neutral-800: #202939;\n  --color-neutral-900: #121926;\n\n  /* Semantic \u2014 Action */\n  --color-action-brand:         #FD7149;\n  --color-action-brand-hover:   #FD5E32;\n  --color-action-brand-active:  #FC3A04;\n  --color-action-brand-subtle:  #FFF3EE;\n  --color-action-danger:        #CD3546;\n  --color-action-special:       #4065C5;\n\n  /* Semantic \u2014 Background */\n  --color-bg-page:         #F8FAFC;\n  --color-bg-panel:        #FFFFFF;\n  --color-bg-inset:        #F1F5F9;\n  --color-bg-brand-subtle: #FFF3EE;\n  --color-bg-brand-bold:   #FD7149;\n  --color-bg-overlay:      rgba(0,0,0,0.45);\n\n  /* Semantic \u2014 Text */\n  --color-text-primary:   #121926;\n  --color-text-secondary: #697586;\n  --color-text-muted:     #9AA3B2;\n  --color-text-disabled:  #CDD5DF;\n  --color-text-inverse:   #FFFFFF;\n  --color-text-brand:     #FD7149;\n  --color-text-link:      #4065C5;\n  --color-text-success:   #3F902B;\n  --color-text-error:     #CD3546;\n  --color-text-warning:   #B85008;\n\n  /* Semantic \u2014 Border */\n  --color-border-default: #E3E8EF;\n  --color-border-strong:  #CDD5DF;\n  --color-border-focus:   #81AFF2;\n  --color-border-brand:   #FD7149;\n  --color-border-error:   #CD3546;\n\n  /* Feedback */\n  --color-success-bg: #F0FDF4; --color-success-border: #B8F5D0;\n  --color-success-icon: #3F902B; --color-success-text: #166534;\n\n  --color-error-bg: #FFF1F1; --color-error-border: #FFBFBF;\n  --color-error-icon: #CD3546; --color-error-text: #871426;\n\n  --color-warning-bg: #FFFBEB; --color-warning-border: #FEDF84;\n  --color-warning-icon: #F79009; --color-warning-text: #7A3010;\n\n  --color-info-bg: #EFF6FF; --color-info-border: #BFDBFE;\n  --color-info-icon: #4065C5; --color-info-text: #1E3A8A;\n}\n```\n\n---\n\n*Yubi Market Design System \u00b7 Color Token Reference v1.0.0*\n*Upload this file to Claude for full color system context.*\n";
+var __mdFilename = "colors.md";
+</script>
+</body>
+</html>

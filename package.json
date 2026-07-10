@@ -14,6 +14,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "tokens:css": "node tokens/build-css.mjs",
+    "predev": "node tokens/build-css.mjs",
+    "prebuild": "node tokens/build-css.mjs",
     "tokens:build": "npm run build --workspace=@yubi/tokens",
     "ds:build": "npm run tokens:build && npm run build --workspace=@yubi/core && npm run build --workspace=@yubi/react",
     "ds:dev": "npm run build --workspace=@yubi/core -- --watch",
@@ -22,6 +25,7 @@
   "dependencies": {
     "@react-three/fiber": "^9.6.1",
     "@types/three": "^0.185.0",
+    "lucide-react": "^1.23.0",
     "next": "16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4",

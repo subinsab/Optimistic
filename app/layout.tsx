@@ -31,34 +31,21 @@ export const metadata: Metadata = {
   ],
 };
 
-// Set the theme before paint to avoid a flash of the wrong theme.
-const themeScript = `
-(function () {
-  try {
-    var stored = localStorage.getItem('optimistic-theme');
-    var theme = stored || 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
-  } catch (e) {
-    document.documentElement.setAttribute('data-theme', 'dark');
-  }
-})();
-`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
+    // Dark-only by design ("dark field, one warm pixel"): the theme is a static
+    // attribute, so it is present in the first paint with no flash and no script.
     <html
       lang="en"
+      data-theme="dark"
       suppressHydrationWarning
       className={`${inter.variable} ${geistMono.variable}`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body>
+      <body suppressHydrationWarning>
         <SiteNav />
         {children}
         <Footer />

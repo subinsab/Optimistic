@@ -1,0 +1,17 @@
+.mark { display: inline-flex; align-items: center; gap: 10px; }
+.px {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+/* hover: the O bursts outward pixel-by-pixel and reassembles once */
+@media (prefers-reduced-motion: no-preference) {
+  .mark:hover .px {
+    animation: logoScatter 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    animation-delay: var(--d, 0s);
+  }
+}
+@keyframes logoScatter {
+  0%, 100% { transform: translate(0, 0); opacity: 1; }
+  38% { transform: translate(var(--dx, 0), var(--dy, 0)); opacity: 0.35; }
+  76% { transform: translate(0, 0); opacity: 1; }
+}

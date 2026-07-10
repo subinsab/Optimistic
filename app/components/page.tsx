@@ -1,128 +1,74 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Reveal from "../_components/Reveal";
-import styles from "./components.module.css";
+import { GROUPS } from "./_data/registry";
+import s from "./docs.module.css";
 
 export const metadata: Metadata = {
   title: "Components — Optimistic",
   description:
-    "The Optimistic component library: foundations and 50+ accessible components, each with tokens, anatomy, motion, and production code for React and Angular.",
+    "The Optimistic component library: 8 foundations, 54 components and 2 layouts, each documented with anatomy, tokens and production code.",
 };
 
-type Item = { name: string; slug: string };
-type Group = { title: string; blurb: string; items: Item[] };
+export default function ComponentsIndex() {
+  const counts = GROUPS.map((g) => ({
+    label: g.label,
+    n: g.categories.reduce((a, c) => a + c.entries.length, 0),
+  }));
 
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-const items = (...names: string[]): Item[] =>
-  names.map((name) => ({ name, slug: slug(name) }));
-
-const GROUPS: Group[] = [
-  {
-    title: "Foundations",
-    blurb: "The tokens and primitives everything else is built on.",
-    items: items(
-      "Color", "Typography", "Spacing", "Radius", "Elevation",
-      "Grid", "Breakpoints", "Icon", "Logo", "Illustration"
-    ),
-  },
-  {
-    title: "Actions",
-    blurb: "Trigger, confirm, and navigate.",
-    items: items("Button", "Split Button", "FAB", "Link", "Icon Button"),
-  },
-  {
-    title: "Inputs & Forms",
-    blurb: "Capture and validate user input.",
-    items: items(
-      "Input", "Textarea", "Dropdown", "Combobox", "Checkbox", "Radio",
-      "Toggle", "Slider", "Choicebox", "PIN Input", "Date Picker",
-      "Time Picker", "Upload", "Form Layout", "Search"
-    ),
-  },
-  {
-    title: "Navigation",
-    blurb: "Move through the product with confidence.",
-    items: items(
-      "Tabs", "Breadcrumbs", "Pagination", "Stepper", "Sidebar",
-      "Side Menu", "Top Nav", "Menu", "Command Menu"
-    ),
-  },
-  {
-    title: "Data Display",
-    blurb: "Present content and structure clearly.",
-    items: items(
-      "Table", "List", "Accordion", "Avatar", "Badge", "Tags", "Pills",
-      "Divider", "Indicator", "Code Block", "Keyboard Input", "Tooltip"
-    ),
-  },
-  {
-    title: "Feedback",
-    blurb: "Tell users what's happening.",
-    items: items(
-      "Snackbar", "Notification", "Progress", "Skeleton", "Loader",
-      "Empty State", "Callout"
-    ),
-  },
-  {
-    title: "Overlays",
-    blurb: "Layer content above the page.",
-    items: items("Modal", "Drawer", "Bottom Sheet", "Popover", "Filter"),
-  },
-  {
-    title: "Patterns",
-    blurb: "Composed experiences built from the primitives.",
-    items: items("Chat Interface", "Auth Flow", "Dashboard"),
-  },
-];
-
-const total = GROUPS.reduce((n, g) => n + g.items.length, 0);
-
-export default function ComponentsPage() {
   return (
-    <main className="page-shell">
-      <header className="page-head">
-        <div className="container">
-          <Reveal>
-            <span className="eyebrow">The library · {total} entries</span>
-            <h1 className="page-title">
-              Components, <span className="gradient-text">documented in depth.</span>
-            </h1>
-            <p className="page-lead">
-              Every component ships with sizing, spacing, anatomy, tokens,
-              motion, do&apos;s &amp; don&apos;ts, live demos, and downloadable
-              code for React and Angular.
-            </p>
-          </Reveal>
+    <div className={s.pageInner}>
+      <Reveal>
+        <span className={s.eyebrow}>
+          <i className={s.hatch} /> COMPONENT LIBRARY
+        </span>
+        <h1 className={s.title}>Every piece, documented.</h1>
+        <p className={s.lead}>
+          The same structure for every entry: a live specimen, its anatomy,
+          the tokens it answers to, and production code. Nothing here is a
+          picture of a component; it is the component.
+        </p>
+        <div className={s.stats}>
+          {counts.map((c) => (
+            <span key={c.label}>
+              <b>{c.n}</b>
+              {c.label}
+            </span>
+          ))}
         </div>
-      </header>
+      </Reveal>
 
-      {GROUPS.map((group, gi) => (
-        <section key={group.title} className="content-section" style={{ paddingBlock: "var(--sp-12)" }}>
-          <div className="container">
-            <Reveal>
-              <div className={styles.groupHead}>
-                <h2 className="h2">{group.title}</h2>
-                <span className={styles.groupCount}>{group.items.length}</span>
+      {GROUPS.map((g) =>
+        g.categories.map((c, ci) => {
+          const label = c.label || g.label;
+          return (
+            <section key={`${g.label}-${label}`} className={s.catSection}>
+              <Reveal>
+                <div className={s.catLabel}>
+                  {label}
+                  <span className={s.catCount}>{String(c.entries.length).padStart(2, "0")}</span>
+                </div>
+              </Reveal>
+              <div className={s.cardGrid}>
+                {c.entries.map((e, i) => (
+                  <Reveal key={e.slug} delay={Math.min(i * 40, 240)}>
+                    <Link href={`/components/${e.slug}`} className={s.card}>
+                      <span className={s.cardTitle}>{e.title}</span>
+                      <span className={s.cardDesc}>{e.desc}</span>
+                      <span className={s.cardFoot}>
+                        <span className={e.built ? s.stReady : s.stSoon}>
+                          {e.built ? "● documented" : "in assembly"}
+                        </span>
+                        <span className={s.cardArrow} aria-hidden="true">→</span>
+                      </span>
+                    </Link>
+                  </Reveal>
+                ))}
               </div>
-              <p className={styles.groupBlurb}>{group.blurb}</p>
-            </Reveal>
-            <div className={styles.tileGrid}>
-              {group.items.map((item, i) => (
-                <Reveal key={item.slug} delay={Math.min(i * 30, 240)}>
-                  <Link href={`/components/${item.slug}`} className={styles.tile}>
-                    <span className={styles.tileSwatch} aria-hidden="true">
-                      {item.name.charAt(0)}
-                    </span>
-                    <span className={styles.tileName}>{item.name}</span>
-                    <span className={styles.tileArrow}>→</span>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-          {gi < GROUPS.length - 1 && <div className={styles.sep} />}
-        </section>
-      ))}
-    </main>
+            </section>
+          );
+        })
+      )}
+    </div>
   );
 }

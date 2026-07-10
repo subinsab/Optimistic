@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropdown — Yubi Market Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+.comp-hero { background: var(--bg-panel); border-bottom: 1px solid var(--border); padding: 48px 56px 40px; display: grid; grid-template-columns: 1fr 300px; gap: 40px; align-items: center; }
+.dl-card { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; display: flex; flex-direction: column; gap: 14px; }
+.dl-card-top { display: flex; align-items: center; gap: 12px; }
+.dl-file-icon { width: 40px; height: 40px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--accent); }
+.dl-file-name { font-size: 13px; font-weight: 700; color: var(--text-1); font-family: var(--mono); }
+.dl-file-meta { font-size: 11px; color: var(--text-3); margin-top: 2px; }
+.dl-card-desc { font-size: 12.5px; color: var(--text-2); line-height: 1.55; }
+.dl-card-desc strong { color: var(--text-1); font-weight: 600; }
+.dl-btn { display: flex; align-items: center; justify-content: center; gap: 7px; background: var(--accent); color: #fff; font-size: 13px; font-weight: 600; padding: 9px 16px; border-radius: 8px; text-decoration: none; transition: background .15s, transform .1s; }
+.dl-btn:hover { background: #E84800; transform: translateY(-1px); }
+.demo-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.spec-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.code-section { padding: 40px 56px; border-bottom: 1px solid var(--border); }
+.related-section { padding: 40px 56px 60px; }
+.section-label { font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--text-3); margin-bottom: 20px; }
+.demo-stage { background: var(--bg-inset); border: 1px solid var(--border); border-radius: 14px; padding: 32px; min-height: 320px; }
+.spec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.spec-table { width: 100%; border-collapse: collapse; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; font-size: 12.5px; }
+.spec-table th { text-align: left; padding: 9px 14px; font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); border-bottom: 1px solid var(--border); background: var(--bg-inset); }
+.spec-table td { padding: 9px 14px; border-bottom: 1px solid var(--border); color: var(--text-2); }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table td:first-child { color: var(--text-1); font-weight: 500; }
+.sv { font-family: var(--mono); font-size: 11px; color: var(--accent-text); background: var(--accent-dim); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--accent); display: inline-block; }
+.color-swatches { display: flex; flex-direction: column; gap: 6px; }
+.color-row { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: 8px; }
+.swatch { width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(0,0,0,.1); flex-shrink: 0; }
+.color-name { font-size: 12px; font-weight: 600; color: var(--text-1); flex: 1; }
+.color-use { font-size: 11px; color: var(--text-3); }
+.anatomy-wrap { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.anatomy-header { padding: 10px 14px; background: var(--bg-inset); border-bottom: 1px solid var(--border); font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+.anatomy-body { padding: 16px 14px; display: flex; flex-direction: column; gap: 8px; }
+.anatomy-item { display: flex; align-items: flex-start; gap: 10px; }
+.anatomy-num { width: 18px; height: 18px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+.anatomy-text { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.anatomy-text strong { color: var(--text-1); }
+.related-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.related-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; text-decoration: none; display: block; transition: border-color .15s, background .15s; }
+.related-card:hover { border-color: var(--accent); background: var(--accent-dim); }
+.related-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); margin-bottom: 4px; }
+.related-title { font-size: 13px; font-weight: 700; color: var(--text-1); }
+#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(10px); background: #111; color: #fff; padding: 9px 18px; border-radius: 8px; font-size: 12.5px; font-family: var(--mono); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 9999; white-space: nowrap; }
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+@media (max-width: 1099px) { .comp-hero { grid-template-columns: 1fr; } .spec-grid { grid-template-columns: 1fr; } .related-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 809px) { .comp-hero, .demo-section, .spec-section, .code-section, .related-section { padding: 32px 20px; } .related-grid { grid-template-columns: 1fr; } }
+
+/* ── Dropdown component styles ── */
+.dd-demo-grid { display: flex; flex-direction: column; gap: 32px; }
+.dd-section-title { font-size: 11px; color: var(--text-3); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-family: var(--mono); margin-bottom: 16px; }
+.dd-row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.demo-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.dd-col { display: flex; flex-direction: column; gap: 6px; min-width: 200px; flex: 1; max-width: 280px; }
+
+/* YM Dropdown */
+.ym-dd-wrap { display: flex; flex-direction: column; gap: 5px; }
+.ym-dd-label { font-size: 13px; font-weight: 600; color: var(--text-1); font-family: 'Inter', -apple-system, sans-serif; }
+.ym-dd-label .req { color: var(--accent); margin-left: 2px; }
+
+.ym-dd-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 36px; padding: 0 12px;
+  background: var(--bg-panel); border: 1.5px solid var(--border);
+  border-radius: 8px; cursor: pointer; font-family: 'Inter', -apple-system, sans-serif;
+  font-size: 14px; color: var(--text-1); transition: border-color 150ms, box-shadow 150ms;
+  user-select: none;
+}
+.ym-dd-trigger:hover:not(.dd-disabled) { border-color: var(--text-3); }
+.ym-dd-trigger.dd-open { border-color: #4065C5; box-shadow: 0 0 0 3px rgba(64,101,197,.12); }
+.ym-dd-trigger.dd-error { border-color: #CD3546; }
+.ym-dd-trigger.dd-disabled { opacity: 0.45; cursor: not-allowed; background: var(--bg-inset); }
+.ym-dd-placeholder { color: var(--text-3); }
+.ym-dd-value { color: var(--text-1); }
+.ym-dd-chevron { color: var(--text-3); transition: transform 200ms; flex-shrink: 0; }
+.ym-dd-trigger.dd-open .ym-dd-chevron { transform: rotate(180deg); }
+
+/* Dropdown menu */
+.ym-dd-menu {
+  position: fixed; z-index: 600;
+  background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.1); overflow: hidden;
+  display: none; max-height: 240px; overflow-y: auto;
+}
+.ym-dd-menu.open { display: block; }
+.ym-dd-item {
+  padding: 9px 12px; font-size: 14px; font-family: 'Inter', -apple-system, sans-serif;
+  color: var(--text-1); cursor: pointer; display: flex; align-items: center; gap: 8px;
+  transition: background 100ms;
+}
+.ym-dd-item:hover { background: var(--bg-inset); }
+.ym-dd-item.selected { color: #4065C5; font-weight: 500; }
+.ym-dd-item.selected::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #4065C5; margin-left: auto; flex-shrink: 0; }
+.ym-dd-item.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+.ym-dd-divider { height: 1px; background: var(--border); margin: 4px 0; }
+.ym-dd-section-label { padding: 6px 12px 4px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-3); }
+.ym-dd-hint { font-size: 11.5px; color: var(--text-3); font-family: 'Inter', -apple-system, sans-serif; margin-top: 2px; }
+.ym-dd-hint.hint-error { color: #CD3546; }
+
+/* Sizes */
+.ym-dd-trigger.dd-l { height: 44px; padding: 0 14px; font-size: 16px; }
+.ym-dd-trigger.dd-s { height: 28px; padding: 0 10px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-left">
+    <button class="icon-btn hamburger" id="hamburger" onclick="toggleSidebar()">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3.5" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="7.25" width="14" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="11" width="14" height="1.5" rx=".75" fill="currentColor"/></svg>
+    </button>
+    <a class="topbar-logo" href="preview.html">
+      <svg height="28" viewBox="0 0 576 144" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M66.2127 45C66.2127 52.6541 67.7203 60.2333 70.6495 67.3047C73.5786 74.3762 77.872 80.8015 83.2844 86.2137C88.6968 91.626 95.1222 95.9193 102.194 98.8484C109.265 101.777 116.845 103.285 124.499 103.285V75.212C120.519 75.212 116.578 74.5243 112.9 73.0011C109.223 71.478 105.882 69.2455 103.067 66.4311C100.253 63.6168 98.0204 60.2756 96.4973 56.5985C94.9741 52.9213 94.2864 48.9801 94.2864 45L66.2127 45Z" fill="#DCDC5B"/><path d="M36 103.285C43.6543 103.285 51.2336 101.777 58.3052 98.8484C65.3769 95.9193 71.8023 91.626 77.2147 86.2137C82.6271 80.8015 86.9205 74.3762 89.8496 67.3047C92.7788 60.2333 94.2864 52.6541 94.2864 45L66.2127 45C66.2127 48.9801 65.525 52.9213 64.0018 56.5985C62.4786 60.2756 60.2461 63.6168 57.4317 66.4312C54.6172 69.2455 51.276 71.478 47.5987 73.0012C43.9215 74.5243 39.9802 75.212 36 75.212L36 103.285Z" fill="#FE5104"/><path d="M94.2864 45L94.2854 45.3587C94.239 52.8908 92.733 60.3438 89.8496 67.3047C87.4913 72.9981 84.2485 78.2723 80.2495 82.9365C76.2506 78.2723 73.0078 72.9981 70.6495 67.3047C67.7203 60.2333 66.2127 52.6541 66.2127 45L94.2864 45Z" fill="#81AFF2"/><path d="M161.936 99.2V79.67L143.744 49.55H153.918L166.181 70.97H166.652L179.05 49.55H189.156L170.83 79.67V99.2H161.936Z" fill="currentColor"/><path d="M219.607 62.23V99.14H214.731L210.753 91.9C208.732 96.82 204.178 99.28 198.99 99.28C191.713 99.28 186.256 95.1 186.256 84.25V62.23H194.678V82.43C194.678 89.17 196.969 92.34 202.224 92.34C207.884 92.34 211.185 87.89 211.185 82.5V62.23H219.607Z" fill="currentColor"/><path d="M245.259 99.34C239.532 99.34 235.22 96.38 233.468 92.06L229.183 99.2H225.109V49.55H233.531L233.468 69.43C235.22 65.05 239.532 62.15 245.259 62.15C253.95 62.15 259.745 68.55 259.745 80.74C259.745 92.87 253.95 99.34 245.259 99.34ZM242.159 92.47C247.55 92.47 251.188 88.63 251.188 80.74C251.188 72.86 247.55 69.02 242.159 69.02C236.095 69.02 233.063 73.8 233.063 78.86V82.63C233.063 87.68 236.095 92.47 242.159 92.47Z" fill="currentColor"/><path d="M265.129 57.77V49.55H273.552V57.77H265.129ZM265.129 99.2V62.29H273.552V99.2H265.129Z" fill="currentColor"/><path d="M292.401 99.17V62.25H296.811L301.227 69.86C303.114 64.94 307.628 62.12 312.614 62.12C317.802 62.12 322.249 64.41 324.136 70.34C325.959 64.88 331.345 62.12 336.87 62.12C343.877 62.12 349.267 66.29 349.267 77.14V99.17H340.845V78.96C340.845 72.22 338.622 69.06 333.636 69.06C328.246 69.06 325.079 73.5 325.079 78.89V99.17H316.589V78.96C316.589 72.22 314.366 69.06 309.447 69.06C303.99 69.06 300.823 73.5 300.823 78.89V99.17H292.401Z" fill="currentColor"/><path d="M369.117 99.24C360.492 99.24 354.698 92.84 354.698 80.71C354.698 68.52 360.492 62.12 369.117 62.12C374.911 62.12 379.223 65.01 380.975 69.39V62.25H389.334V99.17H385.19L380.975 91.96C379.223 96.34 374.911 99.24 369.117 99.24ZM372.283 92.37C378.28 92.37 381.312 87.58 381.312 82.53V78.82C381.312 73.7 378.28 68.99 372.283 68.99C366.893 68.99 363.255 72.83 363.255 80.71C363.255 88.53 366.893 92.37 372.283 92.37Z" fill="currentColor"/><path d="M394.536 99.3V62.38H402.76C404.377 64.5 408.348 62.45 412.997 62.45H415.086V70.4C414.547 70.4 413.738 70.33 412.863 70.33C406.327 70.33 403.228 73.56 402.958 79.15V99.3H394.536Z" fill="currentColor"/><path d="M417.797 99.2V49.55H426.354V77.72L441.646 62.29H451.822L437.943 76.9L452.159 99.2H442.255L434.17 86.2L426.354 88.09V99.2H417.797Z" fill="currentColor"/><path d="M466.665 99.24C455.682 99.24 449.079 91.96 449.079 80.91C449.079 69.46 455.817 62.12 466.328 62.12C478.523 62.12 484.317 70.87 483.105 82.53H457.367C457.367 89.07 461.072 92.77 466.665 92.77C470.977 92.77 474.143 90.68 474.952 87.45H482.97C481.959 94.52 475.424 99.24 466.665 99.24ZM466.328 68.58C461.274 68.58 457.973 71.75 457.434 76.87H474.885C474.615 71.21 471.044 68.58 466.328 68.58Z" fill="currentColor"/><path d="M498.395 99.32C491.725 99.32 489.905 96.28 489.905 91.16V70.28H483.302V62.94H489.905V52.22H498.26V62.94H505.874V70.28H498.26V89.61C498.26 91.9 499.203 92.44 501.292 92.44H505.874V99.32H498.395Z" fill="currentColor"/><path d="M524.301 99.31C514.127 99.31 508.4 94.52 508.468 87.38H516.755C516.822 91.69 520.056 93.51 524.503 93.51C529.085 93.51 531.51 91.83 531.51 88.93C531.51 85.29 529.085 84.62 523.493 83.81C515.407 82.66 509.411 80.78 509.411 73.16C509.411 65.96 515.475 62.12 524.503 62.12C533.532 62.12 539.124 66.29 539.259 73.37H531.039C530.971 69.73 528.344 67.91 524.301 67.91C520.056 67.91 517.833 69.66 517.833 72.29C517.833 75.39 520.393 76.4 526.053 77.14C533.532 78.15 540 79.7 540 88.12C540 95.74 534.003 99.31 524.301 99.31Z" fill="currentColor"/></svg>
+    </a>
+    <div class="topbar-sep"></div>
+    <span class="topbar-label">Dropdown</span>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-badge">v1.0.0</span>
+    <button class="icon-btn" id="theme-toggle" onclick="toggleTheme()">
+      <svg id="icon-moon" width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.9 8.5A5.5 5.5 0 0 0 11 2.1a5.5 5.5 0 1 1-8.1 6.4z" fill="currentColor"/></svg>
+      <svg id="icon-sun" width="15" height="15" viewBox="0 0 15 15" fill="none" style="display:none"><circle cx="7.5" cy="7.5" r="2.5" fill="currentColor"/><path d="M7.5 1v1.5M7.5 12.5V14M1 7.5h1.5M12.5 7.5H14M2.9 2.9l1.06 1.06M11.04 11.04l1.06 1.06M2.9 12.1l1.06-1.06M11.04 3.96l1.06-1.06" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-inner"><nav>
+    <div class="nav-group"><span class="nav-group-label">Foundations</span>
+      <a class="nav-item" href="principles.html"><span class="nav-num">01</span>How to Use</a>
+      <a class="nav-item" href="colors.html"><span class="nav-num">02</span>Color System</a>
+      <a class="nav-item" href="typography.html"><span class="nav-num">03</span>Typography</a>
+      <a class="nav-item" href="spacing.html"><span class="nav-num">04</span>Spacing</a>
+      <a class="nav-item" href="grid.html"><span class="nav-num">05</span>Grid System</a>
+      <a class="nav-item" href="elevation.html"><span class="nav-num">06</span>Elevation</a>
+      <a class="nav-item" href="radius.html"><span class="nav-num">07</span>Border Radius</a>
+      <a class="nav-item" href="breakpoints.html"><span class="nav-num">08</span>Breakpoints</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Components</span>
+      <a class="nav-item" href="components.html"><span class="nav-num">09</span>Components</a>
+      <span class="nav-cat">Navigation</span>
+      <a class="nav-item nav-sub" href="sidebar.html">Side Navigation</a>
+      <a class="nav-item nav-sub" href="topnav.html">Top Navigation</a>
+      <a class="nav-item nav-sub" href="breadcrumbs.html">Breadcrumbs</a>
+      <a class="nav-item nav-sub" href="tabs.html">Tabs</a>
+      <a class="nav-item nav-sub" href="pagination.html">Pagination</a>
+      <a class="nav-item nav-sub" href="link.html">Link</a>
+      <a class="nav-item nav-sub" href="commandmenu.html">Command Menu</a>
+      <span class="nav-cat">Forms</span>
+      <a class="nav-item nav-sub" href="button.html">Button</a>
+      <a class="nav-item nav-sub" href="splitbutton.html">Split Button</a>
+      <a class="nav-item nav-sub" href="input.html">Input</a>
+      <a class="nav-item nav-sub" href="textarea.html">Textarea</a>
+      <a class="nav-item nav-sub" href="checkbox.html">Checkbox</a>
+      <a class="nav-item nav-sub" href="radio.html">Radio</a>
+      <a class="nav-item nav-sub" href="choicebox.html">Choicebox</a>
+      <a class="nav-item nav-sub" href="toggle.html">Toggle</a>
+      <a class="nav-item nav-sub active" href="dropdown.html">Dropdown</a>
+      <a class="nav-item nav-sub" href="datepicker.html">Date Picker</a>
+      <a class="nav-item nav-sub" href="timepicker.html">Time Picker</a>
+      <a class="nav-item nav-sub" href="search.html">Search</a>
+      <a class="nav-item nav-sub" href="slider.html">Slider</a>
+      <a class="nav-item nav-sub" href="pininput.html">Pin Input</a>
+      <a class="nav-item nav-sub" href="upload.html">Upload</a>
+      <span class="nav-cat">Data Display</span>
+      <a class="nav-item nav-sub" href="table.html">Table</a>
+      <a class="nav-item nav-sub" href="list.html">List</a>
+      <a class="nav-item nav-sub" href="avatar.html">Avatar</a>
+      <a class="nav-item nav-sub" href="badge.html">Badge</a>
+      <a class="nav-item nav-sub" href="tags.html">Tags</a>
+      <a class="nav-item nav-sub" href="pills.html">Pills</a>
+      <a class="nav-item nav-sub" href="indicator.html">Indicator</a>
+      <a class="nav-item nav-sub" href="logo.html">Logo</a>
+      <a class="nav-item nav-sub" href="skeleton.html">Skeleton</a>
+      <a class="nav-item nav-sub" href="keyboardinput.html">Keyboard Input</a>
+      <span class="nav-cat">Feedback</span>
+      <a class="nav-item nav-sub" href="snackbar.html">Snackbar</a>
+      <a class="nav-item nav-sub" href="loader.html">Loader</a>
+      <a class="nav-item nav-sub" href="progress.html">Progress</a>
+      <a class="nav-item nav-sub" href="notification.html">Notification</a>
+      <a class="nav-item nav-sub" href="callout.html">Callout</a>
+      <a class="nav-item nav-sub" href="stepper.html">Stepper</a>
+      <a class="nav-item nav-sub" href="emptystate.html">Empty State</a>
+      <span class="nav-cat">Overlays</span>
+      <a class="nav-item nav-sub" href="modal.html">Modal</a>
+      <a class="nav-item nav-sub" href="drawer.html">Drawer</a>
+      <a class="nav-item nav-sub" href="popover.html">Popover</a>
+      <a class="nav-item nav-sub" href="tooltip.html">Tooltip</a>
+      <a class="nav-item nav-sub" href="bottomsheet.html">Bottom Sheet</a>
+      <span class="nav-cat">Layout</span>
+      <a class="nav-item nav-sub" href="accordion.html">Accordion</a>
+      <a class="nav-item nav-sub" href="divider.html">Divider</a>
+      <a class="nav-item nav-sub" href="filter.html">Filter</a>
+      <a class="nav-item nav-sub" href="fab.html">FAB</a>
+      <a class="nav-item nav-sub" href="menu.html">Menu</a>
+      <a class="nav-item nav-sub" href="icon.html">Icon</a>
+      <a class="nav-item nav-sub" href="illustration.html">Illustration</a>
+      <a class="nav-item nav-sub" href="gridcomp.html">Grid</a>
+      <a class="nav-item nav-sub" href="codeblock.html">Code Block</a>
+    </div>
+    <div class="nav-divider"></div>
+    <div class="nav-group"><span class="nav-group-label">Layouts</span>
+      <a class="nav-item" href="sidemenu-with-navbar.html"><span class="nav-num">10</span>Layouts</a>
+      <a class="nav-item nav-sub" href="form-layout.html">Forms</a>
+    </div>
+    <div class="nav-divider"></div>
+  </nav></div>
+</aside>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<main class="main">
+
+  <!-- HERO -->
+  <div class="comp-hero">
+    <div>
+      <span class="page-eyebrow">22 / Forms</span>
+      <h1 class="page-title">Dropdown</h1>
+      <p class="page-desc" style="margin-bottom:20px">Select input that opens a floating menu of options. Supports single selection, grouped options, disabled items, error/success states, and three sizes. Closes on outside click or Escape key.</p>
+      <div class="page-meta">
+        <span class="meta-chip">Single select</span>
+        <span class="meta-chip">L / M / S sizes</span>
+        <span class="meta-chip">Grouped options</span>
+        <span class="meta-chip">Error state</span>
+        <span class="meta-chip">10px menu radius</span>
+      </div>
+    </div>
+    <div class="dl-card">
+      <div class="dl-card-top">
+        <div class="dl-file-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/><polyline points="14,2 14,8 20,8"/></svg>
+        </div>
+        <div>
+          <div class="dl-file-name">dropdown.md</div>
+          <div class="dl-file-meta">Markdown · All specs · Interactions</div>
+        </div>
+      </div>
+      <p class="dl-card-desc">Upload to <strong>Claude</strong> for exact dropdown tokens and production-ready code.</p>
+      <a onclick="event.preventDefault();downloadMd(__mdContent,__mdFilename)" class="dl-btn" href="downloads/dropdown.md" download="dropdown.md">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v8M4 6l3 3 3-3M2 10v1a1 1 0 001 1h8a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Download dropdown.md
+      </a>
+    </div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="demo-section" id="demo">
+    <div class="section-label">Live Demo — Fully Interactive</div>
+    <div class="demo-stage">
+      <div class="dd-demo-grid">
+
+        <!-- Basic dropdowns -->
+        <div>
+          <div class="dd-section-title">States</div>
+          <div class="dd-row">
+
+            <!-- Default (placeholder) -->
+            <div class="dd-col">
+              <div class="ym-dd-wrap" id="dd1-wrap">
+                <label class="ym-dd-label">Loan Type</label>
+                <div class="ym-dd-trigger" onclick="toggleDD('dd1')">
+                  <span class="ym-dd-placeholder" id="dd1-val">Select type…</span>
+                  <svg class="ym-dd-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="ym-dd-menu" id="dd1">
+                  <div class="ym-dd-item" onclick="selectDD('dd1','Secured Loan')">Secured Loan</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd1','Unsecured Loan')">Unsecured Loan</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd1','Working Capital')">Working Capital</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd1','Invoice Financing')">Invoice Financing</div>
+                  <div class="ym-dd-item disabled">Commercial Paper (unavailable)</div>
+                </div>
+                <span class="ym-dd-hint">Select the loan product type</span>
+              </div>
+            </div>
+
+            <!-- With selected value -->
+            <div class="dd-col">
+              <div class="ym-dd-wrap" id="dd2-wrap">
+                <label class="ym-dd-label">Repayment <span class="req" style="color:var(--accent)">*</span></label>
+                <div class="ym-dd-trigger" onclick="toggleDD('dd2')">
+                  <span class="ym-dd-value" id="dd2-val">Monthly</span>
+                  <svg class="ym-dd-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="ym-dd-menu" id="dd2">
+                  <div class="ym-dd-item" onclick="selectDD('dd2','Weekly')">Weekly</div>
+                  <div class="ym-dd-item selected" onclick="selectDD('dd2','Monthly')">Monthly</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd2','Quarterly')">Quarterly</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd2','Annually')">Annually</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Error -->
+            <div class="dd-col">
+              <div class="ym-dd-wrap">
+                <label class="ym-dd-label">State</label>
+                <div class="ym-dd-trigger dd-error">
+                  <span class="ym-dd-placeholder">Select state…</span>
+                  <svg class="ym-dd-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <span class="ym-dd-hint hint-error">State is required</span>
+              </div>
+            </div>
+
+            <!-- Disabled -->
+            <div class="dd-col">
+              <div class="ym-dd-wrap">
+                <label class="ym-dd-label">Currency</label>
+                <div class="ym-dd-trigger dd-disabled">
+                  <span class="ym-dd-value">INR</span>
+                  <svg class="ym-dd-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <span class="ym-dd-hint">Cannot be changed for this account</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="demo-divider"></div>
+
+        <!-- Grouped + Sizes -->
+        <div>
+          <div class="dd-section-title">Grouped Options & Sizes</div>
+          <div class="dd-row">
+
+            <!-- Grouped -->
+            <div class="dd-col" style="max-width:240px">
+              <div class="ym-dd-wrap" id="dd3-wrap">
+                <label class="ym-dd-label">Product Category</label>
+                <div class="ym-dd-trigger" onclick="toggleDD('dd3')">
+                  <span class="ym-dd-placeholder" id="dd3-val">Select category…</span>
+                  <svg class="ym-dd-chevron" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="ym-dd-menu" id="dd3">
+                  <div class="ym-dd-section-label">Lending</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd3','Term Loan')">Term Loan</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd3','Overdraft')">Overdraft</div>
+                  <div class="ym-dd-divider"></div>
+                  <div class="ym-dd-section-label">Trade Finance</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd3','Letter of Credit')">Letter of Credit</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd3','Bank Guarantee')">Bank Guarantee</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Large -->
+            <div class="dd-col" style="max-width:220px">
+              <div class="ym-dd-wrap" id="dd4-wrap">
+                <label class="ym-dd-label">Large · 44px</label>
+                <div class="ym-dd-trigger dd-l" onclick="toggleDD('dd4')">
+                  <span class="ym-dd-placeholder" id="dd4-val">Select…</span>
+                  <svg class="ym-dd-chevron" width="16" height="16" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="ym-dd-menu" id="dd4">
+                  <div class="ym-dd-item" onclick="selectDD('dd4','Option A')">Option A</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd4','Option B')">Option B</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Small -->
+            <div class="dd-col" style="max-width:180px">
+              <div class="ym-dd-wrap" id="dd5-wrap">
+                <label class="ym-dd-label">Small · 28px</label>
+                <div class="ym-dd-trigger dd-s" onclick="toggleDD('dd5')">
+                  <span class="ym-dd-placeholder" id="dd5-val">Select…</span>
+                  <svg class="ym-dd-chevron" width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M3 5l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </div>
+                <div class="ym-dd-menu" id="dd5">
+                  <div class="ym-dd-item" onclick="selectDD('dd5','Option A')">Option A</div>
+                  <div class="ym-dd-item" onclick="selectDD('dd5','Option B')">Option B</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ANATOMY + SPECS -->
+  <div class="spec-section" id="anatomy">
+    <div class="section-label">Anatomy & Measurements</div>
+    <div class="spec-grid">
+      <div>
+        <div class="anatomy-wrap">
+          <div class="anatomy-header">Anatomy</div>
+          <div class="anatomy-body">
+            <div class="anatomy-item">
+              <div class="anatomy-num">1</div>
+              <div class="anatomy-text"><strong>Label</strong> — 13px/600 above trigger. Required (*) in accent.</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">2</div>
+              <div class="anatomy-text"><strong>Trigger</strong> — 36px tall (M), full-width. Shows placeholder or selected value + chevron.</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">3</div>
+              <div class="anatomy-text"><strong>Chevron icon</strong> — 14px, rotates 180° when open. Color `--text-3`.</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">4</div>
+              <div class="anatomy-text"><strong>Menu</strong> — floats 4px below trigger. 10px radius, `--bg-panel`, border `--border`. Max 240px height, scrollable.</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">5</div>
+              <div class="anatomy-text"><strong>Menu Item</strong> — 9px 12px padding, 14px font. Hover: `--bg-inset`. Selected: accent color + dot.</div>
+            </div>
+            <div class="anatomy-item">
+              <div class="anatomy-num">6</div>
+              <div class="anatomy-text"><strong>Section Label</strong> (optional) — 10px uppercase, `--text-3`. Groups items visually.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="specs">
+        <table class="spec-table">
+          <thead><tr><th>Property</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td>Trigger height — L</td><td><span class="sv">44px</span></td></tr>
+            <tr><td>Trigger height — M</td><td><span class="sv">36px</span></td></tr>
+            <tr><td>Trigger height — S</td><td><span class="sv">28px</span></td></tr>
+            <tr><td>Trigger border radius</td><td><span class="sv">8px</span></td></tr>
+            <tr><td>Focus ring</td><td><span class="sv">3px / 12% accent</span></td></tr>
+            <tr><td>Menu offset</td><td><span class="sv">4px</span></td></tr>
+            <tr><td>Menu border radius</td><td><span class="sv">10px</span></td></tr>
+            <tr><td>Menu max height</td><td><span class="sv">240px</span></td></tr>
+            <tr><td>Menu shadow</td><td><span class="sv">0 8px 24px rgba(0,0,0,.1)</span></td></tr>
+            <tr><td>Item padding</td><td><span class="sv">9px 12px</span></td></tr>
+            <tr><td>Item font</td><td><span class="sv">14px</span></td></tr>
+            <tr><td>Disabled opacity</td><td><span class="sv">0.45</span></td></tr>
+            <tr><td>Chevron size</td><td><span class="sv">14px</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOR TOKENS -->
+  <div class="spec-section" id="colors">
+    <div class="section-label">Color Tokens</div>
+    <div class="color-swatches" style="max-width:520px">
+      <div class="color-row"><div class="swatch" style="background:#4065C5"></div><div class="color-name">--blue · #4065C5</div><div class="color-use">Focus border, selected item indicator</div></div>
+      <div class="color-row"><div class="swatch" style="background:var(--border);border:1px solid var(--text-3)"></div><div class="color-name">--border</div><div class="color-use">Trigger default border, menu border</div></div>
+      <div class="color-row"><div class="swatch" style="background:var(--bg-panel);border:1px solid var(--border)"></div><div class="color-name">--bg-panel</div><div class="color-use">Trigger & menu background</div></div>
+      <div class="color-row"><div class="swatch" style="background:var(--bg-inset);border:1px solid var(--border)"></div><div class="color-name">--bg-inset</div><div class="color-use">Menu item hover, disabled trigger bg</div></div>
+      <div class="color-row"><div class="swatch" style="background:#CD3546"></div><div class="color-name">--error · #CD3546</div><div class="color-use">Error trigger border</div></div>
+    </div>
+  </div>
+
+  <!-- CODE -->
+  <div class="code-section" id="code">
+    <div class="section-label">Code</div>
+    <div class="code-tabs">
+      <div class="code-tab active" onclick="switchTab(this,'tab-html')">HTML</div>
+      <div class="code-tab" onclick="switchTab(this,'tab-css')">CSS</div>
+      <div class="code-tab" onclick="switchTab(this,'tab-react')">React</div>
+    </div>
+    <div class="code-panel active" id="tab-html">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <div class="code-block"><span class="cmt">&lt;!-- Dropdown select --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-dd-wrap"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;label</span> <span class="attr">class</span>=<span class="str">"ym-dd-label"</span><span class="tag">&gt;</span>Loan Type<span class="tag">&lt;/label&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-dd-trigger"</span> <span class="attr">onclick</span>=<span class="str">"toggleDD('dd1')"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;span</span> <span class="attr">class</span>=<span class="str">"ym-dd-placeholder"</span> <span class="attr">id</span>=<span class="str">"dd1-val"</span><span class="tag">&gt;</span>Select type…<span class="tag">&lt;/span&gt;</span>
+    <span class="tag">&lt;svg</span> <span class="attr">class</span>=<span class="str">"ym-dd-chevron"</span> <span class="attr">width</span>=<span class="str">"14"</span> <span class="attr">height</span>=<span class="str">"14"</span> <span class="attr">viewBox</span>=<span class="str">"0 0 14 14"</span> <span class="attr">fill</span>=<span class="str">"none"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;path</span> <span class="attr">d</span>=<span class="str">"M3 5l4 4 4-4"</span> <span class="attr">stroke</span>=<span class="str">"currentColor"</span> <span class="attr">stroke-width</span>=<span class="str">"1.5"</span> <span class="attr">stroke-linecap</span>=<span class="str">"round"</span><span class="tag">/&gt;&lt;/svg&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-dd-menu"</span> <span class="attr">id</span>=<span class="str">"dd1"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-dd-item"</span> <span class="attr">onclick</span>=<span class="str">"selectDD('dd1','Secured')"</span><span class="tag">&gt;</span>Secured Loan<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-dd-item"</span> <span class="attr">onclick</span>=<span class="str">"selectDD('dd1','Unsecured')"</span><span class="tag">&gt;</span>Unsecured Loan<span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="str">"ym-dd-item disabled"</span><span class="tag">&gt;</span>Unavailable Option<span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></div>
+    </div>
+    <div class="code-panel" id="tab-css">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <div class="code-block"><span class="fn">.ym-dd-wrap</span> { <span class="kw">position</span>: relative; <span class="kw">display</span>: flex; <span class="kw">flex-direction</span>: column; <span class="kw">gap</span>: <span class="num">5px</span>; }
+<span class="fn">.ym-dd-trigger</span> {
+  <span class="kw">display</span>: flex; <span class="kw">align-items</span>: center; <span class="kw">justify-content</span>: space-between;
+  <span class="kw">height</span>: <span class="num">36px</span>; <span class="kw">padding</span>: <span class="num">0 12px</span>;
+  <span class="kw">background</span>: <span class="kw">var</span>(--bg-panel); <span class="kw">border</span>: <span class="num">1.5px</span> solid <span class="kw">var</span>(--border);
+  <span class="kw">border-radius</span>: <span class="num">8px</span>; <span class="kw">cursor</span>: pointer;
+  <span class="kw">font-size</span>: <span class="num">14px</span>; <span class="kw">transition</span>: border-color <span class="num">150ms</span>, box-shadow <span class="num">150ms</span>;
+}
+<span class="fn">.ym-dd-trigger.dd-open</span> { <span class="kw">border-color</span>: <span class="num">#4065C5</span>; <span class="kw">box-shadow</span>: <span class="num">0 0 0 3px</span> rgba(<span class="num">64,101,197,.12</span>); }
+<span class="fn">.ym-dd-chevron</span> { <span class="kw">transition</span>: transform <span class="num">200ms</span>; }
+<span class="fn">.ym-dd-trigger.dd-open .ym-dd-chevron</span> { <span class="kw">transform</span>: rotate(<span class="num">180deg</span>); }
+
+<span class="fn">.ym-dd-menu</span> {
+  <span class="kw">position</span>: absolute; <span class="kw">top</span>: calc(<span class="num">100%</span> + <span class="num">4px</span>); <span class="kw">left</span>: <span class="num">0</span>; <span class="kw">right</span>: <span class="num">0</span>; <span class="kw">z-index</span>: <span class="num">200</span>;
+  <span class="kw">background</span>: <span class="kw">var</span>(--bg-panel); <span class="kw">border</span>: <span class="num">1px</span> solid <span class="kw">var</span>(--border); <span class="kw">border-radius</span>: <span class="num">10px</span>;
+  <span class="kw">box-shadow</span>: <span class="num">0 8px 24px</span> rgba(<span class="num">0,0,0,.1</span>); <span class="kw">display</span>: none; <span class="kw">max-height</span>: <span class="num">240px</span>; <span class="kw">overflow-y</span>: auto;
+}
+<span class="fn">.ym-dd-menu.open</span> { <span class="kw">display</span>: block; }
+<span class="fn">.ym-dd-item</span> { <span class="kw">padding</span>: <span class="num">9px 12px</span>; <span class="kw">font-size</span>: <span class="num">14px</span>; <span class="kw">cursor</span>: pointer; <span class="kw">transition</span>: background <span class="num">100ms</span>; }
+<span class="fn">.ym-dd-item:hover</span> { <span class="kw">background</span>: <span class="kw">var</span>(--bg-inset); }
+<span class="fn">.ym-dd-item.selected</span> { <span class="kw">color</span>: <span class="num">#4065C5</span>; <span class="kw">font-weight</span>: <span class="num">500</span>; }
+<span class="fn">.ym-dd-item.disabled</span> { <span class="kw">opacity</span>: <span class="num">0.4</span>; <span class="kw">pointer-events</span>: none; }</div>
+    </div>
+    <div class="code-panel" id="tab-react">
+      <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+      <div class="code-block"><span class="kw">import</span> React, { useState, useRef, useEffect } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">interface</span> DropdownOption { value: <span class="kw">string</span>; label: <span class="kw">string</span>; disabled?: <span class="kw">boolean</span>; group?: <span class="kw">string</span>; }
+<span class="kw">interface</span> DropdownProps {
+  label?: <span class="kw">string</span>;
+  placeholder?: <span class="kw">string</span>;
+  options: DropdownOption[];
+  value?: <span class="kw">string</span>;
+  size?: <span class="str">'l'</span> | <span class="str">'m'</span> | <span class="str">'s'</span>;
+  error?: <span class="kw">boolean</span>;
+  disabled?: <span class="kw">boolean</span>;
+  hint?: <span class="kw">string</span>;
+  onChange?: (value: <span class="kw">string</span>) =&gt; <span class="kw">void</span>;
+}
+
+<span class="kw">export const</span> <span class="fn">Dropdown</span>: React.FC&lt;DropdownProps&gt; = ({ label, placeholder = <span class="str">'Select…'</span>, options, value, size = <span class="str">'m'</span>, error, disabled, hint, onChange }) =&gt; {
+  <span class="kw">const</span> [open, setOpen] = useState(<span class="kw">false</span>);
+  <span class="kw">const</span> ref = useRef&lt;HTMLDivElement&gt;(null);
+  <span class="kw">const</span> selected = options.find(o =&gt; o.value === value);
+
+  useEffect(() =&gt; {
+    <span class="kw">const</span> handler = (e: MouseEvent) =&gt; { <span class="kw">if</span> (!ref.current?.contains(e.target <span class="kw">as</span> Node)) setOpen(<span class="kw">false</span>); };
+    document.addEventListener(<span class="str">'mousedown'</span>, handler);
+    <span class="kw">return</span> () =&gt; document.removeEventListener(<span class="str">'mousedown'</span>, handler);
+  }, []);
+
+  <span class="kw">return</span> (
+    &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-dd-wrap"</span> <span class="attr">ref</span>={ref}&gt;
+      {label &amp;&amp; &lt;<span class="tag">label</span> <span class="attr">className</span>=<span class="str">"ym-dd-label"</span>&gt;{label}&lt;/<span class="tag">label</span>&gt;}
+      &lt;<span class="tag">div</span>
+        <span class="attr">className</span>={`ym-dd-trigger dd-${size} ${open ? <span class="str">'dd-open'</span> : <span class="str">''</span>} ${error ? <span class="str">'dd-error'</span> : <span class="str">''</span>} ${disabled ? <span class="str">'dd-disabled'</span> : <span class="str">''</span>}`}
+        <span class="attr">onClick</span>={() =&gt; !disabled &amp;&amp; setOpen(!open)}
+      &gt;
+        &lt;<span class="tag">span</span> <span class="attr">className</span>={selected ? <span class="str">'ym-dd-value'</span> : <span class="str">'ym-dd-placeholder'</span>}&gt;{selected?.label || placeholder}&lt;/<span class="tag">span</span>&gt;
+        &lt;<span class="tag">svg</span> <span class="attr">className</span>=<span class="str">"ym-dd-chevron"</span> ...&gt;...&lt;/<span class="tag">svg</span>&gt;
+      &lt;/<span class="tag">div</span>&gt;
+      {open &amp;&amp; (
+        &lt;<span class="tag">div</span> <span class="attr">className</span>=<span class="str">"ym-dd-menu open"</span>&gt;
+          {options.map(opt =&gt; (
+            &lt;<span class="tag">div</span> <span class="attr">key</span>={opt.value}
+              <span class="attr">className</span>={`ym-dd-item ${opt.value === value ? <span class="str">'selected'</span> : <span class="str">''</span>} ${opt.disabled ? <span class="str">'disabled'</span> : <span class="str">''</span>}`}
+              <span class="attr">onClick</span>={() =&gt; { onChange?.(opt.value); setOpen(<span class="kw">false</span>); }}
+            &gt;{opt.label}&lt;/<span class="tag">div</span>&gt;
+          ))}
+        &lt;/<span class="tag">div</span>&gt;
+      )}
+      {hint &amp;&amp; &lt;<span class="tag">span</span> <span class="attr">className</span>={`ym-dd-hint ${error ? <span class="str">'hint-error'</span> : <span class="str">''</span>}`}&gt;{hint}&lt;/<span class="tag">span</span>&gt;}
+    &lt;/<span class="tag">div</span>&gt;
+  );
+};</div>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="related-section">
+    <div class="section-label">Related Components</div>
+    <div class="related-grid">
+      <a class="related-card" href="input.html">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Input</div>
+      </a>
+      <a class="related-card" href="search.html">
+        <div class="related-eyebrow">Forms</div>
+        <div class="related-title">Search</div>
+      </a>
+      <a class="related-card" href="filter.html">
+        <div class="related-eyebrow">Layout</div>
+        <div class="related-title">Filter</div>
+      </a>
+    </div>
+  </div>
+
+  <footer style="padding:20px 56px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-size:11.5px;color:var(--text-3)">Yubi Market Design System · Dropdown v1.0.0 · Internal Use</span>
+    <span style="font-size:11.5px;color:var(--text-3)">2026-04-02</span>
+  </footer>
+
+</main>
+
+<div id="toast">Copied!</div>
+
+<script>
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  html.setAttribute('data-theme', next);
+  localStorage.setItem('ym-theme', next);
+  document.getElementById('icon-moon').style.display = isDark ? 'block' : 'none';
+  document.getElementById('icon-sun').style.display  = isDark ? 'none'  : 'block';
+}
+(function() {
+  const saved = localStorage.getItem('ym-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', saved);
+  if (saved === 'dark') {
+    document.getElementById('icon-moon').style.display = 'none';
+    document.getElementById('icon-sun').style.display  = 'block';
+  }
+})();
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function switchTab(el, panelId) {
+  document.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.code-panel').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(panelId).classList.add('active');
+}
+
+function copyCode(btn) {
+  const panel = btn.closest('.code-panel');
+  const text = panel.querySelector('.code-block').innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    showToast();
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Dropdown logic
+function positionPanel(panel, trigger, matchWidth) {
+  const tr = trigger.getBoundingClientRect();
+  const offset = panel.dataset.offset ? parseInt(panel.dataset.offset) : 4;
+  let top  = tr.bottom + offset;
+  let left = tr.left;
+  if (matchWidth) panel.style.width = tr.width + 'px';
+  panel.style.top  = top  + 'px';
+  panel.style.left = left + 'px';
+  panel.style.right = '';
+  const pr = panel.getBoundingClientRect();
+  if (pr.right > window.innerWidth - 8) {
+    panel.style.left = Math.max(8, window.innerWidth - pr.width - 8) + 'px';
+  }
+  if (pr.bottom > window.innerHeight - 8) {
+    panel.style.top = Math.max(8, tr.top - pr.height - offset) + 'px';
+  }
+}
+
+function toggleDD(id) {
+  const menu = document.getElementById(id);
+  const trigger = menu.parentElement.querySelector('.ym-dd-trigger');
+  const isOpen = menu.classList.contains('open');
+  // Close all others
+  document.querySelectorAll('.ym-dd-menu.open').forEach(m => {
+    m.classList.remove('open');
+    m.parentElement.querySelector('.ym-dd-trigger')?.classList.remove('dd-open');
+  });
+  if (!isOpen) {
+    menu.classList.add('open');
+    trigger.classList.add('dd-open');
+    positionPanel(menu, trigger, true);
+  }
+}
+
+function selectDD(id, value) {
+  const valEl = document.getElementById(id + '-val');
+  if (valEl) {
+    valEl.textContent = value;
+    valEl.className = 'ym-dd-value';
+  }
+  // Update selected state in menu
+  const menu = document.getElementById(id);
+  menu.querySelectorAll('.ym-dd-item').forEach(item => {
+    item.classList.toggle('selected', item.textContent.trim() === value);
+  });
+  // Close
+  menu.classList.remove('open');
+  menu.parentElement.querySelector('.ym-dd-trigger')?.classList.remove('dd-open');
+}
+
+function closeAllDD() {
+  document.querySelectorAll('.ym-dd-menu.open').forEach(m => {
+    m.classList.remove('open');
+    m.parentElement.querySelector('.ym-dd-trigger')?.classList.remove('dd-open');
+  });
+}
+// Close on outside click
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.ym-dd-wrap') && !e.target.closest('.ym-dd-menu')) closeAllDD();
+});
+// Close on Escape / scroll
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAllDD(); });
+window.addEventListener('scroll', closeAllDD, { passive: true });
+</script>
+<script src="download.js"></script>
+<script id="__dl_data">
+var __mdContent  = "# Dropdown \u2014 Yubi Market Design System\n\n> **Version:** 1.0.0 | **Category:** Forms (22/54) | **Status:** Stable\n\n---\n\n## Overview\n\nSingle-select menu that reveals a list of options on click. Supports labels, placeholder text, grouped options, three sizes, and error/disabled states. Closes on outside click or Escape key.\n\n---\n\n## Sizes\n\n| Size | Height | Font  | Padding   |\n|------|--------|-------|-----------|\n| L    | 44px   | 15px  | 0 14px    |\n| M    | 36px   | 14px  | 0 12px    |\n| S    | 30px   | 13px  | 0 10px    |\n\n---\n\n## States\n\n| State    | Border           | Box Shadow                        |\n|----------|------------------|-----------------------------------|\n| Default  | `--border`       | none                              |\n| Hover    | `--text-3`       | none                              |\n| Open     | `#FE5104`        | `0 0 0 3px rgba(254,81,4,.12)`   |\n| Error    | `#CD3546`        | none                              |\n| Disabled | `--border`       | none \u2014 opacity 0.45, bg inset     |\n\n---\n\n## Measurements\n\n| Property          | Value                          |\n|-------------------|--------------------------------|\n| Trigger height (M)| 36px                           |\n| Trigger radius    | 8px                            |\n| Border width      | 1.5px                          |\n| Menu radius       | 10px                           |\n| Menu shadow       | `0 8px 24px rgba(0,0,0,.12)`  |\n| Menu offset       | 4px below trigger              |\n| Item height       | ~36px (padding 9px 12px)       |\n| Chevron rotation  | 180\u00b0 when open, 200ms          |\n| Label font        | 13px / 600                     |\n| Hint font         | 11.5px                         |\n| Disabled opacity  | 0.45                           |\n| Selected dot      | 6px circle, `#FE5104`          |\n| Group header font | 10px / 700, uppercase          |\n\n---\n\n## HTML\n\n```html\n<!-- Basic dropdown (medium, default) -->\n<div class=\"ym-dd-wrap\" id=\"dd1\">\n  <label class=\"ym-dd-label\">Loan Type <span class=\"req\">*</span></label>\n  <div class=\"ym-dd-trigger\" onclick=\"toggleDD('dd1')\">\n    <span class=\"ym-dd-placeholder\">Select an option</span>\n    <svg class=\"ym-dd-chevron\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\">\n      <path d=\"M4 6l4 4 4-4\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n    </svg>\n  </div>\n  <div class=\"ym-dd-menu\" id=\"dd1-menu\">\n    <div class=\"ym-dd-item\" onclick=\"selectDD('dd1','Personal Loan')\">Personal Loan</div>\n    <div class=\"ym-dd-item\" onclick=\"selectDD('dd1','Business Loan')\">Business Loan</div>\n    <div class=\"ym-dd-item\" onclick=\"selectDD('dd1','Home Loan')\">Home Loan</div>\n  </div>\n</div>\n\n<!-- Large -->\n<div class=\"ym-dd-wrap dd-l\" id=\"dd-large\">\n  <div class=\"ym-dd-trigger\" onclick=\"toggleDD('dd-large')\">\n    <span class=\"ym-dd-placeholder\">Select...</span>\n    <svg class=\"ym-dd-chevron\" ...></svg>\n  </div>\n  <div class=\"ym-dd-menu\" id=\"dd-large-menu\">...</div>\n</div>\n\n<!-- Error state -->\n<div class=\"ym-dd-wrap\" id=\"dd-err\">\n  <label class=\"ym-dd-label\">Category</label>\n  <div class=\"ym-dd-trigger dd-error\" onclick=\"toggleDD('dd-err')\">\n    <span class=\"ym-dd-placeholder\">Select an option</span>\n    <svg class=\"ym-dd-chevron\" ...></svg>\n  </div>\n  <div class=\"ym-dd-menu\" id=\"dd-err-menu\">...</div>\n  <span class=\"ym-dd-hint hint-error\">This field is required</span>\n</div>\n\n<!-- Disabled -->\n<div class=\"ym-dd-wrap\" id=\"dd-dis\">\n  <div class=\"ym-dd-trigger dd-disabled\">\n    <span class=\"ym-dd-placeholder\">Not available</span>\n    <svg class=\"ym-dd-chevron\" ...></svg>\n  </div>\n</div>\n\n<!-- Grouped options -->\n<div class=\"ym-dd-menu\" id=\"dd-grp-menu\">\n  <div class=\"ym-dd-group-header\">Business</div>\n  <div class=\"ym-dd-item\" onclick=\"selectDD('dd-grp','Working Capital')\">Working Capital</div>\n  <div class=\"ym-dd-item\" onclick=\"selectDD('dd-grp','Term Loan')\">Term Loan</div>\n  <div class=\"ym-dd-divider\"></div>\n  <div class=\"ym-dd-group-header\">Personal</div>\n  <div class=\"ym-dd-item\" onclick=\"selectDD('dd-grp','Personal Loan')\">Personal Loan</div>\n  <div class=\"ym-dd-item\" onclick=\"selectDD('dd-grp','Home Loan')\">Home Loan</div>\n</div>\n```\n\n---\n\n## CSS\n\n```css\n/* Wrapper & label */\n.ym-dd-wrap { display: flex; flex-direction: column; gap: 5px; position: relative; }\n.ym-dd-label { font-size: 13px; font-weight: 600; color: var(--text-1); }\n.ym-dd-label .req { color: var(--accent); margin-left: 2px; }\n\n/* Trigger */\n.ym-dd-trigger {\n  display: flex; align-items: center; justify-content: space-between;\n  height: 36px; padding: 0 12px;\n  background: var(--bg-panel); border: 1.5px solid var(--border);\n  border-radius: 8px; cursor: pointer; font-size: 14px;\n  color: var(--text-1); transition: border-color 150ms, box-shadow 150ms;\n  user-select: none;\n}\n.ym-dd-trigger:hover:not(.dd-disabled) { border-color: var(--text-3); }\n.ym-dd-trigger.dd-open { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(254,81,4,.12); }\n.ym-dd-trigger.dd-error { border-color: #CD3546; }\n.ym-dd-trigger.dd-disabled { opacity: 0.45; cursor: not-allowed; background: var(--bg-inset); }\n\n.ym-dd-placeholder { color: var(--text-3); }\n.ym-dd-value { color: var(--text-1); }\n.ym-dd-chevron { color: var(--text-3); transition: transform 200ms; flex-shrink: 0; }\n.ym-dd-trigger.dd-open .ym-dd-chevron { transform: rotate(180deg); }\n\n/* Sizes */\n.ym-dd-wrap.dd-l .ym-dd-trigger { height: 44px; padding: 0 14px; font-size: 15px; }\n.ym-dd-wrap.dd-s .ym-dd-trigger { height: 30px; padding: 0 10px; font-size: 13px; }\n\n/* Menu */\n.ym-dd-menu {\n  position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 200;\n  background: var(--bg-panel); border: 1px solid var(--border); border-radius: 10px;\n  box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 6px; display: none;\n  max-height: 240px; overflow-y: auto;\n}\n.ym-dd-menu.open { display: block; }\n\n/* Items */\n.ym-dd-item {\n  padding: 9px 12px; border-radius: 7px; cursor: pointer;\n  font-size: 14px; color: var(--text-1);\n  transition: background 100ms; position: relative;\n}\n.ym-dd-item:hover { background: var(--bg-inset); }\n.ym-dd-item.selected { color: var(--accent); font-weight: 500; padding-right: 28px; }\n.ym-dd-item.selected::after {\n  content: ''; position: absolute; right: 12px; top: 50%; transform: translateY(-50%);\n  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);\n}\n\n/* Groups */\n.ym-dd-group-header {\n  padding: 6px 12px 4px; font-size: 10px; font-weight: 700;\n  letter-spacing: .06em; text-transform: uppercase; color: var(--text-3);\n}\n.ym-dd-divider { height: 1px; background: var(--border); margin: 4px 0; }\n\n/* Hint */\n.ym-dd-hint { font-size: 11.5px; color: var(--text-3); }\n.ym-dd-hint.hint-error { color: #CD3546; }\n```\n\n---\n\n## JavaScript\n\n```javascript\nfunction toggleDD(id) {\n  const wrap = document.getElementById(id);\n  const trigger = wrap.querySelector('.ym-dd-trigger');\n  const menu = wrap.querySelector('.ym-dd-menu');\n  if (trigger.classList.contains('dd-disabled')) return;\n  const isOpen = menu.classList.contains('open');\n  // Close all other dropdowns\n  document.querySelectorAll('.ym-dd-menu.open').forEach(m => {\n    m.classList.remove('open');\n    m.closest('.ym-dd-wrap')?.querySelector('.ym-dd-trigger')?.classList.remove('dd-open');\n  });\n  if (!isOpen) {\n    menu.classList.add('open');\n    trigger.classList.add('dd-open');\n  }\n}\n\nfunction selectDD(id, value) {\n  const wrap = document.getElementById(id);\n  const trigger = wrap.querySelector('.ym-dd-trigger');\n  const menu = wrap.querySelector('.ym-dd-menu');\n  // Update displayed value\n  trigger.innerHTML = `<span class=\"ym-dd-value\">${value}</span>\n    <svg class=\"ym-dd-chevron\" width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\">\n      <path d=\"M4 6l4 4 4-4\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/>\n    </svg>`;\n  // Mark selected item\n  menu.querySelectorAll('.ym-dd-item').forEach(item => {\n    item.classList.toggle('selected', item.textContent.trim() === value);\n  });\n  // Close menu\n  menu.classList.remove('open');\n  trigger.classList.remove('dd-open');\n}\n\n// Close on outside click\ndocument.addEventListener('click', e => {\n  if (!e.target.closest('.ym-dd-wrap')) {\n    document.querySelectorAll('.ym-dd-menu.open').forEach(m => {\n      m.classList.remove('open');\n      m.closest('.ym-dd-wrap')?.querySelector('.ym-dd-trigger')?.classList.remove('dd-open');\n    });\n  }\n});\n\n// Close on Escape\ndocument.addEventListener('keydown', e => {\n  if (e.key === 'Escape') {\n    document.querySelectorAll('.ym-dd-menu.open').forEach(m => {\n      m.classList.remove('open');\n      m.closest('.ym-dd-wrap')?.querySelector('.ym-dd-trigger')?.classList.remove('dd-open');\n    });\n  }\n});\n```\n\n---\n\n## Accessibility\n\n- Use `role=\"combobox\"` on the trigger, `aria-expanded`, `aria-haspopup=\"listbox\"`\n- Use `role=\"listbox\"` on the menu, `role=\"option\"` on each item, `aria-selected` on selected\n- Support keyboard: Enter/Space to open, Arrow keys to navigate, Enter to select, Escape to close\n- Associate label with `for`/`id` or wrap in `<label>`\n\n---\n\n## Related Components\n\n- **Radio** (`radio.html`) \u2014 visible options when count is small (\u22645)\n- **Checkbox** (`checkbox.html`) \u2014 multi-select variant\n- **Input** (`input.html`) \u2014 free-text entry\n\n---\n\n*Yubi Market Design System \u00b7 Dropdown v1.0.0 \u00b7 Internal Use*\n";
+var __mdFilename = "dropdown.md";
+</script>
+</body>
+</html>
