@@ -4,7 +4,7 @@
     "padding-x": { "$value": "{space.100}",        "$type": "dimension" },
     "padding-y": { "$value": "{space.025}",        "$type": "dimension" },
     "gap":       { "$value": "{space.050}",        "$type": "dimension" },
-    "font":      { "$value": "{text-style.badge}", "$type": "typography" },
+    "font":      { "$value": "{text-style.body-3}", "$type": "typography" },
     "neutral": {
       "bg":     { "$value": "{color.bg.inset}",       "$type": "color" },
       "border": { "$value": "{color.border.default}", "$type": "color" },

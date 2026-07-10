@@ -56,6 +56,20 @@ import BottomSheetDoc from "./BottomSheetDoc";
 import DatePickerDoc from "./DatePickerDoc";
 import TimePickerDoc from "./TimePickerDoc";
 import FilterDoc from "./FilterDoc";
+import GridDoc from "./GridDoc";
+import CodeBlockDoc from "./CodeBlockDoc";
+import IconDoc from "./IconDoc";
+import IllustrationDoc from "./IllustrationDoc";
+import NotificationDoc from "./NotificationDoc";
+import IntroductionDoc from "./IntroductionDoc";
+import PrinciplesDoc from "./PrinciplesDoc";
+import ColorsDoc from "./ColorsDoc";
+import TypographyDoc from "./TypographyDoc";
+import SpacingDoc from "./SpacingDoc";
+import GridSystemDoc from "./GridSystemDoc";
+import ElevationDoc from "./ElevationDoc";
+import RadiusDoc from "./RadiusDoc";
+import BreakpointsDoc from "./BreakpointsDoc";
 import s from "../docs.module.css";
 
 export function generateStaticParams() {
@@ -202,6 +216,34 @@ export default async function ComponentPage({
         <TimePickerDoc related={related} />
       ) : entry.slug === "filter" ? (
         <FilterDoc related={related} />
+      ) : entry.slug === "gridcomp" ? (
+        <GridDoc related={related} />
+      ) : entry.slug === "codeblock" ? (
+        <CodeBlockDoc related={related} />
+      ) : entry.slug === "icon" ? (
+        <IconDoc related={related} />
+      ) : entry.slug === "illustration" ? (
+        <IllustrationDoc related={related} />
+      ) : entry.slug === "notification" ? (
+        <NotificationDoc related={related} />
+      ) : entry.slug === "introduction" ? (
+        <IntroductionDoc related={related} />
+      ) : entry.slug === "principles" ? (
+        <PrinciplesDoc related={related} />
+      ) : entry.slug === "colors" ? (
+        <ColorsDoc related={related} />
+      ) : entry.slug === "typography" ? (
+        <TypographyDoc related={related} />
+      ) : entry.slug === "spacing" ? (
+        <SpacingDoc related={related} />
+      ) : entry.slug === "grid" ? (
+        <GridSystemDoc related={related} />
+      ) : entry.slug === "elevation" ? (
+        <ElevationDoc related={related} />
+      ) : entry.slug === "radius" ? (
+        <RadiusDoc related={related} />
+      ) : entry.slug === "breakpoints" ? (
+        <BreakpointsDoc related={related} />
       ) : (
         <Scaffold related={related} />
       )}

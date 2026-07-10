@@ -46,6 +46,11 @@
       "lg":  { "$value": "24px", "$type": "dimension" },
       "xl":  { "$value": "32px", "$type": "dimension" },
       "2xl": { "$value": "40px", "$type": "dimension" }
+    },
+    "modal": {
+      "sm": { "$value": "480px", "$type": "dimension", "$description": "Small dialog width" },
+      "md": { "$value": "560px", "$type": "dimension", "$description": "Default dialog width" },
+      "lg": { "$value": "640px", "$type": "dimension", "$description": "Large dialog width" }
     }
   }
 }

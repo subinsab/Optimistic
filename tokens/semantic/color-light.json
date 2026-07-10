@@ -24,7 +24,7 @@
     },
     "bg": {
       "page":          { "$value": "{color.neutral.50}",  "$type": "color" },
-      "panel":         { "$value": "{color.neutral.0}",   "$type": "color" },
+      "panel":         { "$value": "{color.white}",   "$type": "color" },
       "inset":         { "$value": "{color.neutral.100}", "$type": "color" },
       "subtle":        { "$value": "{color.neutral.200}", "$type": "color" },
       "hover":         { "$value": "{color.neutral.100}", "$type": "color" },
@@ -39,7 +39,7 @@
       "secondary": { "$value": "{color.neutral.500}", "$type": "color" },
       "muted":     { "$value": "{color.neutral.400}", "$type": "color" },
       "disabled":  { "$value": "{color.neutral.300}", "$type": "color" },
-      "inverse":   { "$value": "{color.neutral.0}",   "$type": "color" },
+      "inverse":   { "$value": "{color.white}",   "$type": "color" },
       "brand":     { "$value": "{color.brand.500}",   "$type": "color" },
       "link":      { "$value": "{color.blue.600}",    "$type": "color" },
       "success":   { "$value": "{color.green.600}",   "$type": "color" },

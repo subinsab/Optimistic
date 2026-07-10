@@ -557,13 +557,14 @@ export default function CityScene() {
   return (
     <div ref={wrapRef} style={{ position: "absolute", inset: 0 }}>
     <Canvas
-      shadows
+      shadows="percentage"
       frameloop={active ? "always" : "never"}
       dpr={[1, 1.7]}
       camera={{ position: [0, 118, 188], fov: 58, near: 1, far: 2400 }}
       gl={{ antialias: true, alpha: false }}
       style={{ position: "absolute", inset: 0 }}
-      onCreated={({ scene, camera }) => {
+      onCreated={({ scene, camera, gl }) => {
+        gl.shadowMap.type = THREE.PCFShadowMap; // PCFSoftShadowMap is deprecated in this three build
         scene.background = new THREE.Color("#0b0b0b");
         scene.fog = new THREE.Fog("#0b0b0b", 280, 840); // atmospheric depth — far horizon melts into black
         camera.lookAt(0, 34, -76);                      // one-point axis through the spire; horizon sits in the lower half

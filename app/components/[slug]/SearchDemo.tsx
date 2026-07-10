@@ -19,36 +19,43 @@ const DATA = [
   { title: "Tabs", meta: "Navigation" },
 ];
 
-function Field({ withClear, initial = "" }: { withClear?: boolean; initial?: string }) {
+export function SearchField({ withClear, initial = "", autoFocus, placeholder = "Search components…", onCollapse }:
+  { withClear?: boolean; initial?: string; autoFocus?: boolean; placeholder?: string; onCollapse?: () => void }) {
   const [q, setQ] = useState(initial);
   const [open, setOpen] = useState(initial.length > 0);
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const results = useMemo(() => q ? DATA.filter((d) => d.title.toLowerCase().includes(q.toLowerCase())) : [], [q]);
   useEffect(() => {
-    if (!open) return;
-    const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
+    const h = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+        if (!q && onCollapse) onCollapse(); // empty + collapsible ⇒ collapse the whole field
+      }
+    };
     document.addEventListener("mousedown", h);
     return () => document.removeEventListener("mousedown", h);
-  }, [open]);
+  }, [q, onCollapse]);
   useEffect(() => setActive(0), [q]);
   return (
     <div className={s.osearch} ref={ref}>
       <span className={s.inWrap}>
         <span className={s.inIcon}><SearchIcon /></span>
         <input
+          autoFocus={autoFocus}
           className={`${s.oinput} ${s.inM} ${s.inHasIcon} ${withClear && q ? s.inHasAffix : ""}`}
           value={q}
-          placeholder="Search components…"
+          placeholder={placeholder}
           type="search"
           role="searchbox"
-          aria-label="Search components"
+          aria-label="Search"
           onChange={(e) => { setQ(e.target.value); setOpen(true); }}
           onFocus={() => q && setOpen(true)}
           onKeyDown={(e) => {
             if (e.key === "ArrowDown") { e.preventDefault(); setActive((a) => Math.min(a + 1, results.length - 1)); }
             if (e.key === "ArrowUp") { e.preventDefault(); setActive((a) => Math.max(a - 1, 0)); }
-            if (e.key === "Escape") { setQ(""); setOpen(false); }
+            if (e.key === "Enter" && results[active]) { setQ(results[active].title); setOpen(false); }
+            if (e.key === "Escape") { if (q) { setQ(""); setOpen(false); } else onCollapse?.(); }
           }}
         />
         {withClear && q && (
@@ -84,9 +91,9 @@ export default function SearchDemo() {
         ))}
       </div>
       <div className={s.demoStage} key={tab} style={{ minHeight: 360 }}>
-        {tab === "As you type" && (<><div className={s.subLabel}>Results answer live — try “ta” or “co”</div><Field initial="co" /></>)}
-        {tab === "Clearable" && (<><div className={s.subLabel}>A clear button appears once there is a query</div><Field withClear initial="button" /></>)}
-        {tab === "Empty" && (<><div className={s.subLabel}>No result is a message, not a blank void</div><Field initial="zzz" /></>)}
+        {tab === "As you type" && (<><div className={s.subLabel}>Results answer live — try “ta” or “co”</div><SearchField initial="co" /></>)}
+        {tab === "Clearable" && (<><div className={s.subLabel}>A clear button appears once there is a query</div><SearchField withClear initial="button" /></>)}
+        {tab === "Empty" && (<><div className={s.subLabel}>No result is a message, not a blank void</div><SearchField initial="zzz" /></>)}
       </div>
     </div>
   );

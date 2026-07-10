@@ -1,0 +1,1342 @@
+{
+  "semantic": {
+    "colors": {
+      "base": {
+        "weakest": {
+          "$value": "{color.ink.page}",
+          "$type": "color"
+        },
+        "strongest": {
+          "$value": "{color.white}",
+          "$type": "color"
+        }
+      },
+      "neutral": {
+        "weakest": {
+          "$value": "{color.neutral.900}",
+          "$type": "color"
+        },
+        "weaker": {
+          "$value": "{color.neutral.800}",
+          "$type": "color"
+        },
+        "weak": {
+          "$value": "{color.neutral.700}",
+          "$type": "color"
+        },
+        "subtle": {
+          "$value": "{color.neutral.600}",
+          "$type": "color"
+        },
+        "medium": {
+          "$value": "{color.neutral.500}",
+          "$type": "color"
+        },
+        "default": {
+          "$value": "{color.neutral.400}",
+          "$type": "color"
+        },
+        "solid": {
+          "$value": "{color.neutral.300}",
+          "$type": "color"
+        },
+        "strong": {
+          "$value": "{color.neutral.200}",
+          "$type": "color"
+        },
+        "stronger": {
+          "$value": "{color.neutral.100}",
+          "$type": "color"
+        },
+        "strongest": {
+          "$value": "{color.neutral.50}",
+          "$type": "color"
+        }
+      },
+      "brand": {
+        "weakest": {
+          "$value": "{color.brand.900}",
+          "$type": "color"
+        },
+        "weaker": {
+          "$value": "{color.brand.800}",
+          "$type": "color"
+        },
+        "weak": {
+          "$value": "{color.brand.700}",
+          "$type": "color"
+        },
+        "subtle": {
+          "$value": "{color.brand.600}",
+          "$type": "color"
+        },
+        "medium": {
+          "$value": "{color.brand.500}",
+          "$type": "color"
+        },
+        "default": {
+          "$value": "{color.brand.400}",
+          "$type": "color"
+        },
+        "solid": {
+          "$value": "{color.brand.300}",
+          "$type": "color"
+        },
+        "strong": {
+          "$value": "{color.brand.200}",
+          "$type": "color"
+        },
+        "stronger": {
+          "$value": "{color.brand.100}",
+          "$type": "color"
+        },
+        "strongest": {
+          "$value": "{color.brand.50}",
+          "$type": "color"
+        }
+      },
+      "success": {
+        "weakest": {
+          "$value": "{color.green.900}",
+          "$type": "color"
+        },
+        "weaker": {
+          "$value": "{color.green.800}",
+          "$type": "color"
+        },
+        "weak": {
+          "$value": "{color.green.700}",
+          "$type": "color"
+        },
+        "subtle": {
+          "$value": "{color.green.600}",
+          "$type": "color"
+        },
+        "medium": {
+          "$value": "{color.green.500}",
+          "$type": "color"
+        },
+        "default": {
+          "$value": "{color.green.400}",
+          "$type": "color"
+        },
+        "solid": {
+          "$value": "{color.green.300}",
+          "$type": "color"
+        },
+        "strong": {
+          "$value": "{color.green.200}",
+          "$type": "color"
+        },
+        "stronger": {
+          "$value": "{color.green.100}",
+          "$type": "color"
+        },
+        "strongest": {
+          "$value": "{color.green.50}",
+          "$type": "color"
+        }
+      },
+      "error": {
+        "weakest": {
+          "$value": "{color.red.900}",
+          "$type": "color"
+        },
+        "weaker": {
+          "$value": "{color.red.800}",
+          "$type": "color"
+        },
+        "weak": {
+          "$value": "{color.red.700}",
+          "$type": "color"
+        },
+        "subtle": {
+          "$value": "{color.red.600}",
+          "$type": "color"
+        },
+        "medium": {
+          "$value": "{color.red.500}",
+          "$type": "color"
+        },
+        "default": {
+          "$value": "{color.red.400}",
+          "$type": "color"
+        },
+        "solid": {
+          "$value": "{color.red.300}",
+          "$type": "color"
+        },
+        "strong": {
+          "$value": "{color.red.200}",
+          "$type": "color"
+        },
+        "stronger": {
+          "$value": "{color.red.100}",
+          "$type": "color"
+        },
+        "strongest": {
+          "$value": "{color.red.50}",
+          "$type": "color"
+        }
+      },
+      "caution": {
+        "weakest": {
+          "$value": "{color.amber.900}",
+          "$type": "color"
+        },
+        "weaker": {
+          "$value": "{color.amber.800}",
+          "$type": "color"
+        },
+        "weak": {
+          "$value": "{color.amber.700}",
+          "$type": "color"
+        },
+        "subtle": {
+          "$value": "{color.amber.600}",
+          "$type": "color"
+        },
+        "medium": {
+          "$value": "{color.amber.500}",
+          "$type": "color"
+        },
+        "default": {
+          "$value": "{color.amber.400}",
+          "$type": "color"
+        },
+        "solid": {
+          "$value": "{color.amber.300}",
+          "$type": "color"
+        },
+        "strong": {
+          "$value": "{color.amber.200}",
+          "$type": "color"
+        },
+        "stronger": {
+          "$value": "{color.amber.100}",
+          "$type": "color"
+        },
+        "strongest": {
+          "$value": "{color.amber.50}",
+          "$type": "color"
+        }
+      },
+      "special": {
+        "weakest": {
+          "$value": "{color.blue.900}",
+          "$type": "color"
+        },
+        "weaker": {
+          "$value": "{color.blue.800}",
+          "$type": "color"
+        },
+        "weak": {
+          "$value": "{color.blue.700}",
+          "$type": "color"
+        },
+        "subtle": {
+          "$value": "{color.blue.600}",
+          "$type": "color"
+        },
+        "medium": {
+          "$value": "{color.blue.500}",
+          "$type": "color"
+        },
+        "default": {
+          "$value": "{color.blue.400}",
+          "$type": "color"
+        },
+        "solid": {
+          "$value": "{color.blue.300}",
+          "$type": "color"
+        },
+        "strong": {
+          "$value": "{color.blue.200}",
+          "$type": "color"
+        },
+        "stronger": {
+          "$value": "{color.blue.100}",
+          "$type": "color"
+        },
+        "strongest": {
+          "$value": "{color.blue.50}",
+          "$type": "color"
+        }
+      },
+      "text": {
+        "header": {
+          "weakest": {
+            "$value": "{semantic.colors.base.weakest}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.neutral.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.neutral.weak}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.neutral.solid}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{semantic.colors.neutral.strongest}",
+            "$type": "color"
+          }
+        },
+        "subHeader": {
+          "weakest": {
+            "$value": "{semantic.colors.base.weakest}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.neutral.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.neutral.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.neutral.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.neutral.solid}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{semantic.colors.neutral.strongest}",
+            "$type": "color"
+          }
+        },
+        "body": {
+          "weakest": {
+            "$value": "{semantic.colors.base.weakest}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.neutral.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.neutral.weak}",
+            "$type": "color"
+          },
+          "subtle": {
+            "$value": "{semantic.colors.neutral.subtle}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.neutral.medium}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.neutral.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.neutral.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.neutral.strong}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{semantic.colors.neutral.strongest}",
+            "$type": "color"
+          }
+        },
+        "brand": {
+          "weak": {
+            "$value": "{semantic.colors.brand.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.brand.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.brand.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.brand.strong}",
+            "$type": "color"
+          }
+        },
+        "success": {
+          "weak": {
+            "$value": "{semantic.colors.success.weak}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.success.medium}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.success.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.success.strong}",
+            "$type": "color"
+          }
+        },
+        "error": {
+          "weak": {
+            "$value": "{semantic.colors.error.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.error.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.error.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.error.strong}",
+            "$type": "color"
+          }
+        },
+        "caution": {
+          "weak": {
+            "$value": "{semantic.colors.caution.weak}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.caution.strong}",
+            "$type": "color"
+          },
+          "stronger": {
+            "$value": "{semantic.colors.caution.stronger}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{semantic.colors.caution.strongest}",
+            "$type": "color"
+          }
+        },
+        "special": {
+          "weak": {
+            "$value": "{semantic.colors.special.weak}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.special.medium}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.special.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.special.solid}",
+            "$type": "color"
+          }
+        }
+      },
+      "icon": {
+        "common": {
+          "weakest": {
+            "$value": "{semantic.colors.base.weakest}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.neutral.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.neutral.weak}",
+            "$type": "color"
+          },
+          "subtle": {
+            "$value": "{semantic.colors.neutral.subtle}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.neutral.medium}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.neutral.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.neutral.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.neutral.strong}",
+            "$type": "color"
+          },
+          "stronger": {
+            "$value": "{semantic.colors.neutral.stronger}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{semantic.colors.neutral.strongest}",
+            "$type": "color"
+          }
+        },
+        "brand": {
+          "weak": {
+            "$value": "{semantic.colors.brand.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.brand.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.brand.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.brand.strong}",
+            "$type": "color"
+          }
+        },
+        "success": {
+          "weak": {
+            "$value": "{semantic.colors.success.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.success.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.success.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.success.strong}",
+            "$type": "color"
+          }
+        },
+        "error": {
+          "weak": {
+            "$value": "{semantic.colors.error.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.error.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.error.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.error.strong}",
+            "$type": "color"
+          }
+        },
+        "caution": {
+          "weak": {
+            "$value": "{semantic.colors.caution.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.caution.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.caution.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.caution.strong}",
+            "$type": "color"
+          }
+        },
+        "special": {
+          "weak": {
+            "$value": "{semantic.colors.special.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.special.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.special.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.special.strong}",
+            "$type": "color"
+          }
+        }
+      },
+      "background": {
+        "common": {
+          "weakest": {
+            "$value": "{semantic.colors.base.weakest}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.neutral.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.neutral.weak}",
+            "$type": "color"
+          },
+          "subtle": {
+            "$value": "{semantic.colors.neutral.subtle}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.neutral.medium}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.neutral.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.neutral.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.neutral.strong}",
+            "$type": "color"
+          },
+          "stronger": {
+            "$value": "{semantic.colors.neutral.stronger}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{semantic.colors.neutral.strongest}",
+            "$type": "color"
+          }
+        },
+        "brand": {
+          "strong": {
+            "$value": "{semantic.colors.brand.strong}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.brand.solid}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.brand.default}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.brand.weak}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.brand.weaker}",
+            "$type": "color"
+          },
+          "weakest": {
+            "$value": "{semantic.colors.brand.weakest}",
+            "$type": "color"
+          }
+        },
+        "success": {
+          "strong": {
+            "$value": "{semantic.colors.success.strong}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.success.solid}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.success.default}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.success.medium}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.success.weak}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.success.weaker}",
+            "$type": "color"
+          }
+        },
+        "error": {
+          "strong": {
+            "$value": "{semantic.colors.error.strong}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.error.solid}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.error.default}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.error.weak}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.error.weaker}",
+            "$type": "color"
+          },
+          "weakest": {
+            "$value": "{semantic.colors.error.weakest}",
+            "$type": "color"
+          }
+        },
+        "caution": {
+          "strongest": {
+            "$value": "{semantic.colors.caution.strongest}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.caution.strong}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.caution.solid}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.caution.default}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.caution.weak}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.caution.weaker}",
+            "$type": "color"
+          }
+        },
+        "special": {
+          "strong": {
+            "$value": "{semantic.colors.special.strong}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.special.solid}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.special.default}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.special.weak}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.special.weaker}",
+            "$type": "color"
+          },
+          "weakest": {
+            "$value": "{semantic.colors.special.weakest}",
+            "$type": "color"
+          }
+        },
+        "additional": {
+          "weak": {
+            "$value": "{color.coralBlue.500}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{color.fadedBlue.500}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{color.greyishBlue.500}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{color.lightNavyBlue.500}",
+            "$type": "color"
+          },
+          "stronger": {
+            "$value": "{color.tealsBlue.500}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{color.royalBlue.500}",
+            "$type": "color"
+          }
+        }
+      },
+      "border": {
+        "common": {
+          "weakest": {
+            "$value": "{semantic.colors.base.weakest}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.neutral.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.neutral.weak}",
+            "$type": "color"
+          },
+          "subtle": {
+            "$value": "{semantic.colors.neutral.subtle}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.neutral.medium}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.neutral.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.neutral.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.neutral.strong}",
+            "$type": "color"
+          },
+          "stronger": {
+            "$value": "{semantic.colors.neutral.stronger}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{semantic.colors.neutral.strongest}",
+            "$type": "color"
+          }
+        },
+        "brand": {
+          "weakest": {
+            "$value": "{semantic.colors.brand.weakest}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.brand.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.brand.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.brand.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.brand.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.brand.strong}",
+            "$type": "color"
+          }
+        },
+        "success": {
+          "weaker": {
+            "$value": "{semantic.colors.success.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.success.weak}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.success.medium}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.success.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.success.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.success.strong}",
+            "$type": "color"
+          }
+        },
+        "error": {
+          "weakest": {
+            "$value": "{semantic.colors.error.weakest}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.error.weak}",
+            "$type": "color"
+          },
+          "medium": {
+            "$value": "{semantic.colors.error.medium}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.error.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.error.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.error.strong}",
+            "$type": "color"
+          }
+        },
+        "caution": {
+          "weaker": {
+            "$value": "{semantic.colors.caution.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.caution.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.caution.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.caution.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.caution.strong}",
+            "$type": "color"
+          },
+          "strongest": {
+            "$value": "{semantic.colors.caution.strongest}",
+            "$type": "color"
+          }
+        },
+        "special": {
+          "weakest": {
+            "$value": "{semantic.colors.special.weakest}",
+            "$type": "color"
+          },
+          "weaker": {
+            "$value": "{semantic.colors.special.weaker}",
+            "$type": "color"
+          },
+          "weak": {
+            "$value": "{semantic.colors.special.weak}",
+            "$type": "color"
+          },
+          "default": {
+            "$value": "{semantic.colors.special.default}",
+            "$type": "color"
+          },
+          "solid": {
+            "$value": "{semantic.colors.special.solid}",
+            "$type": "color"
+          },
+          "strong": {
+            "$value": "{semantic.colors.special.strong}",
+            "$type": "color"
+          }
+        }
+      },
+      "action": {
+        "primary": {
+          "background": {
+            "default": {
+              "$value": "{semantic.colors.brand.default}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.brand.solid}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.brand.strong}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.brand.weak}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "default": {
+              "$value": "{semantic.colors.brand.default}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.brand.solid}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.brand.strong}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.brand.weak}",
+              "$type": "color"
+            }
+          }
+        },
+        "secondary": {
+          "background": {
+            "default": {
+              "$value": "{semantic.colors.neutral.weakest}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.neutral.weaker}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.brand.weak}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.neutral.weakest}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "default": {
+              "$value": "{semantic.colors.border.brand.default}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.border.brand.default}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.border.brand.default}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.border.brand.weak}",
+              "$type": "color"
+            }
+          }
+        },
+        "tertiary": {
+          "background": {
+            "default": {
+              "$value": "{semantic.colors.base.weakest}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.neutral.weaker}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.neutral.weak}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.neutral.weakest}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "default": {
+              "$value": "{semantic.colors.neutral.subtle}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.neutral.subtle}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.neutral.subtle}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.neutral.subtle}",
+              "$type": "color"
+            }
+          }
+        },
+        "success": {
+          "background": {
+            "default": {
+              "$value": "{semantic.colors.success.medium}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.success.solid}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.success.strong}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.success.weak}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "default": {
+              "$value": "{semantic.colors.success.medium}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.success.solid}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.success.strong}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.success.weak}",
+              "$type": "color"
+            }
+          }
+        },
+        "error": {
+          "background": {
+            "default": {
+              "$value": "{semantic.colors.error.default}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.error.solid}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.error.strong}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.error.weak}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "default": {
+              "$value": "{semantic.colors.error.default}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.error.solid}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.error.strong}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.error.weak}",
+              "$type": "color"
+            }
+          }
+        },
+        "special": {
+          "background": {
+            "default": {
+              "$value": "{semantic.colors.special.default}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.special.solid}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.special.solid}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.special.weak}",
+              "$type": "color"
+            }
+          },
+          "border": {
+            "default": {
+              "$value": "{semantic.colors.special.default}",
+              "$type": "color"
+            },
+            "hover": {
+              "$value": "{semantic.colors.special.solid}",
+              "$type": "color"
+            },
+            "active": {
+              "$value": "{semantic.colors.special.solid}",
+              "$type": "color"
+            },
+            "disabled": {
+              "$value": "{semantic.colors.special.weak}",
+              "$type": "color"
+            }
+          }
+        }
+      },
+      "elemental": {
+        "darkCobalt": {
+          "$value": "{color.cobalt.500}",
+          "$type": "color"
+        },
+        "lightCobalt": {
+          "$value": "{color.pastelBlue.500}",
+          "$type": "color"
+        },
+        "darkSkyBlue": {
+          "$value": "{color.berry.500}",
+          "$type": "color"
+        },
+        "lightSkyBlue": {
+          "$value": "{color.pastelSkyBlue.500}",
+          "$type": "color"
+        },
+        "darkPink": {
+          "$value": "{color.maroon.500}",
+          "$type": "color"
+        },
+        "lightPink": {
+          "$value": "{color.pastelRose.500}",
+          "$type": "color"
+        },
+        "darkPurple": {
+          "$value": "{color.purple.500}",
+          "$type": "color"
+        },
+        "lightPurple": {
+          "$value": "{color.pastelPurple.500}",
+          "$type": "color"
+        },
+        "darkRose": {
+          "$value": "{color.red.600}",
+          "$type": "color"
+        },
+        "lightRose": {
+          "$value": "{color.red.100}",
+          "$type": "color"
+        },
+        "darkMintGreen": {
+          "$value": "{color.green.400}",
+          "$type": "color"
+        },
+        "lightMintGreen": {
+          "$value": "{color.lime.500}",
+          "$type": "color"
+        },
+        "darkGreen": {
+          "$value": "{color.green.500}",
+          "$type": "color"
+        },
+        "lightGreen": {
+          "$value": "{color.green.100}",
+          "$type": "color"
+        },
+        "darkYellowish": {
+          "$value": "{color.amber.500}",
+          "$type": "color"
+        },
+        "lightYellowish": {
+          "$value": "{color.amber.200}",
+          "$type": "color"
+        },
+        "darkBlue": {
+          "$value": "{color.blue.500}",
+          "$type": "color"
+        },
+        "lightBlue": {
+          "$value": "{color.blue.50}",
+          "$type": "color"
+        },
+        "darkOrange": {
+          "$value": "{color.orange.500}",
+          "$type": "color"
+        },
+        "lightOrange": {
+          "$value": "{color.orange.100}",
+          "$type": "color"
+        },
+        "darkTeal": {
+          "$value": "{color.teal.500}",
+          "$type": "color"
+        },
+        "lightTeal": {
+          "$value": "{color.pastelCyan.500}",
+          "$type": "color"
+        },
+        "lapis": {
+          "$value": "{color.lapis.500}",
+          "$type": "color"
+        },
+        "azure": {
+          "$value": "{color.azure.500}",
+          "$type": "color"
+        },
+        "darkGrey": {
+          "$value": "{color.grey.800}",
+          "$type": "color"
+        },
+        "stone": {
+          "$value": "{color.grey.700}",
+          "$type": "color"
+        },
+        "fossil": {
+          "$value": "{color.grey.400}",
+          "$type": "color"
+        },
+        "smoke": {
+          "$value": "{color.grey.200}",
+          "$type": "color"
+        },
+        "cloud": {
+          "$value": "{color.grey.300}",
+          "$type": "color"
+        },
+        "lightGrey": {
+          "$value": "{color.cloud.500}",
+          "$type": "color"
+        },
+        "charcoalGrey": {
+          "$value": "{color.charcoalGrey.500}",
+          "$type": "color"
+        },
+        "moss": {
+          "$value": "{color.moss.500}",
+          "$type": "color"
+        },
+        "spruce": {
+          "$value": "{color.spruce.500}",
+          "$type": "color"
+        },
+        "navyBlue": {
+          "$value": "{color.navyBlue.500}",
+          "$type": "color"
+        },
+        "heather": {
+          "$value": "{color.heather.500}",
+          "$type": "color"
+        },
+        "saffron": {
+          "$value": "{color.saffron.500}",
+          "$type": "color"
+        },
+        "tangerine": {
+          "$value": "{color.tangerine.500}",
+          "$type": "color"
+        },
+        "sangria": {
+          "$value": "{color.sangria.500}",
+          "$type": "color"
+        },
+        "magenta": {
+          "$value": "{color.magenta.500}",
+          "$type": "color"
+        }
+      }
+    }
+  }
+}

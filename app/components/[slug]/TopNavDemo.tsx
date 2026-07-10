@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import Logo from "../../_components/Logo";
+import { BellCenter } from "./NotificationDemo";
+import { SearchField } from "./SearchDemo";
 import s from "../docs.module.css";
 
 const TABS = ["App bar", "Mega menu", "Mobile"] as const;
 const SearchIcon = () => (<svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.5" /><path d="M10.5 10.5 14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>);
-const Bell = () => (<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M5 9a5 5 0 0 1 10 0c0 4 1.5 5 1.5 5h-13S5 13 5 9z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" /><path d="M8.5 17a1.5 1.5 0 0 0 3 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>);
 const Caret = () => (<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M4 6l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" /></svg>);
 const CaretR = () => (<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" /></svg>);
 const Menu = () => (<svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 6h14M3 10h14M3 14h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg>);
@@ -27,57 +28,16 @@ function useDismiss(open: boolean, close: () => void) {
 /* search collapses to a pill and expands to a real input on click (1.2) */
 function SearchBox() {
   const [expanded, setExpanded] = useState(false);
-  const [q, setQ] = useState("");
-  const ref = useDismiss(expanded, () => { if (!q) setExpanded(false); });
   return (
-    <div className={`${s.otnavSearchWrap} ${expanded ? s.otnavSearchOpen : ""}`} ref={ref}>
+    <div className={`${s.otnavSearchWrap} ${expanded ? s.otnavSearchOpen : ""}`}>
       {expanded ? (
-        <div className={s.otnavSearchField}>
-          <SearchIcon />
-          <input
-            autoFocus
-            className={s.otnavSearchInput}
-            value={q}
-            placeholder="Search projects, people, docs…"
-            onChange={(e) => setQ(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Escape") { setQ(""); setExpanded(false); } }}
-            aria-label="Search"
-          />
-          {q && <button type="button" className={s.otnavSearchClear} aria-label="Clear" onClick={() => setQ("")}><Close /></button>}
+        <div className={s.otnavSearchMount}>
+          <SearchField autoFocus withClear onCollapse={() => setExpanded(false)} />
         </div>
       ) : (
         <button type="button" className={s.otnavSearch} onClick={() => setExpanded(true)}>
           <SearchIcon /> <span className={s.otnavSearchLabel}>Search</span><span className={s.ocmdEsc} style={{ marginLeft: "auto" }}>⌘K</span>
         </button>
-      )}
-    </div>
-  );
-}
-
-function Notifications() {
-  const [open, setOpen] = useState(false);
-  const ref = useDismiss(open, () => setOpen(false));
-  const items = [["Ada shared “Q3 plan”", "2m ago", true], ["Build #418 passed", "1h ago", true], ["Invoice 4821 paid", "Yesterday", false]] as const;
-  return (
-    <div className={s.otnavPop} ref={ref}>
-      <button type="button" className={s.otnavIconBtn} aria-haspopup="menu" aria-expanded={open} aria-label="Notifications" onClick={() => setOpen((o) => !o)}>
-        <Bell /><span className={s.otnavNotifDot} />
-      </button>
-      {open && (
-        <div className={`${s.otnavMenu} ${s.otnavMenuWide}`} role="menu">
-          <div className={s.otnavMenuHead}><span className={s.otnavMenuName}>Notifications</span><span className={s.ocmdKbd} style={{ marginLeft: "auto" }}>2 new</span></div>
-          {items.map(([t, time, unread]) => (
-            <div key={t} className={s.otnavNotifItem}>
-              <span className={unread ? s.otnavNotifUnread : s.otnavNotifRead} />
-              <span className={s.otnavNotifBody}>
-                <span className={s.otnavNotifText}>{t}</span>
-                <span className={s.otnavNotifTime}>{time}</span>
-              </span>
-            </div>
-          ))}
-          <div className={s.omenuDivider} />
-          <button role="menuitem" className={s.omenuOpt} style={{ justifyContent: "center", color: "#9aa0a8" }}>View all</button>
-        </div>
       )}
     </div>
   );
@@ -200,7 +160,7 @@ export default function TopNavDemo() {
               </div>
               <div className={s.otnavRight}>
                 <SearchBox />
-                <Notifications />
+                <BellCenter bare />
                 <Profile />
               </div>
             </nav>

@@ -74,7 +74,8 @@ export default function BreadcrumbsDoc({ related }: { related: typeof ALL_ENTRIE
         <table className={s.tokTable}><thead><tr><th>Prop</th><th>Type</th><th>Notes</th></tr></thead><tbody>
           <tr><td className={s.tokName}>Item href / current</td><td>string / boolean</td><td>Link, or the non-clickable current page</td></tr>
           <tr><td className={s.tokName}>maxItems</td><td>number</td><td>Collapse the middle into a … dropdown past this</td></tr>
-          <tr><td className={s.tokName}>separator</td><td>chevron · slash</td><td>Glyph between crumbs</td></tr>
+          <tr><td className={s.tokName}>separator</td><td>chevron · slash · arrow · dot</td><td>Glyph between crumbs</td></tr>
+          <tr><td className={s.tokName}>siblingMenus</td><td>boolean</td><td>A caret on each crumb opens its sibling pages</td></tr>
           <tr><td className={s.tokName}>showIcons</td><td>boolean</td><td>Leading home / folder glyphs</td></tr>
           <tr><td className={s.tokName}>aria-current</td><td>page</td><td>Set on the last crumb for assistive tech</td></tr>
         </tbody></table>

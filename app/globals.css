@@ -4,6 +4,10 @@
    React, Angular, and plain HTML.
    ════════════════════════════════════════════════════════════════ */
 
+/* Generated from tokens/ by tokens/build-css.mjs — the single source of truth.
+   Colours, spacing, sizing and type all resolve from these. */
+@import "./tokens.generated.css";
+
 /* ── BRAND CONSTANTS (theme-independent) ───────────────────────── */
 :root {
   /* Dawn palette — optimism reads as first light */
@@ -168,8 +172,10 @@ button { font: inherit; cursor: pointer; }
 }
 @media (pointer: coarse) { .cursor-glow { display: none; } }
 
-/* Reveal-on-scroll base (toggled via .is-visible) */
-.reveal { opacity: 0; transform: translateY(18px); transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out); }
+/* Reveal-on-scroll. Default VISIBLE so content (and colours) always render even
+   if JS never runs. The hidden start only applies once JS arms an off-screen section. */
+.reveal { opacity: 1; transform: none; transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out); }
+.reveal-armed:not(.is-visible) { opacity: 0; transform: translateY(18px); }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ── SITE-WIDE CONTENT UTILITIES (shared across routes) ────────── */

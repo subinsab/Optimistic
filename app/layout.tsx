@@ -31,30 +31,21 @@ export const metadata: Metadata = {
   ],
 };
 
-// Dark-only by design ("dark field, one warm pixel"). Force the theme and
-// clear any light preference stored by the old toggle.
-const themeScript = `
-(function () {
-  document.documentElement.setAttribute('data-theme', 'dark');
-  try { localStorage.removeItem('optimistic-theme'); } catch (e) {}
-})();
-`;
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
+    // Dark-only by design ("dark field, one warm pixel"): the theme is a static
+    // attribute, so it is present in the first paint with no flash and no script.
     <html
       lang="en"
+      data-theme="dark"
       suppressHydrationWarning
       className={`${inter.variable} ${geistMono.variable}`}
     >
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body>
+      <body suppressHydrationWarning>
         <SiteNav />
         {children}
         <Footer />
