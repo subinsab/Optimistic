@@ -56,12 +56,16 @@ import BottomSheetDoc from "./BottomSheetDoc";
 import DatePickerDoc from "./DatePickerDoc";
 import TimePickerDoc from "./TimePickerDoc";
 import FilterDoc from "./FilterDoc";
+import TableDoc from "./TableDoc";
 import GridDoc from "./GridDoc";
 import CodeBlockDoc from "./CodeBlockDoc";
 import IconDoc from "./IconDoc";
 import IllustrationDoc from "./IllustrationDoc";
 import NotificationDoc from "./NotificationDoc";
 import IntroductionDoc from "./IntroductionDoc";
+import CardDoc from "./CardDoc";
+import ShellLayoutsDoc from "./ShellLayoutsDoc";
+import ChartDoc from "./ChartDoc";
 import PrinciplesDoc from "./PrinciplesDoc";
 import ColorsDoc from "./ColorsDoc";
 import TypographyDoc from "./TypographyDoc";
@@ -71,6 +75,16 @@ import ElevationDoc from "./ElevationDoc";
 import RadiusDoc from "./RadiusDoc";
 import BreakpointsDoc from "./BreakpointsDoc";
 import s from "../docs.module.css";
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/* format an ISO stamp deterministically (pure string parsing, no Date/locale — hydration-safe) */
+function fmtUpdated(iso?: string) {
+  if (!iso) return null;
+  const [date, time = ""] = iso.split("T");
+  const [y, m, d] = date.split("-");
+  const hm = time.slice(0, 5);
+  return `${MONTHS[Number(m) - 1]} ${Number(d)}, ${y}${hm ? " · " + hm : ""}`;
+}
 
 export function generateStaticParams() {
   return ALL_ENTRIES.map((e) => ({ slug: e.slug }));
@@ -118,6 +132,13 @@ export default async function ComponentPage({
         </nav>
         <h1 className={s.title}>{entry.title}</h1>
         <p className={s.lead}>{entry.desc}</p>
+        {(entry.version || entry.updated) && (
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 14, fontFamily: "var(--font-mono-geist)", fontSize: "0.66rem", letterSpacing: "0.06em", color: "#767b87" }}>
+            {entry.version && <span style={{ color: "#9aa0a8" }}>v{entry.version}</span>}
+            {entry.version && entry.updated && <span style={{ color: "#3a3c42" }}>·</span>}
+            {entry.updated && <span>Updated {fmtUpdated(entry.updated)}</span>}
+          </div>
+        )}
       </Reveal>
 
       {entry.slug === "button" ? (
@@ -216,6 +237,10 @@ export default async function ComponentPage({
         <TimePickerDoc related={related} />
       ) : entry.slug === "filter" ? (
         <FilterDoc related={related} />
+      ) : entry.slug === "table" ? (
+        <TableDoc related={related} />
+      ) : entry.slug === "chart" ? (
+        <ChartDoc related={related} />
       ) : entry.slug === "gridcomp" ? (
         <GridDoc related={related} />
       ) : entry.slug === "codeblock" ? (
@@ -228,6 +253,8 @@ export default async function ComponentPage({
         <NotificationDoc related={related} />
       ) : entry.slug === "introduction" ? (
         <IntroductionDoc related={related} />
+      ) : entry.slug === "card" ? (
+        <CardDoc related={related} />
       ) : entry.slug === "principles" ? (
         <PrinciplesDoc related={related} />
       ) : entry.slug === "colors" ? (
@@ -244,6 +271,8 @@ export default async function ComponentPage({
         <RadiusDoc related={related} />
       ) : entry.slug === "breakpoints" ? (
         <BreakpointsDoc related={related} />
+      ) : entry.slug === "sidemenu-with-navbar" ? (
+        <ShellLayoutsDoc related={related} />
       ) : (
         <Scaffold related={related} />
       )}

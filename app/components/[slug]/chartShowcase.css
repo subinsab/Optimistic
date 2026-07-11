@@ -1,0 +1,37 @@
+/* Chart showcase · scopes the kit tokens (incl. the --element-* palette) so the
+   real Chart / Donut / Sparkline render. Toggle data-mode for dark / daylight. */
+.chartScope {
+  --surface: #0B0B0B; --surface-raised: #0E0F12; --surface-sunken: #101114; --surface-overlay: #141519; --surface-chip: #1C1C1E;
+  --text: #F4F5F6; --text-secondary: #9AA0A8; --text-muted: #767B87; --text-faint: #565A62;
+  --border: #1E1E1E; --border-strong: #33343C; --border-subtle: #17181C; --border-focus: #FF7A00;
+  --accent: #FF7A00; --accent-hover: #E96E00; --accent-surface: #20160B; --accent-border: #5C3410; --on-accent: #1A0E04;
+  --success-text: #8FD9B2; --danger-text: #F29A9D;
+  --element-1: #FF7A00; --element-2: #5B8CFF; --element-3: #3FC98A; --element-4: #FFC457; --element-5: #A78BFA;
+  --element-6: #34D3C0; --element-7: #F2777B; --element-8: #EF8FD0; --element-9: #A9D96B; --element-10: #9AA0A8;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.35); --shadow-2: 0 8px 24px rgba(0,0,0,.42); --shadow-3: 0 16px 40px rgba(0,0,0,.5);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif; --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px;
+  --radius-2: 2px; --radius-6: 6px; --radius-8: 8px; --radius-10: 10px; --radius-12: 12px; --radius-16: 16px; --radius-full: 999px;
+}
+.chartScope[data-mode="light"] {
+  --surface: #FFFFFF; --surface-raised: #F7F8FA; --surface-sunken: #EEF0F3; --surface-overlay: #FFFFFF; --surface-chip: #EEF0F3;
+  --text: #16171B; --text-secondary: #565A62; --text-muted: #767B87; --text-faint: #9AA0A8;
+  --border: #E7E9EE; --border-strong: #CFD3DA; --border-subtle: #F0F2F5;
+  --success-text: #126B3D; --danger-text: #A5262A;
+  --shadow-1: 0 1px 2px rgba(16,24,40,.08); --shadow-2: 0 8px 24px rgba(16,24,40,.12); --shadow-3: 0 16px 40px rgba(16,24,40,.16);
+}
+
+.chartScope { padding: 4px; }
+.csToggleRow { display: flex; justify-content: flex-end; margin-bottom: 18px; }
+.csChartGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 22px; }
+.csChartCard {
+  background: var(--surface-raised); border: 1px solid var(--border); border-radius: var(--radius-12);
+  padding: 18px 18px 16px; display: flex; flex-direction: column; gap: 4px;
+}
+.csChartCard--wide { grid-column: 1 / -1; }
+.csChartTitle { font-size: 0.92rem; font-weight: 650; color: var(--text); }
+.csChartSub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 10px; }
+.csSparkRow { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.csSparkCell { display: flex; align-items: center; gap: 10px; }
+.csSparkCell b { font-size: 0.95rem; color: var(--text); font-variant-numeric: tabular-nums; }
+.csSparkCell span { font-size: 0.76rem; color: var(--text-muted); }

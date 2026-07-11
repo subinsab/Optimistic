@@ -102,7 +102,44 @@
   --bp-web: 1024px;
 }
 
-/* ── 3 · THEME — override the accent (and anything else) ─────
+/* ── 3 · THEME — light mode (flip the field, keep the ember) ─
+   Add data-theme="daylight" on <html> for the light theme.     */
+[data-theme="daylight"] {
+  /* surface */
+  --surface:         #FFFFFF;
+  --surface-raised:  #F7F8FA;
+  --surface-sunken:  #F0F2F5;
+  --surface-overlay: #FFFFFF;
+  --surface-chip:    #EEF0F3;
+
+  /* text */
+  --text:           #16171B;
+  --text-secondary: #565A62;
+  --text-muted:     #767B87;
+  --text-faint:     #9AA0A8;
+
+  /* border */
+  --border:        #E7E9EE;
+  --border-strong: #CFD3DA;
+  --border-subtle: #F0F2F5;
+
+  /* accent stays ember; only its tints change for a light field */
+  --accent-surface: #FFF3E9;
+  --accent-border:  #FFD0A3;
+
+  /* feedback tints for a light field */
+  --success-text: #126B3D; --success-surface: #EAF7F0; --success-border: #B7E3C9;
+  --danger-text:  #A5262A; --danger-surface:  #FDECEC; --danger-border:  #F5C2C4;
+  --warning-text: #8A5A00; --warning-surface: #FFF6E5; --warning-border: #FFE0A3;
+  --info-text:    #273F92; --info-surface:    #EDF1FD; --info-border:    #C3D0F7;
+
+  /* softer shadows on white */
+  --shadow-1: 0 1px 2px rgba(16,24,40,.08);
+  --shadow-2: 0 8px 24px rgba(16,24,40,.12);
+  --shadow-3: 0 16px 40px rgba(16,24,40,.16);
+}
+
+/* ── Product theme — override the accent (and anything else) ──
    Add data-theme="harbor" on <html> to switch. Copy this block
    and change the values to make your own product theme.        */
 [data-theme="harbor"] {

@@ -1,0 +1,44 @@
+/* Scoped copy of the kit's tokens.css, so the live DataGrid demo can render the
+   real optimistic-ui component without leaking its var names into the docs app.
+   Toggling data-mode flips the whole grid between the dark and daylight themes. */
+.gridScope {
+  --surface: #0B0B0B; --surface-raised: #0E0F12; --surface-sunken: #101114; --surface-overlay: #141519; --surface-chip: #1C1C1E;
+  --text: #F4F5F6; --text-secondary: #9AA0A8; --text-muted: #767B87; --text-faint: #565A62;
+  --border: #1E1E1E; --border-strong: #33343C; --border-subtle: #17181C; --border-focus: #FF7A00;
+  --accent: #FF7A00; --on-accent: #1A0E04;
+  --warning-text: #FFD37A; --warning-surface: #1C1710; --warning-border: #6A5220; --warning-solid: #FFB020;
+  --danger-solid: #EB4A4F; --danger-surface: #1C1113;
+  --shadow-2: 0 8px 24px rgba(0,0,0,.42);
+  --shadow-focus: 0 0 0 3px rgba(255,122,0,.14);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-10: 40px;
+  --radius-2: 2px; --radius-6: 6px; --radius-8: 8px; --radius-10: 10px; --radius-12: 12px; --radius-full: 999px;
+}
+
+.gridScope[data-mode="light"] {
+  --surface: #FFFFFF; --surface-raised: #F7F8FA; --surface-sunken: #F0F2F5; --surface-overlay: #FFFFFF; --surface-chip: #EEF0F3;
+  --text: #16171B; --text-secondary: #565A62; --text-muted: #767B87; --text-faint: #9AA0A8;
+  --border: #E7E9EE; --border-strong: #CFD3DA; --border-subtle: #F0F2F5;
+  --warning-text: #8A5A00; --warning-surface: #FFF6E5; --warning-border: #FFE0A3; --warning-solid: #FFB020;
+  --danger-surface: #FDECEC;
+  --shadow-2: 0 8px 24px rgba(16,24,40,.12);
+}
+
+/* the demo's own chrome (mode toggle) uses the docs app vars, not the kit's */
+.gridScopeWrap { display: flex; flex-direction: column; gap: 16px; padding: 18px; }
+.gridCtlRow { display: flex; flex-wrap: wrap; gap: 10px; }
+.gridModeRow { display: inline-flex; align-items: center; gap: 8px; align-self: flex-start; padding: 4px; border: 1px solid var(--color-ink-border); border-radius: 999px; background: var(--color-ink-panel); }
+.gridModeBtn { border: 0; background: none; color: var(--color-ink-text-3); font: inherit; font-size: 0.78rem; padding: 5px 14px; border-radius: 999px; cursor: pointer; }
+.gridModeBtn.on { background: var(--color-ink-chip); color: var(--color-ink-text-1); }
+
+/* Table Features button + checklist panel */
+.gridFeatWrap { position: relative; }
+.gridFeatBtn { display: inline-flex; align-items: center; gap: 7px; border: 1px solid var(--color-ink-border); background: var(--color-ink-panel); color: var(--color-ink-text-2); font: inherit; font-size: 0.8rem; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+.gridFeatBtn:hover { color: var(--color-ink-text-1); border-color: var(--color-ink-border-strong); }
+.gridFeatBtn.on { border-color: var(--color-brand-500, #ff7a00); color: var(--color-ink-text-1); }
+.gridFeatPanel { position: absolute; top: calc(100% + 8px); left: 0; z-index: 30; width: 250px; max-height: 340px; overflow-y: auto; padding: 6px; background: var(--color-ink-elevated, #141519); border: 1px solid var(--color-ink-border); border-radius: 12px; box-shadow: 0 16px 40px rgba(0,0,0,.5); display: flex; flex-direction: column; }
+.gridFeatOpt { display: flex; align-items: center; gap: 11px; padding: 8px 10px; border: 0; background: none; color: var(--color-ink-text-2); font: inherit; font-size: 0.85rem; text-align: left; border-radius: 8px; cursor: pointer; }
+.gridFeatOpt:hover { background: var(--color-ink-panel); color: var(--color-ink-text-1); }
+.gridChk { display: inline-flex; align-items: center; justify-content: center; width: 17px; height: 17px; flex: none; border: 1.5px solid var(--color-ink-border-strong); border-radius: 5px; color: #fff; }
+.gridChk.on { background: var(--color-brand-500, #ff7a00); border-color: var(--color-brand-500, #ff7a00); }

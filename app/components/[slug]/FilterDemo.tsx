@@ -30,8 +30,12 @@ function Check({ on }: { on: boolean }) {
   return <span className={`${s.ochk} ${s.chkS} ${on ? s.ochkOn : ""}`} aria-hidden="true" />;
 }
 
+/* icons reused by other demos */
+export const FSearch = Search;
+export const FSliders = Sliders;
+
 /* the quick-filter trigger — controlled so the bar can clear it */
-function QuickFilter({ label, options, value, onChange }: { label: string; options: string[]; value: string[]; onChange: (v: string[]) => void }) {
+export function QuickFilter({ label, options, value, onChange }: { label: string; options: string[]; value: string[]; onChange: (v: string[]) => void }) {
   const [open, setOpen] = useState(false);
   const ref = useDismiss(open, () => setOpen(false));
   const toggle = (o: string) => onChange(value.includes(o) ? value.filter((x) => x !== o) : [...value, o]);
