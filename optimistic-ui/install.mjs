@@ -12,7 +12,7 @@
      node install.mjs --tokens-only   # just the tokens
    ============================================================ */
 
-import { readFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
 import { dirname, join, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -33,7 +33,7 @@ const names = args.filter((a, i) => !a.startsWith("--") && !(dirIx !== -1 && i =
 if (flag("--list")) {
   log(paint("bold", "\nOptimistic UI — available components\n"));
   for (const [key, c] of Object.entries(registry.components)) {
-    log(`  ${paint("warm", key.padEnd(14))} ${c.title}${c.deps.length ? paint("dim", "  · needs " + c.deps.join(", ")) : ""}`);
+    log(`  ${paint("warm", key.padEnd(14))} ${paint("dim", "v" + (c.version || "0.0.0"))}  ${c.title}${c.deps.length ? paint("dim", "  · needs " + c.deps.join(", ")) : ""}`);
   }
   log("");
   process.exit(0);
@@ -68,6 +68,19 @@ for (const name of wanted) {
   c.files.forEach(copy);
   c.deps.forEach((d) => deps.add(d));
   log(`  ${paint("green", "✓")} ${name.padEnd(13)} ${paint("dim", "→ " + join(targetDir, "components", name).replace(process.cwd() + "/", ""))}`);
+}
+
+/* ── record installed versions so they can be tracked and updated ── */
+if (wanted.length) {
+  const lockPath = join(targetDir, "optimistic.lock.json");
+  let lock = { components: {} };
+  try { lock = JSON.parse(readFileSync(lockPath, "utf8")); lock.components = lock.components || {}; } catch { /* new lockfile */ }
+  lock.kit = registry.version;
+  lock.updatedAt = new Date().toISOString();
+  for (const name of wanted) lock.components[name] = registry.components[name].version || "0.0.0";
+  mkdirSync(dirname(lockPath), { recursive: true });
+  writeFileSync(lockPath, JSON.stringify(lock, null, 2) + "\n");
+  log(`  ${paint("green", "✓")} lockfile      ${paint("dim", "→ " + lockPath.replace(process.cwd() + "/", ""))}`);
 }
 
 /* ── next steps ── */

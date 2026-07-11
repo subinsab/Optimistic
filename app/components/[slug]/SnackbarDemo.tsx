@@ -42,10 +42,10 @@ export default function SnackbarDemo() {
       <div className={s.demoStage} key={tab}>
         {tab === "Variants" && (
           <>
-            <div className={s.subLabel}>Success, error and info — brief and non-blocking</div>
+            <div className={s.subLabel}>Success, error and info · brief and non-blocking</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <Snack tone={s.osnackSuccess} icon={<Check />}>Changes saved.</Snack>
-              <Snack tone={s.osnackError} icon={<Err />}>Couldn&apos;t save — try again.</Snack>
+              <Snack tone={s.osnackError} icon={<Err />}>Couldn&apos;t save. Try again.</Snack>
               <Snack tone={s.osnackInfo} icon={<Info />}>A new version is available.</Snack>
             </div>
           </>
@@ -61,7 +61,7 @@ export default function SnackbarDemo() {
         )}
         {tab === "Live" && (
           <>
-            <div className={s.subLabel}>Trigger one — it auto-dismisses after 4s</div>
+            <div className={s.subLabel}>Trigger one · it auto-dismisses after 4s</div>
             <div className={s.btnRow} style={{ gap: 14 }}>
               <button className={`${s.obtn} ${s.m} ${s.vWarm}`} onClick={show}>Save changes</button>
               <span className={s.stateBadge}>{live ? "showing…" : "idle"}</span>

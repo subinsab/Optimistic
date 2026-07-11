@@ -27,7 +27,7 @@ const CODE = [
   { label: "React", code: `import { toast } from "@optimistic/ui";
 
 toast.success("Changes saved.", { action: { label: "Undo", onClick: undo } });
-toast.error("Couldn't save — try again.");
+toast.error("Couldn't save. Try again.");
 toast("A new version is available.", { duration: 6000 });
 
 // mount once at the app root
@@ -63,10 +63,10 @@ export default function SnackbarDoc({ related }: { related: typeof ALL_ENTRIES }
         <a className={s.resChip} href={`https://claude.ai/new?q=${CLAUDE}`} target="_blank" rel="noreferrer"><i>✳</i> Start building with Claude ↗</a>
       </div></Reveal>
 
-      <Reveal><section className={s.docSection}><div className={s.secLabel}>Live Demo — Fully Interactive</div><div className={s.secBody}><SnackbarDemo /></div></section></Reveal>
+      <Reveal><section className={s.docSection}><div className={s.secLabel}>Live Demo · Fully Interactive</div><div className={s.secBody}><SnackbarDemo /></div></section></Reveal>
       <Reveal><section className={s.docSection}><div className={s.secLabel}>Configuration</div><div className={s.secBody}><SnackbarConfigurator /></div></section></Reveal>
 
-      <Reveal><section className={s.docSection}><div className={s.secLabel}>Behavior — The Engineering Contract</div><div className={s.secBody}>
+      <Reveal><section className={s.docSection}><div className={s.secLabel}>Behavior · The Engineering Contract</div><div className={s.secBody}>
         <table className={s.tokTable}><thead><tr><th>Prop / event</th><th>Type</th><th>Notes</th></tr></thead><tbody>
           <tr><td className={s.tokName}>variant</td><td>success · error · info · warn</td><td>Icon and accent colour</td></tr>
           <tr><td className={s.tokName}>action</td><td>{"{ label, onClick }"}</td><td>One inline warm action, like Undo</td></tr>
@@ -102,7 +102,7 @@ export default function SnackbarDoc({ related }: { related: typeof ALL_ENTRIES }
         <div className={s.ddGrid}>
           <div className={`${s.ddCard} ${s.ddDo}`}><div className={s.ddHead}>✓ Do</div><div className={s.ddStage}><div className={`${s.osnack} ${s.osnackSuccess}`} style={{ pointerEvents: "none", maxWidth: 260 }}><span className={s.osnackIcon}><Check /></span><span className={s.osnackText}>Saved.</span><span className={s.osnackAction}>Undo</span></div></div><p className={s.ddText}>One line, one action. Confirm and let the reader move on.</p></div>
           <div className={`${s.ddCard} ${s.ddDont}`}><div className={s.ddHead}>✕ Don&apos;t</div><div className={s.ddStage}><div className={`${s.osnack} ${s.osnackSuccess}`} style={{ pointerEvents: "none", maxWidth: 260 }}><span className={s.osnackIcon}><Check /></span><span className={s.osnackText} style={{ whiteSpace: "normal" }}>Saved. Your changes to the document have been written to all three replicas and…</span></div></div><p className={s.ddText}>Don&apos;t write a paragraph. Long copy belongs in a Callout or Modal.</p></div>
-          <div className={`${s.ddCard} ${s.ddDo}`}><div className={s.ddHead}>✓ Do</div><div className={s.ddStage}><div className={`${s.osnack} ${s.osnackError}`} style={{ pointerEvents: "none", maxWidth: 260 }}><span className={s.osnackIcon}><Check /></span><span className={s.osnackText}>Couldn&apos;t save.</span><span className={s.osnackAction}>Retry</span></div></div><p className={s.ddText}>Give errors a way forward — a Retry beats a dead end.</p></div>
+          <div className={`${s.ddCard} ${s.ddDo}`}><div className={s.ddHead}>✓ Do</div><div className={s.ddStage}><div className={`${s.osnack} ${s.osnackError}`} style={{ pointerEvents: "none", maxWidth: 260 }}><span className={s.osnackIcon}><Check /></span><span className={s.osnackText}>Couldn&apos;t save.</span><span className={s.osnackAction}>Retry</span></div></div><p className={s.ddText}>Give errors a way forward. A Retry beats a dead end.</p></div>
           <div className={`${s.ddCard} ${s.ddDont}`}><div className={s.ddHead}>✕ Don&apos;t</div><div className={s.ddStage}><div className={`${s.osnack} ${s.osnackSuccess}`} style={{ pointerEvents: "none", maxWidth: 260 }}><span className={s.osnackText}>Saved.</span><span className={s.osnackAction}>Undo</span><span className={s.osnackAction}>View</span><span className={s.osnackAction}>Share</span></div></div><p className={s.ddText}>Don&apos;t stack multiple actions. A toast holds one, at most.</p></div>
         </div>
       </div></section></Reveal>

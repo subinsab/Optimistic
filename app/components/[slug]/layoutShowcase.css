@@ -1,0 +1,71 @@
+/* Layout showcase · scopes the kit's tokens so real Card/Table/Badge render
+   inside the app-shell frames. Toggle data-mode to flip dark / daylight. */
+.lyScope {
+  --surface: #0B0B0B; --surface-raised: #0E0F12; --surface-sunken: #101114; --surface-overlay: #141519; --surface-chip: #1C1C1E;
+  --text: #F4F5F6; --text-secondary: #9AA0A8; --text-muted: #767B87; --text-faint: #565A62;
+  --border: #1E1E1E; --border-strong: #33343C; --border-subtle: #17181C; --border-focus: #FF7A00;
+  --accent: #FF7A00; --accent-hover: #E96E00; --accent-surface: #20160B; --accent-border: #5C3410; --on-accent: #1A0E04;
+  --success-text: #8FD9B2; --danger-text: #F29A9D; --success-surface: #0F1A14; --danger-surface: #1C1113; --success-border: #1C5A3A; --danger-border: #6A2A2C;
+  --warning-text: #FFD37A; --warning-surface: #1C1710; --warning-border: #6A5220;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.35); --shadow-2: 0 8px 24px rgba(0,0,0,.42); --shadow-3: 0 16px 40px rgba(0,0,0,.5); --shadow-focus: 0 0 0 3px rgba(255,122,0,.14);
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif; --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px;
+  --radius-2: 2px; --radius-6: 6px; --radius-8: 8px; --radius-10: 10px; --radius-12: 12px; --radius-16: 16px; --radius-full: 999px;
+}
+.lyScope[data-mode="light"] {
+  --surface: #FFFFFF; --surface-raised: #F7F8FA; --surface-sunken: #EEF0F3; --surface-overlay: #FFFFFF; --surface-chip: #EEF0F3;
+  --text: #16171B; --text-secondary: #565A62; --text-muted: #767B87; --text-faint: #9AA0A8;
+  --border: #E7E9EE; --border-strong: #CFD3DA; --border-subtle: #F0F2F5;
+  --accent-surface: #FFF3E9; --accent-border: #FFD0A3;
+  --success-text: #126B3D; --danger-text: #A5262A; --success-surface: #EAF7F0; --danger-surface: #FDECEC; --success-border: #B7E3C9; --danger-border: #F5C2C4;
+  --warning-text: #8A5A00; --warning-surface: #FFF6E5; --warning-border: #FFE0A3;
+  --shadow-1: 0 1px 2px rgba(16,24,40,.08); --shadow-2: 0 8px 24px rgba(16,24,40,.12); --shadow-3: 0 16px 40px rgba(16,24,40,.16);
+}
+
+/* chrome */
+.lyToggleRow { display: flex; justify-content: flex-end; margin-bottom: 18px; }
+.lyGrid { display: flex; flex-direction: column; gap: 26px; }
+.lyBlock { display: flex; flex-direction: column; gap: 10px; }
+.lyCap { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: .12em; text-transform: uppercase; color: var(--text-muted); }
+
+/* the app-shell frame */
+.lyFrame { height: 320px; border: 1px solid var(--border); border-radius: var(--radius-12); overflow: hidden; background: var(--surface); display: flex; flex-direction: column; font-family: var(--font-sans); box-shadow: var(--shadow-2); }
+
+/* top menu */
+.lyTop { flex: none; height: 46px; display: flex; align-items: center; gap: 18px; padding: 0 14px; border-bottom: 1px solid var(--border); background: var(--surface-raised); }
+.lyBrand { display: flex; align-items: center; gap: 8px; font-weight: 650; font-size: 0.82rem; color: var(--text); }
+.lyBrand i { width: 15px; height: 15px; border-radius: 5px; background: var(--accent); display: block; }
+.lyNav { display: flex; gap: 16px; }
+.lyNav span { font-size: 0.76rem; color: var(--text-secondary); }
+.lyNav span.on { color: var(--text); font-weight: 600; }
+.lyTopR { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+.lyPill { display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 12px; border-radius: var(--radius-full); background: var(--surface-chip); border: 1px solid var(--border); color: var(--text-muted); font-size: 0.72rem; }
+.lyDot { width: 26px; height: 26px; border-radius: 50%; background: var(--surface-chip); border: 1px solid var(--border-strong); }
+
+/* main split: sidebar + column */
+.lyMain { flex: 1; display: flex; min-height: 0; }
+.lySide { width: 152px; flex: none; border-right: 1px solid var(--border); background: var(--surface-raised); padding: 12px 8px; display: flex; flex-direction: column; gap: 2px; }
+.lySideItem { display: flex; align-items: center; gap: 9px; padding: 7px 10px; border-radius: var(--radius-8); font-size: 0.76rem; color: var(--text-secondary); }
+.lySideItem.on { background: var(--surface-chip); color: var(--text); }
+.lySideItem i { width: 13px; height: 13px; border-radius: 3px; background: currentColor; opacity: .5; flex: none; }
+.lySideItem.on i { background: var(--accent); opacity: 1; }
+
+.lyCol { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+/* page header inside the content column */
+.lyHeader { flex: none; min-height: 50px; display: flex; align-items: center; gap: 10px; padding: 0 16px; border-bottom: 1px solid var(--border); }
+.lyCrumb { font-size: 0.68rem; color: var(--text-muted); margin-bottom: 2px; }
+.lyHeader b { font-size: 0.92rem; font-weight: 650; color: var(--text); }
+
+/* content area */
+.lyContent { flex: 1; min-height: 0; overflow: auto; padding: 14px; display: flex; flex-direction: column; gap: 12px; background: var(--surface); }
+.lyCards { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+.lyStat { padding: 12px 14px; }
+.lyStat__label { font-size: 0.68rem; color: var(--text-muted); }
+.lyStat__val { font-size: 1.1rem; font-weight: 700; color: var(--text); margin: 5px 0 7px; letter-spacing: -.01em; }
+
+/* keep the embedded kit table compact and edge-to-edge in the frame */
+.lyContent .o-tbl { font-size: 0.78rem; }
+
+/* brand button · orange background, white label */
+.lyScope .o-btn--warm { color: #fff; }
