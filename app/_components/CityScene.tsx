@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useLayoutEffect, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 /* ════════════════════════════════════════════════════════════════
@@ -394,8 +394,13 @@ function Traffic() {
     return { list, groups };
   }, []);
 
+  const tacc = useRef(0);
   useFrame(({ clock }, dt) => {
-    const d = Math.min(dt, 0.05); const s = signal(clock.elapsedTime);
+    // cap the traffic sim to ~30fps: halves the collision/sort/position work
+    tacc.current += dt;
+    if (tacc.current < 1 / 30) return;
+    const d = Math.min(tacc.current, 0.05); const s = signal(clock.elapsedTime);
+    tacc.current = 0;
     list.forEach((v) => {
       const go = v.axis === "x" ? s.x : s.z;
       const cross = v.axis === "x" ? ROADSX : ROADSZ; // perpendicular crossings
@@ -549,6 +554,17 @@ function City() {
   );
 }
 
+/* the shadow casters (buildings, spire, trees, lamps) and the light never
+   move, so the shadow map is identical every frame. Render it for the first
+   few frames, then freeze it — drops the whole per-frame shadow pass. */
+function ShadowFreeze() {
+  const gl = useThree((s) => s.gl);
+  const n = useRef(0);
+  useEffect(() => { gl.shadowMap.autoUpdate = false; gl.shadowMap.needsUpdate = true; }, [gl]);
+  useFrame(() => { if (n.current < 4) { n.current++; gl.shadowMap.needsUpdate = true; } });
+  return null;
+}
+
 export default function CityScene() {
   const wrapRef = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(true);
@@ -589,6 +605,7 @@ export default function CityScene() {
         shadow-bias={-0.0004}
       />
       <directionalLight position={[-200, 130, -140]} intensity={0.36} color="#8e929c" />
+      <ShadowFreeze />
       <City />
     </Canvas>
     </div>
