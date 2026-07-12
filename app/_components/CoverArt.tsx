@@ -7,6 +7,8 @@
  * towers (the one warm pixel).
  */
 
+import { BESPOKE } from "./covers";
+
 const MONTHS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
 export function fmtDate(iso: string) {
@@ -17,28 +19,8 @@ export function fmtDate(iso: string) {
 
 const PAL = ["#FF7A00", "#5B8CFF", "#3FC98A", "#A78BFA", "#34D3C0", "#EF8FD0"];
 
-/* Bespoke minimal cover: one elegant curve that dips (prepare for the worst)
-   then rises to a peak (hope for the best), with a single ember pixel at the
-   crest. The optimistic contract, drawn. */
-function OptimismCover({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect width="400" height="260" fill="#0a0a0b" />
-      <path d="M52,150 C88,178 108,199 133,198 C190,196 256,150 316,92 C330,79 344,75 356,88"
-        fill="none" stroke="#d6d9de" strokeOpacity="0.82" strokeWidth="1.4" strokeLinecap="round" />
-      <circle cx="337" cy="77" r="2.6" fill="#FF7A00" />
-      <g fill="#e6e8ec" fontFamily='"Geist Mono", ui-monospace, monospace' fontSize="9" letterSpacing="1.4" textAnchor="middle">
-        <text x="326" y="52">HOPE FOR</text>
-        <text x="326" y="64">THE BEST</text>
-        <text x="132" y="222">PREPARE FOR</text>
-        <text x="132" y="234">THE WORST</text>
-      </g>
-    </svg>
-  );
-}
-
 export default function CoverArt({ seed, className, cover }: { seed: number; className?: string; cover?: string }) {
-  if (cover === "optimism") return <OptimismCover className={className} />;
+  if (cover && BESPOKE[cover]) return BESPOKE[cover](className);
   const rnd = (n: number) => {
     const x = Math.sin(seed * 99.7 + n * 37.13) * 10000;
     return x - Math.floor(x);

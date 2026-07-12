@@ -324,14 +324,11 @@ function People({ count = 140 }: { count?: number }) {
   useLayoutEffect(() => {
     if (torso.current) { peeps.forEach((p, i) => { tmp.set(p.top); torso.current!.setColorAt(i, tmp); }); if (torso.current.instanceColor) torso.current.instanceColor.needsUpdate = true; }
   }, [peeps]);
-  const acc = useRef(0);
   useFrame(({ clock }, dt) => {
-    // cap the pedestrian sim to ~30fps: half the instance-matrix work,
-    // no visible change (movement integrates the accumulated time)
-    acc.current += dt;
-    if (acc.current < 1 / 30) return;
-    const d = Math.min(acc.current, 0.05);
-    acc.current = 0;
+    // integrate every frame with real delta time, so motion is frame-rate
+    // independent and stays smooth at any refresh rate (60/120Hz). Clamp the
+    // step so a background-tab stall can never teleport anyone.
+    const d = Math.min(dt, 0.05);
     peeps.forEach((p, i) => {
       const wrap = p.axis === "x" ? WRAPX : WRAPZ;
       p.pos += p.dir * p.spd * d; if (p.pos > wrap) p.pos = -wrap; if (p.pos < -wrap) p.pos = wrap;
@@ -394,13 +391,10 @@ function Traffic() {
     return { list, groups };
   }, []);
 
-  const tacc = useRef(0);
   useFrame(({ clock }, dt) => {
-    // cap the traffic sim to ~30fps: halves the collision/sort/position work
-    tacc.current += dt;
-    if (tacc.current < 1 / 30) return;
-    const d = Math.min(tacc.current, 0.05); const s = signal(clock.elapsedTime);
-    tacc.current = 0;
+    // integrate every frame with real delta time so vehicles move smoothly at
+    // any refresh rate. Clamp the step to survive a background-tab stall.
+    const d = Math.min(dt, 0.05); const s = signal(clock.elapsedTime);
     list.forEach((v) => {
       const go = v.axis === "x" ? s.x : s.z;
       const cross = v.axis === "x" ? ROADSX : ROADSZ; // perpendicular crossings
