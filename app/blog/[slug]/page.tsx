@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getArticleBySlug, getPublishedArticles } from "../../_data/articles";
 import CoverArt, { fmtDate } from "../../_components/CoverArt";
+import ArticleBody from "../_visuals/ArticleBody";
 import s from "../blog.module.css";
 
 export async function generateStaticParams() {
@@ -15,9 +16,9 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await props.params;
   const article = await getArticleBySlug(slug);
-  if (!article) return { title: "Article not found — Optimistic" };
+  if (!article) return { title: "Article not found · Optimistic" };
   return {
-    title: `${article.title} — Optimistic`,
+    title: `${article.title} · Optimistic`,
     description: article.excerpt,
   };
 }
@@ -55,16 +56,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
         </div>
 
         <article className={s.artBody}>
-          {(article.content ?? [{ paragraphs: [article.excerpt] }]).map(
-            (block, i) => (
-              <section key={i}>
-                {block.heading && <h2>{block.heading}</h2>}
-                {block.paragraphs.map((p, j) => (
-                  <p key={j}>{p}</p>
-                ))}
-              </section>
-            )
-          )}
+          <ArticleBody blocks={article.content ?? [{ paragraphs: [article.excerpt] }]} />
         </article>
 
         {more.length > 0 && (
