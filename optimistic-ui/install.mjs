@@ -1,18 +1,18 @@
 #!/usr/bin/env node
 /* ============================================================
-   Optimistic UI — installer
-   Copies the design tokens and chosen components INTO your
-   project, so you own the source and can edit it freely.
+   Optimistic UI — CLI
+   Copies design tokens and chosen components INTO your project,
+   so you own the source and can edit it freely.
 
    Usage:
-     node install.mjs                 # tokens + all components
-     node install.mjs button icon     # tokens + those components
-     node install.mjs --dir src/ui    # choose the target folder
-     node install.mjs --list          # list available components
-     node install.mjs --tokens-only   # just the tokens
+     npx optimistic-ui add button card      # tokens + those components
+     npx optimistic-ui add --all            # tokens + every component
+     npx optimistic-ui init                 # just the tokens
+     npx optimistic-ui list                 # list available components
+     npx optimistic-ui add card --dir src/ui  # choose the target folder
    ============================================================ */
 
-import { readFileSync, writeFileSync, mkdirSync, copyFileSync, existsSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, copyFileSync } from "node:fs";
 import { dirname, join, resolve, basename } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -28,10 +28,29 @@ const args = process.argv.slice(2);
 const flag = (n) => args.includes(n);
 const dirIx = args.indexOf("--dir");
 const targetDir = resolve(process.cwd(), dirIx !== -1 ? args[dirIx + 1] : "optimistic");
-const names = args.filter((a, i) => !a.startsWith("--") && !(dirIx !== -1 && i === dirIx + 1));
+const COMMANDS = new Set(["add", "list", "init", "help"]);
+const positional = args.filter((a, i) => !a.startsWith("--") && !(dirIx !== -1 && i === dirIx + 1));
+const cmd = COMMANDS.has(positional[0]) ? positional[0] : null;
+// back-compat: bare component names (no verb) still work
+const names = cmd ? positional.slice(1) : positional;
 
-if (flag("--list")) {
-  log(paint("bold", "\nOptimistic UI — available components\n"));
+function help() {
+  log(paint("bold", "\n  Optimistic UI") + paint("dim", "  ·  own-the-source component kit\n"));
+  log("  " + paint("bold", "Usage"));
+  log(`    ${paint("warm", "npx optimistic-ui add")} button card      tokens + those components`);
+  log(`    ${paint("warm", "npx optimistic-ui add --all")}            tokens + every component`);
+  log(`    ${paint("warm", "npx optimistic-ui init")}                 just the tokens`);
+  log(`    ${paint("warm", "npx optimistic-ui list")}                 list available components`);
+  log("");
+  log("  " + paint("bold", "Options"));
+  log(`    ${paint("dim", "--dir <path>")}   target folder (default: ./optimistic)`);
+  log(`    ${paint("dim", "--all")}          with 'add', install every component`);
+  log("");
+}
+
+/* ── list ── */
+if (cmd === "list" || flag("--list")) {
+  log(paint("bold", "\n  Optimistic UI — available components\n"));
   for (const [key, c] of Object.entries(registry.components)) {
     log(`  ${paint("warm", key.padEnd(14))} ${paint("dim", "v" + (c.version || "0.0.0"))}  ${c.title}${c.deps.length ? paint("dim", "  · needs " + c.deps.join(", ")) : ""}`);
   }
@@ -39,12 +58,25 @@ if (flag("--list")) {
   process.exit(0);
 }
 
+/* ── help / bare invocation ── */
+if (cmd === "help" || flag("--help") || (!cmd && names.length === 0 && !flag("--tokens-only"))) {
+  help();
+  process.exit(0);
+}
+
 /* ── which components ── */
-const wanted = flag("--tokens-only") ? [] : names.length ? names : Object.keys(registry.components);
+const tokensOnly = cmd === "init" || flag("--tokens-only");
+const wanted = tokensOnly ? [] : names.length ? names : flag("--all") ? Object.keys(registry.components) : [];
+
+if (!tokensOnly && wanted.length === 0) {
+  log(paint("warm", "\n  No components specified.") + paint("dim", "  Try  npx optimistic-ui add button card   (or --all)\n"));
+  process.exit(1);
+}
+
 const unknown = wanted.filter((n) => !registry.components[n]);
 if (unknown.length) {
-  log(paint("warm", `\nUnknown component(s): ${unknown.join(", ")}`));
-  log(paint("dim", "Run  node install.mjs --list  to see what's available.\n"));
+  log(paint("warm", `\n  Unknown component(s): ${unknown.join(", ")}`));
+  log(paint("dim", "  Run  npx optimistic-ui list  to see what's available.\n"));
   process.exit(1);
 }
 

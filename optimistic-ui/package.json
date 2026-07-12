@@ -1,0 +1,40 @@
+{
+  "name": "optimistic-ui",
+  "version": "0.1.0",
+  "description": "Optimistic UI — a dark-first, token-driven, theme-aware component kit. Install the source into your project with npx; you own every file.",
+  "type": "module",
+  "bin": {
+    "optimistic-ui": "./install.mjs"
+  },
+  "files": [
+    "install.mjs",
+    "registry.json",
+    "components",
+    "tokens",
+    "README.md"
+  ],
+  "keywords": [
+    "design-system",
+    "component-library",
+    "ui",
+    "react",
+    "tokens",
+    "dark-mode",
+    "cli",
+    "optimistic"
+  ],
+  "homepage": "https://design.theoptimisticdesigner.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/subinsab/Optimistic.git",
+    "directory": "optimistic-ui"
+  },
+  "bugs": {
+    "url": "https://github.com/subinsab/Optimistic/issues"
+  },
+  "author": "Subin",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
