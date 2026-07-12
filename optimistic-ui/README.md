@@ -11,48 +11,40 @@ without fighting a dependency.
 
 ## Requirements
 
-- **Node.js 18.18 or newer** (20 LTS recommended) — the installer runs on Node.
-- **Git** — to clone the repository.
+- **Node.js 18 or newer** (20 LTS recommended) — the CLI runs on Node.
 - Any package manager (`npm`, `pnpm`, or `yarn`) in your target project.
 
 Check what you have:
 
 ```sh
-node -v   # v18.18.0 or higher
-git --version
+node -v   # v18 or higher
 ```
 
 ---
 
 ## Install
 
-**1. Get the kit**
+Run the CLI from the root of your project. Nothing to clone — the files land
+straight in your codebase and are yours to edit.
 
 ```sh
-git clone https://github.com/subinsab/Optimistic.git
-cd Optimistic/optimistic-ui
-```
+# tokens + those components, into ./optimistic
+npx optimistic-ui add button card table
 
-**2. Run the installer** (from the folder you want to install *into*, or pass `--dir`)
-
-```sh
-# everything — tokens + all components — into ./optimistic
-sh /path/to/optimistic-ui/install.sh
-
-# or pick components and a target folder
-sh install.sh button notification icon --dir src/ui
+# tokens + every component
+npx optimistic-ui add --all
 
 # just the design tokens
-sh install.sh --tokens-only
+npx optimistic-ui init
 
 # see what's available
-sh install.sh --list
+npx optimistic-ui list
+
+# choose the target folder
+npx optimistic-ui add button --dir src/ui
 ```
 
-(No `node`-less environments? The installer only needs Node.js, which most
-frontend projects already have. You can also run `node install.mjs` directly.)
-
-**3. Wire it up**
+**Then wire it up**
 
 ```css
 /* your global stylesheet */

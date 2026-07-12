@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import Reveal from "../../_components/Reveal";
 import { ALL_ENTRIES, findEntry } from "../_data/registry";
@@ -123,13 +122,6 @@ export default async function ComponentPage({
   return (
     <div className={s.pageInner}>
       <Reveal>
-        <nav className={s.crumbs} aria-label="Breadcrumb">
-          <Link href="/components">Components</Link>
-          <span className={s.crumbSep}>/</span>
-          <span>{entry.category}</span>
-          <span className={s.crumbSep}>/</span>
-          <span>{entry.title}</span>
-        </nav>
         <h1 className={s.title}>{entry.title}</h1>
         <p className={s.lead}>{entry.desc}</p>
         {(entry.version || entry.updated) && (
@@ -425,17 +417,9 @@ useEffect(() => {
 function ButtonDoc({ related }: { related: typeof ALL_ENTRIES }) {
   return (
     <>
-      {/* resources: the file and the builder */}
+      {/* resources: the builder */}
       <Reveal delay={80}>
         <div className={s.resRow}>
-          <a
-            className={s.resChip}
-            href="https://www.figma.com/community/file/optimistic-design-system"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <i>◇</i> Open the Figma file ↗
-          </a>
           <ClaudeBuild />
         </div>
       </Reveal>

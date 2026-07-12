@@ -18,8 +18,8 @@ const CODE = [
   <svg class="o-link__arrow">…</svg>
 </a>
 
-<a href="https://figma.com" class="o-link o-link--external"
-   target="_blank" rel="noreferrer noopener">Figma file</a>` },
+<a href="https://example.com" class="o-link o-link--external"
+   target="_blank" rel="noreferrer noopener">Release notes</a>` },
   { label: "CSS", code: `.o-link {
   color: #ff9d45; text-decoration: none;
   border-bottom: 1px solid rgba(255,122,0,.35);
@@ -39,14 +39,14 @@ const CODE = [
 <Link href="/changelog" tone="quiet">changelog</Link>
 
 <Link href="/components" standalone>Browse all components</Link>
-<Link href="https://figma.com" external>Figma file</Link>
+<Link href="https://example.com" external>Release notes</Link>
 
 // framework routing: pass the router's component through
 <Link href="/pricing" as={NextLink}>Pricing</Link>` },
   { label: "Angular", code: `<a oLink routerLink="/principles">design principles</a>
 <a oLink routerLink="/changelog" tone="quiet">changelog</a>
 <a oLink routerLink="/components" standalone>Browse all components</a>
-<a oLink href="https://figma.com" external>Figma file</a>` },
+<a oLink href="https://example.com" external>Release notes</a>` },
   { label: "Async / API", code: `// A link is a promise: never route to a dead end. Prefetch on intent
 // so the destination is warm by the time the click lands.
 function SmartLink({ href, children }) {
@@ -72,7 +72,6 @@ export default function LinkDoc({ related }: { related: typeof ALL_ENTRIES }) {
   return (
     <>
       <Reveal delay={80}><div className={s.resRow}>
-        <a className={s.resChip} href="https://www.figma.com/community/file/optimistic-design-system" target="_blank" rel="noreferrer"><i>◇</i> Open the Figma file ↗</a>
         <a className={s.resChip} href={`https://claude.ai/new?q=${CLAUDE}`} target="_blank" rel="noreferrer"><i>✳</i> Start building with Claude ↗</a>
       </div></Reveal>
 
@@ -110,7 +109,7 @@ export default function LinkDoc({ related }: { related: typeof ALL_ENTRIES }) {
         <div className={s.ddGrid}>
           <div className={`${s.ddCard} ${s.ddDo}`}><div className={s.ddHead}>✓ Do</div><div className={s.ddStage}><span className={s.olinkProse} style={{ fontSize: "0.85rem" }}>See the <span className={s.olink}>colour system</span> for the full scale.</span></div><p className={s.ddText}>Wrap the words that name the destination. The link text is the label.</p></div>
           <div className={`${s.ddCard} ${s.ddDont}`}><div className={s.ddHead}>✕ Don&apos;t</div><div className={s.ddStage}><span className={s.olinkProse} style={{ fontSize: "0.85rem" }}>For the colour system, <span className={s.olink}>click here</span>.</span></div><p className={s.ddText}>Don&apos;t link &quot;click here&quot;. It fails screen readers and says nothing scanned alone.</p></div>
-          <div className={`${s.ddCard} ${s.ddDo}`}><div className={s.ddHead}>✓ Do</div><div className={s.ddStage}><span className={`${s.olink} ${s.olinkStandalone} ${s.olinkExternal}`} style={{ pointerEvents: "none" }}>Open in Figma<Ext /></span></div><p className={s.ddText}>Mark links that leave the site so a new tab is never a surprise.</p></div>
+          <div className={`${s.ddCard} ${s.ddDo}`}><div className={s.ddHead}>✓ Do</div><div className={s.ddStage}><span className={`${s.olink} ${s.olinkStandalone} ${s.olinkExternal}`} style={{ pointerEvents: "none" }}>Open the release notes<Ext /></span></div><p className={s.ddText}>Mark links that leave the site so a new tab is never a surprise.</p></div>
           <div className={`${s.ddCard} ${s.ddDont}`}><div className={s.ddHead}>✕ Don&apos;t</div><div className={s.ddStage}><span className={`${s.obtn} ${s.sm} ${s.vWarm}`} style={{ pointerEvents: "none" }}>Learn more</span></div><p className={s.ddText}>Don&apos;t dress navigation as a solid button. A link goes; a button does.</p></div>
         </div>
       </div></section></Reveal>
