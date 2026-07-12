@@ -149,6 +149,34 @@
   border-radius: var(--r-sm);
 }
 .mobileLink:hover { background: var(--bg-hover); }
+.mobileCta { color: var(--accent); font-weight: 600; }
+
+/* click-away backdrop under the open menu */
+.scrim {
+  position: fixed;
+  inset: var(--nav-h) 0 0;
+  z-index: -1;
+  background: rgba(0, 0, 0, 0.4);
+  border: 0;
+  padding: 0;
+  cursor: default;
+}
+
+/* ── compact: component docs run full-height, so the marketing bar is hidden
+   and only a floating menu trigger remains. The transparent bar is made
+   click-through so it never blocks the content beneath it. ── */
+.nav.compact {
+  background: transparent;
+  border-bottom-color: transparent;
+  pointer-events: none;
+}
+.nav.compact .brand,
+.nav.compact .links,
+.nav.compact .cta { display: none; }
+.nav.compact .actions { margin-left: auto; pointer-events: auto; }
+.nav.compact .menuBtn { display: inline-flex; }
+.nav.compact .mobile,
+.nav.compact .scrim { pointer-events: auto; }
 
 @media (max-width: 780px) {
   .links { display: none; }
