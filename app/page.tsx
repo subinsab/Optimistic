@@ -331,7 +331,7 @@ export default async function Home() {
               href={featured.placeholder ? undefined : `/blog/${featured.slug}`}
             >
               <div className={s.jCover}>
-                <CoverArt seed={featured.seed} className={s.coverImg} />
+                <CoverArt seed={featured.seed} cover={featured.cover} className={s.coverImg} />
                 <div className={s.jOverlay} aria-hidden="true" />
                 <span className={s.jCat}>{featured.category}</span>
                 <h3 className={s.jFeatTitle}>{featured.title}</h3>
@@ -351,7 +351,7 @@ export default async function Home() {
                   href={a.placeholder ? undefined : `/blog/${a.slug}`}
                 >
                   <div className={s.jThumb}>
-                    <CoverArt seed={a.seed + i} className={s.coverImg} />
+                    <CoverArt seed={a.seed + i} cover={a.cover} className={s.coverImg} />
                   </div>
                   <div className={s.jSecBody}>
                     <span className={s.jSecCat}>{a.category}</span>
