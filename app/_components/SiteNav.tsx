@@ -17,6 +17,9 @@ export default function SiteNav() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  // component docs run full-height: hide the marketing bar and expose only a
+  // floating menu trigger that reveals the same navigation on demand.
+  const compact = pathname === "/components" || pathname.startsWith("/components/");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -26,7 +29,7 @@ export default function SiteNav() {
   }, []);
 
   return (
-    <header className={`${styles.nav} ${scrolled ? styles.scrolled : ""}`}>
+    <header className={`${styles.nav} ${scrolled ? styles.scrolled : ""} ${compact ? styles.compact : ""}`}>
       <div className={styles.inner}>
         <Link href="/" className={styles.brand} aria-label="Optimistic home">
           <Logo />
@@ -67,18 +70,31 @@ export default function SiteNav() {
       </div>
 
       {open && (
-        <div className={styles.mobile}>
-          {LINKS.map((l) => (
+        <>
+          <button className={styles.scrim} aria-label="Close menu" onClick={() => setOpen(false)} />
+          <div className={styles.mobile}>
+            <Link href="/" className={styles.mobileLink} onClick={() => setOpen(false)}>
+              Home
+            </Link>
+            {LINKS.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={styles.mobileLink}
+                onClick={() => setOpen(false)}
+              >
+                {l.label}
+              </Link>
+            ))}
             <Link
-              key={l.href}
-              href={l.href}
-              className={styles.mobileLink}
+              href="/components"
+              className={`${styles.mobileLink} ${styles.mobileCta}`}
               onClick={() => setOpen(false)}
             >
-              {l.label}
+              Get started →
             </Link>
-          ))}
-        </div>
+          </div>
+        </>
       )}
     </header>
   );
