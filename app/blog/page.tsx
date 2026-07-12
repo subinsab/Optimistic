@@ -5,7 +5,7 @@ import CoverArt, { fmtDate } from "../_components/CoverArt";
 import s from "./blog.module.css";
 
 export const metadata: Metadata = {
-  title: "Blog — Optimistic",
+  title: "Blog · Optimistic",
   description:
     "Design system insights and engineering: token architecture, Figma Variables, component governance, accessibility, and scaling stories from real product teams.",
 };
