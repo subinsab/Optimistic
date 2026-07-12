@@ -35,10 +35,9 @@ const LOCAL: [string, string, string, string][] = [
 
 /* add the kit to your own app */
 const KIT: [string, string, string, string][] = [
-  ["01", "Open the kit", "The installer lives inside the repo you just cloned.", "cd Optimistic/optimistic-ui"],
-  ["02", "Copy components into your app", "Pull the tokens plus the components you want into a folder you own. Run with --list to see them all.", "node install.mjs button notification --dir src/ui"],
-  ["03", "Import the tokens once", "Add this to your global stylesheet. It defines every CSS variable the foundations below use.", "/* global.css */\n@import \"./ui/tokens.css\";"],
-  ["04", "Use a component", "It is plain React and CSS with no build magic. Edit it freely, it is your code now.", "import { Button } from \"./ui/components/button/button\";\n\n<Button variant=\"warm\">Ship it</Button>"],
+  ["01", "Add components to your app", "In your project root, run the CLI. It copies the tokens plus the components you name into a folder you own. No clone needed. Run `npx optimistic-ui list` to see them all.", "npx optimistic-ui add button notification --dir src/ui"],
+  ["02", "Import the tokens once", "Add this to your global stylesheet. It defines every CSS variable the foundations below use.", "/* global.css */\n@import \"./src/ui/tokens.css\";"],
+  ["03", "Use a component", "It is plain React and CSS with no build magic. Edit it freely, it is your code now.", "import { Button } from \"./src/ui/components/button/button\";\n\n<Button variant=\"warm\">Ship it</Button>"],
 ];
 
 /* how to use each foundation, with the real CSS variables */
@@ -116,8 +115,8 @@ export default function PrinciplesDoc({ related }: { related: typeof ALL_ENTRIES
       </div></section></Reveal>
 
       <Reveal><section className={s.docSection}><div className={s.secLabel}>Add Optimistic UI to your app</div><div className={s.secBody}>
-        <p className={s.fnCardText} style={{ maxWidth: 640, marginBottom: 20 }}>The kit is shadcn-style: instead of a locked npm package, an installer copies the tokens and the components you pick straight into your project, so you own and can reshape every file.</p>
-        <Steps items={KIT} head={(i) => ["terminal", "terminal", "css", "tsx"][i]} />
+        <p className={s.fnCardText} style={{ maxWidth: 640, marginBottom: 20 }}>The kit is shadcn-style: instead of a locked runtime dependency, a CLI (<code>npx optimistic-ui</code>) copies the tokens and the components you pick straight into your project, so you own and can reshape every file.</p>
+        <Steps items={KIT} head={(i) => ["terminal", "css", "tsx"][i]} />
       </div></section></Reveal>
 
       <Reveal><section className={s.docSection}><div className={s.secLabel}>Using the foundations</div><div className={s.secBody}>

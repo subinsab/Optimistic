@@ -53,7 +53,7 @@ export default function LinkDemo() {
           <>
             <div className={s.subLabel}>Leaves the site — marked and safe by default</div>
             <div className={s.btnRow} style={{ gap: 24 }}>
-              <a href="#" onClick={noNav} className={`${s.olink} ${s.olinkStandalone} ${s.olinkExternal}`} rel="noreferrer">Open the Figma file<Ext /></a>
+              <a href="#" onClick={noNav} className={`${s.olink} ${s.olinkStandalone} ${s.olinkExternal}`} rel="noreferrer">Open the changelog<Ext /></a>
               <a href="#" onClick={noNav} className={`${s.olink} ${s.olinkExternal}`} rel="noreferrer">github.com/optimistic<Ext /></a>
             </div>
           </>

@@ -66,7 +66,6 @@ export default function PillsDoc({ related }: { related: typeof ALL_ENTRIES }) {
   return (
     <>
       <Reveal delay={80}><div className={s.resRow}>
-        <a className={s.resChip} href="https://www.figma.com/community/file/optimistic-design-system" target="_blank" rel="noreferrer"><i>◇</i> Open the Figma file ↗</a>
         <a className={s.resChip} href={`https://claude.ai/new?q=${CLAUDE}`} target="_blank" rel="noreferrer"><i>✳</i> Start building with Claude ↗</a>
       </div></Reveal>
 
