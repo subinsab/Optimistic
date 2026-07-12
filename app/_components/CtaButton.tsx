@@ -2,7 +2,7 @@ import Link from "next/link";
 import s from "./CtaButton.module.css";
 
 /*
-   Shared page CTA — same anatomy as the nav's "Get started" button:
+   Shared page CTA · same anatomy as the nav's "Get started" button:
    a light chip holding a dark 24px launchpad with the 9-pixel ↗ glyph.
    On hover the pixels scatter along their own vectors and reassemble,
    and the launchpad pops to the warm accent.
@@ -43,15 +43,17 @@ function Arrow() {
 export default function CtaButton({
   href,
   type,
+  external,
   children,
 }: {
   href?: string;
   type?: "submit" | "button";
+  external?: boolean;
   children: React.ReactNode;
 }) {
   if (href) {
     return (
-      <Link className={s.cta} href={href}>
+      <Link className={s.cta} href={href} {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}>
         {children}
         <Arrow />
       </Link>

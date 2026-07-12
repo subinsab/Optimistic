@@ -5,7 +5,7 @@ import CtaButton from "../_components/CtaButton";
 import s from "./community.module.css";
 
 export const metadata: Metadata = {
-  title: "Community — Optimistic",
+  title: "Community · Optimistic",
   description:
     "Optimistic is built in the open. Propose components, contribute code, improve the docs, and land your first contribution within the hour.",
 };
@@ -15,7 +15,7 @@ const P = ({ c, r, cls }: { c: number; r: number; cls?: string }) => (
   <rect className={cls} x={c * 8} y={r * 8} width={6} height={6} rx={1.5} />
 );
 
-/* ways in — one glyph, one hover behaviour each */
+/* ways in · one glyph, one hover behaviour each */
 const WAYS = [
   {
     title: "Propose a component",
@@ -63,7 +63,7 @@ const WAYS = [
   },
 ];
 
-/* the first hour — a short path with a visible finish line */
+/* the first hour · a short path with a visible finish line */
 const STEPS = [
   {
     n: "01",
@@ -205,15 +205,16 @@ export default function CommunityPage() {
             <span className={s.eyebrow}>
               <i className={s.hatch} /> THE FIRST MOVE
             </span>
-            <h2 className={s.title}>Start with a star.</h2>
+            <h2 className={s.title}>Join the conversation.</h2>
             <p className={s.lead}>
-              It costs nothing and tells us someone is watching. We will take
-              it from there.
+              The Discord is where the questions, proposals and works in
+              progress live. Jump in and say hi, or star the repo to follow
+              along.
             </p>
             <div className={s.ctaRow}>
-              <CtaButton href="https://github.com">Open GitHub</CtaButton>
-              <a className={s.quietLink} href="/contact">
-                Or just say hello <span aria-hidden="true">→</span>
+              <CtaButton href="https://discord.gg/Y29N3Wjf6" external>Join the Discord</CtaButton>
+              <a className={s.quietLink} href="https://github.com/subinsab/Optimistic" target="_blank" rel="noopener noreferrer">
+                Or star it on GitHub <span aria-hidden="true">→</span>
               </a>
             </div>
           </Reveal>
