@@ -324,8 +324,14 @@ function People({ count = 140 }: { count?: number }) {
   useLayoutEffect(() => {
     if (torso.current) { peeps.forEach((p, i) => { tmp.set(p.top); torso.current!.setColorAt(i, tmp); }); if (torso.current.instanceColor) torso.current.instanceColor.needsUpdate = true; }
   }, [peeps]);
+  const acc = useRef(0);
   useFrame(({ clock }, dt) => {
-    const d = Math.min(dt, 0.05);
+    // cap the pedestrian sim to ~30fps: half the instance-matrix work,
+    // no visible change (movement integrates the accumulated time)
+    acc.current += dt;
+    if (acc.current < 1 / 30) return;
+    const d = Math.min(acc.current, 0.05);
+    acc.current = 0;
     peeps.forEach((p, i) => {
       const wrap = p.axis === "x" ? WRAPX : WRAPZ;
       p.pos += p.dir * p.spd * d; if (p.pos > wrap) p.pos = -wrap; if (p.pos < -wrap) p.pos = wrap;
@@ -559,9 +565,9 @@ export default function CityScene() {
     <Canvas
       shadows="percentage"
       frameloop={active ? "always" : "never"}
-      dpr={[1, 1.7]}
+      dpr={[1, 1.5]}
       camera={{ position: [0, 118, 188], fov: 58, near: 1, far: 2400 }}
-      gl={{ antialias: true, alpha: false }}
+      gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
       style={{ position: "absolute", inset: 0 }}
       onCreated={({ scene, camera, gl }) => {
         gl.shadowMap.type = THREE.PCFShadowMap; // PCFSoftShadowMap is deprecated in this three build
@@ -577,7 +583,7 @@ export default function CityScene() {
       <pointLight position={[0, 95, 90]} intensity={2.5} distance={250} decay={0} color="#e8e4da" />
       <directionalLight
         position={[240, 340, 180]} intensity={1.4} color="#fff3e2" castShadow
-        shadow-mapSize-width={2048} shadow-mapSize-height={2048}
+        shadow-mapSize-width={1024} shadow-mapSize-height={1024}
         shadow-camera-near={1} shadow-camera-far={1050}
         shadow-camera-left={-260} shadow-camera-right={260} shadow-camera-top={260} shadow-camera-bottom={-260}
         shadow-bias={-0.0004}
