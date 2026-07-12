@@ -31,7 +31,7 @@ export default async function BlogPage() {
         {featured && (
           <Link className={s.featured} href={`/blog/${featured.slug}`}>
             <div className={s.featCover}>
-              <CoverArt seed={featured.seed} className={s.coverImg} />
+              <CoverArt seed={featured.seed} cover={featured.cover} className={s.coverImg} />
             </div>
             <div>
               <span className={s.cat}>{featured.category}</span>
@@ -52,7 +52,7 @@ export default async function BlogPage() {
             {rest.map((a) => (
               <Link key={a.slug} className={s.card} href={`/blog/${a.slug}`}>
                 <div className={s.cardThumb}>
-                  <CoverArt seed={a.seed} className={s.coverImg} />
+                  <CoverArt seed={a.seed} cover={a.cover} className={s.coverImg} />
                 </div>
                 <span className={`${s.cat} ${s.cardCat}`}>{a.category}</span>
                 <h3 className={s.cardTitle}>{a.title}</h3>

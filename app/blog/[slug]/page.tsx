@@ -52,7 +52,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
         </header>
 
         <div className={s.artCover}>
-          <CoverArt seed={article.seed} className={s.coverImg} />
+          <CoverArt seed={article.seed} cover={article.cover} className={s.coverImg} />
         </div>
 
         <article className={s.artBody}>
@@ -73,7 +73,7 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
               {more.map((a) => (
                 <Link key={a.slug} className={s.card} href={`/blog/${a.slug}`}>
                   <div className={s.cardThumb}>
-                    <CoverArt seed={a.seed} className={s.coverImg} />
+                    <CoverArt seed={a.seed} cover={a.cover} className={s.coverImg} />
                   </div>
                   <span className={`${s.cat} ${s.cardCat}`}>{a.category}</span>
                   <h3 className={s.cardTitle}>{a.title}</h3>

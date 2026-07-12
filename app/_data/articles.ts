@@ -31,6 +31,7 @@ export type Article = {
   featured?: boolean;
   status: "Published" | "Draft";
   seed: number; // drives the procedural cover art
+  cover?: string; // opt-in bespoke cover (e.g. "optimism"); falls back to generative
   placeholder?: boolean;
   content?: Block[]; // article body, in order
 };
@@ -48,6 +49,7 @@ const COLLECTION: Article[] = [
     featured: true,
     status: "Published",
     seed: 42,
+    cover: "optimism",
     content: [
       { type: "lead", text: "Optimism, here, is not a personality trait or a marketing adjective. It is borrowed from a specific engineering pattern, the optimistic update, and it shapes both how the system is built and how it feels to use." },
       {
