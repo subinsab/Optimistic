@@ -28,9 +28,12 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
   const article = await getArticleBySlug(slug);
   if (!article) notFound();
 
-  const more = (await getPublishedArticles())
-    .filter((a) => a.slug !== article.slug)
-    .slice(0, 2);
+  const rest = (await getPublishedArticles()).filter((a) => a.slug !== article.slug);
+  // suggest same-category first, then fill with the most recent others
+  const more = [
+    ...rest.filter((a) => a.category === article.category),
+    ...rest.filter((a) => a.category !== article.category),
+  ].slice(0, 3);
 
   return (
     <main className={s.main}>
@@ -77,9 +80,11 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
                   </div>
                   <span className={`${s.cat} ${s.cardCat}`}>{a.category}</span>
                   <h3 className={s.cardTitle}>{a.title}</h3>
+                  <p className={s.cardExcerpt}>{a.excerpt}</p>
                   <span className={`${s.meta} ${s.cardMeta}`}>
                     {fmtDate(a.publishedDate)} · {a.readingTime}
                   </span>
+                  <span className={s.cardArrow} aria-hidden="true">→</span>
                 </Link>
               ))}
             </div>
