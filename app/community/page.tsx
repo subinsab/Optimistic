@@ -120,7 +120,7 @@ export default function CommunityPage() {
           </Reveal>
           <Reveal delay={320}>
             <div className={s.heroChips}>
-              <OptimisticHeart hint="click the heart" />
+              <OptimisticHeart />
             </div>
           </Reveal>
         </div>

@@ -173,10 +173,26 @@
 .nav.compact .brand,
 .nav.compact .links,
 .nav.compact .cta { display: none; }
-.nav.compact .actions { margin-left: auto; pointer-events: auto; }
+/* keep the floating menu trigger on the LEFT on component docs */
+.nav.compact .actions { margin-right: auto; pointer-events: auto; }
 .nav.compact .menuBtn { display: inline-flex; }
 .nav.compact .mobile,
 .nav.compact .scrim { pointer-events: auto; }
+/* align the trigger with the component sidebar's 18px left padding */
+.nav.compact .inner { padding-inline: 18px; }
+/* the site menu becomes a compact dropdown, anchored under the trigger and
+   left-aligned with the left sidebar */
+.nav.compact .mobile {
+  left: 18px; right: auto; top: 58px;
+  width: min(232px, calc(100vw - 36px));
+  background: #0e0e11;
+  border: 1px solid #24242b;
+  border-radius: 12px;
+  padding: 6px;
+  gap: 2px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+}
+.nav.compact .mobileLink { padding: 9px 12px; border-radius: 8px; font-size: 0.92rem; }
 
 @media (max-width: 780px) {
   .links { display: none; }

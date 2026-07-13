@@ -40,7 +40,8 @@ export default function Counter({
           requestAnimationFrame(tick);
         }
       },
-      { threshold: 0.4 }
+      // count up before the number scrolls into view, so it reads as settled
+      { rootMargin: "300px 0px 300px 0px", threshold: 0 }
     );
     io.observe(el);
     return () => io.disconnect();

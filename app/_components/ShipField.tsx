@@ -362,7 +362,7 @@ export default function ShipField() {
     ro.observe(canvas);
     const vis = new IntersectionObserver(
       ([e]) => { visible = e.isIntersecting; if (visible && !raf && !reduce) { last = performance.now(); raf = requestAnimationFrame(step); } },
-      { rootMargin: "150px" }
+      { rootMargin: "350px" }
     );
     vis.observe(canvas);
 

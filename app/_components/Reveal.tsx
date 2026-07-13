@@ -52,10 +52,11 @@ export default function Reveal({
             if (safety) clearTimeout(safety);
           }
         },
-        // threshold 0 fires the instant the top edge enters view. A ratio-based
-        // threshold never triggers for very tall sections (12% of a 5000px block
-        // exceeds the viewport), which used to leave the colours hidden for seconds.
-        { threshold: 0, rootMargin: "0px 0px -10% 0px" }
+        // threshold 0 fires the instant the top edge enters view. The positive
+        // bottom margin reveals a block slightly BEFORE it scrolls into view, so
+        // content is already settling in as you reach it instead of popping in
+        // late. A ratio-based threshold never triggers for very tall sections.
+        { threshold: 0, rootMargin: "0px 0px 15% 0px" }
       );
       io.observe(el);
       // Backstop only for genuinely broken observers; short so nothing lingers.
