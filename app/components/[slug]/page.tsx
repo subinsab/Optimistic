@@ -73,7 +73,18 @@ import GridSystemDoc from "./GridSystemDoc";
 import ElevationDoc from "./ElevationDoc";
 import RadiusDoc from "./RadiusDoc";
 import BreakpointsDoc from "./BreakpointsDoc";
+import { DocsThemeToggle } from "../DocsTheme";
 import s from "../docs.module.css";
+
+/* foundation pages have no interactive Live Demo, so they get no theme toggle */
+const FOUNDATION_SLUGS = new Set([
+  "introduction", "principles", "colors", "typography", "spacing",
+  "grid", "elevation", "radius", "breakpoints",
+]);
+
+/* these demos are self-contained dark/light showcases with their own in-demo
+   theme switcher, so the page-level toggle would be a redundant second control */
+const SELF_THEMED_SLUGS = new Set(["card", "chart", "sidemenu-with-navbar"]);
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 /* format an ISO stamp deterministically (pure string parsing, no Date/locale — hydration-safe) */
@@ -119,8 +130,16 @@ export default async function ComponentPage({
     (e) => e.category === entry.category && e.slug !== entry.slug
   ).slice(0, 3);
 
+  const showThemeToggle =
+    !FOUNDATION_SLUGS.has(entry.slug) && !SELF_THEMED_SLUGS.has(entry.slug);
+
   return (
     <div className={s.pageInner}>
+      {showThemeToggle && (
+        <div className={s.themeSlot}>
+          <DocsThemeToggle />
+        </div>
+      )}
       <Reveal>
         <h1 className={s.title}>{entry.title}</h1>
         <p className={s.lead}>{entry.desc}</p>

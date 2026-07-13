@@ -268,7 +268,7 @@ function DateField({ size = "M", mode = "single", autoClose = false, confirm = f
       <div
         className={`${s.oinput} ${s[SIZECLS[size] as keyof typeof s]} ${s.dateTrigger} ${hasValue ? s.dateTriggerHasVal : ""}`}
         role="button" tabIndex={0} aria-haspopup="dialog" aria-expanded={open}
-        style={{ color: value ? "#e7e9ee" : "#565a62" }}
+        style={{ color: value ? "var(--color-ink-text-1)" : "var(--color-ink-text-4)" }}
         onClick={() => setOpen((o) => !o)}
         onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setOpen((o) => !o); } }}
       >

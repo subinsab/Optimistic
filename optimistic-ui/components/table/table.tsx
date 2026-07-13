@@ -14,6 +14,8 @@ import { Drawer } from "../drawer/drawer";
 import { Tag } from "../tag/tag";
 import { Button } from "../button/button";
 import { Filter } from "../filter/filter";
+import { Checkbox } from "../checkbox/checkbox";
+import { Pagination } from "../pagination/pagination";
 import "./table.css";
 
 export interface Column<T> {
@@ -526,7 +528,7 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
             </td>
           )}
           {selectable && (
-            <td className={`o-tbl__ctrl ${pinOf(SELECT).cls}`} style={pinOf(SELECT).style}><input type="checkbox" checked={on} onChange={() => setSel(on ? sel.filter((x) => x !== id) : [...sel, id])} aria-label="Select row" /></td>
+            <td className={`o-tbl__ctrl ${pinOf(SELECT).cls}`} style={pinOf(SELECT).style}><Checkbox checked={on} onChange={() => setSel(on ? sel.filter((x) => x !== id) : [...sel, id])} aria-label="Select row" /></td>
           )}
           {rowNumbers && <td className={`o-tbl__num ${pinOf(ROWNUM).cls}`} style={pinOf(ROWNUM).style}>{rowNo}</td>}
           {visCols.map((c) => {
@@ -679,7 +681,7 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
                     onDragOver={(e) => { e.preventDefault(); if (dragKey && dragKey !== c.key && !settingsSearch) moveCol(dragKey, c.key); }}
                     onDragEnd={() => setDragKey(null)}>
                     <span className="o-tbl__setgrip"><IGrip /></span>
-                    <input type="checkbox" checked={!hiddenCols.includes(c.key)} onChange={() => setHiddenCols((h) => (h.includes(c.key) ? h.filter((x) => x !== c.key) : [...h, c.key]))} aria-label={advColLabel(c.key)} />
+                    <Checkbox checked={!hiddenCols.includes(c.key)} onChange={() => setHiddenCols((h) => (h.includes(c.key) ? h.filter((x) => x !== c.key) : [...h, c.key]))} aria-label={advColLabel(c.key)} />
                     <span className="o-tbl__setname">{c.header}</span>
                   </div>
                 ))}
@@ -734,7 +736,7 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
               {renderDetail && <th className={`o-tbl__ctrl ${pinOf(EXPAND).cls}`} style={{ ...pinOf(EXPAND).style, ...(hasGroups && stickyHeader ? { top: groupH } : {}) }} ref={(el) => { thRefs.current[EXPAND] = el; }} aria-hidden="true" />}
               {selectable && (
                 <th className={`o-tbl__ctrl ${pinOf(SELECT).cls}`} style={{ ...pinOf(SELECT).style, ...(hasGroups && stickyHeader ? { top: groupH } : {}) }} ref={(el) => { thRefs.current[SELECT] = el; }}>
-                  <input type="checkbox" checked={allOn} ref={(el) => { if (el) el.indeterminate = someOn; }} onChange={() => setSel(allOn ? sel.filter((id) => !viewIds.includes(id)) : Array.from(new Set([...sel, ...viewIds])))} aria-label="Select all rows" />
+                  <Checkbox checked={allOn} ref={(el) => { if (el) el.indeterminate = someOn; }} onChange={() => setSel(allOn ? sel.filter((id) => !viewIds.includes(id)) : Array.from(new Set([...sel, ...viewIds])))} aria-label="Select all rows" />
                 </th>
               )}
               {rowNumbers && <th className={`o-tbl__num ${pinOf(ROWNUM).cls}`} style={{ ...pinOf(ROWNUM).style, ...(hasGroups && stickyHeader ? { top: groupH } : {}) }} ref={(el) => { thRefs.current[ROWNUM] = el; }}>#</th>}
@@ -763,10 +765,7 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
                                 </div>
                                 <div className="o-tbl__menu-list">
                                   {distinct(c).map((v) => (
-                                    <label key={v} className="o-tbl__menu-opt">
-                                      <input type="checkbox" checked={colFilter[c.key]?.includes(v) ?? false} onChange={() => { toggleFilterVal(c.key, v); setPage(0); }} />
-                                      <span>{v}</span>
-                                    </label>
+                                    <Checkbox key={v} className="o-tbl__menu-opt" label={v} checked={colFilter[c.key]?.includes(v) ?? false} onChange={() => { toggleFilterVal(c.key, v); setPage(0); }} />
                                   ))}
                                 </div>
                               </FloatPopover>
@@ -835,10 +834,7 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
                             <label className="o-tbl__floatsearch"><ISearch /><input value={listSearch[c.key] ?? ""} onChange={(e) => setListSearch((sx) => ({ ...sx, [c.key]: e.target.value }))} placeholder="Search values" aria-label="Search values" /></label>
                             <div className="o-tbl__floatlist">
                               {shown.map((v) => (
-                                <label key={v} className="o-tbl__menu-opt">
-                                  <input type="checkbox" checked={picks.includes(v)} onChange={() => { toggleFilterVal(c.key, v); setPage(0); }} />
-                                  <span>{v}</span>
-                                </label>
+                                <Checkbox key={v} className="o-tbl__menu-opt" label={v} checked={picks.includes(v)} onChange={() => { toggleFilterVal(c.key, v); setPage(0); }} />
                               ))}
                               {shown.length === 0 && <span className="o-tbl__floatempty">No matches</span>}
                             </div>
@@ -909,13 +905,7 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
               </label>
             )}
           </div>
-          <div className="o-tbl__pager">
-            <button type="button" onClick={() => setPage((p) => Math.max(0, p - 1))} disabled={pageClamped === 0} aria-label="Previous page">‹</button>
-            {pageList(pageClamped, pages).map((p, i) => p === -1
-              ? <span key={`e${i}`} className="o-tbl__gap">…</span>
-              : <button key={p} type="button" className={p === pageClamped ? "is-on" : ""} onClick={() => setPage(p)} aria-current={p === pageClamped}>{p + 1}</button>)}
-            <button type="button" onClick={() => setPage((p) => Math.min(pages - 1, p + 1))} disabled={pageClamped >= pages - 1} aria-label="Next page">›</button>
-          </div>
+          <Pagination className="o-tbl__pager" page={pageClamped + 1} total={pages} onPage={(p) => setPage(p - 1)} />
         </div>
       )}
 
@@ -931,16 +921,30 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
 Table.displayName = "Table";
 
 /* compact page list with ellipses: 1 … 4 [5] 6 … 50 */
-function pageList(cur: number, total: number): number[] {
-  if (total <= 7) return Array.from({ length: total }, (_, i) => i);
-  const out = new Set([0, total - 1, cur, cur - 1, cur + 1]);
-  const arr = [...out].filter((p) => p >= 0 && p < total).sort((a, b) => a - b);
-  const res: number[] = [];
-  for (let i = 0; i < arr.length; i++) { if (i && arr[i] - arr[i - 1] > 1) res.push(-1); res.push(arr[i]); }
-  return res;
+/* A fixed-positioned portal resolves against the nearest ancestor that has a
+   transform / filter / perspective / contain — not the viewport. Menus portal
+   into the grid root (to inherit its theme tokens), so if any ancestor (e.g. a
+   page-transition wrapper) is transformed, viewport coords land in the wrong
+   place. Find that containing block so we can subtract its offset. */
+function fixedContainingRect(node: HTMLElement | null): { top: number; left: number } {
+  let el: HTMLElement | null = node;
+  while (el) {
+    const cs = getComputedStyle(el);
+    if (
+      cs.transform !== "none" ||
+      cs.perspective !== "none" ||
+      (cs.filter && cs.filter !== "none") ||
+      (cs.willChange && /transform|perspective|filter/.test(cs.willChange)) ||
+      (cs.contain && /paint|layout|strict|content/.test(cs.contain))
+    ) {
+      const r = el.getBoundingClientRect();
+      return { top: r.top, left: r.left };
+    }
+    el = el.parentElement;
+  }
+  return { top: 0, left: 0 };
 }
 
-/* portaled popover for a floating filter, so it never clips inside the scroll area */
 function FloatPopover({ anchor, container, onClose, children }: { anchor: HTMLElement | null; container: HTMLElement | null; onClose: () => void; children: React.ReactNode }) {
   const ref = React.useRef<HTMLDivElement>(null);
   const [pos, setPos] = React.useState<{ left: number; top: number } | null>(null);
@@ -948,9 +952,10 @@ function FloatPopover({ anchor, container, onClose, children }: { anchor: HTMLEl
     if (!anchor) return;
     const r = anchor.getBoundingClientRect();
     const width = 232;
+    const cb = fixedContainingRect(container);
     const left = Math.max(8, Math.min(r.left, window.innerWidth - width - 8));
-    setPos({ left, top: r.bottom + 6 });
-  }, [anchor]);
+    setPos({ left: left - cb.left, top: r.bottom + 6 - cb.top });
+  }, [anchor, container]);
   React.useEffect(() => {
     const h = (e: MouseEvent) => { if (!ref.current?.contains(e.target as Node) && !anchor?.contains(e.target as Node)) onClose(); };
     const key = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -987,15 +992,16 @@ function HeaderMenu(props: {
 }) {
   const { anchor, container, onClose, colHeader, allColumns, hiddenCols, pinState, grouped } = props;
   const ref = React.useRef<HTMLDivElement>(null);
-  const [pos, setPos] = React.useState<{ left: number; top: number } | null>(null);
+  const [pos, setPos] = React.useState<{ left: number; top: number; flyRight: boolean } | null>(null);
   const [sub, setSub] = React.useState<"pin" | "cols" | null>(null);
   React.useLayoutEffect(() => {
     if (!anchor) return;
     const r = anchor.getBoundingClientRect();
     const width = 216;
-    const left = Math.max(8, Math.min(r.right - width, window.innerWidth - width - 8));
-    setPos({ left, top: r.bottom + 6 });
-  }, [anchor]);
+    const cb = fixedContainingRect(container);
+    const vpLeft = Math.max(8, Math.min(r.right - width, window.innerWidth - width - 8));
+    setPos({ left: vpLeft - cb.left, top: r.bottom + 6 - cb.top, flyRight: vpLeft + width + 196 <= window.innerWidth });
+  }, [anchor, container]);
   React.useEffect(() => {
     const h = (e: MouseEvent) => { if (!ref.current?.contains(e.target as Node) && !anchor?.contains(e.target as Node)) onClose(); };
     const key = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
@@ -1005,8 +1011,7 @@ function HeaderMenu(props: {
   }, [anchor, onClose]);
   if (!pos || typeof document === "undefined") return null;
   const pin = (s: "left" | "right" | "none") => { props.onPin(s); onClose(); };
-  const flyRight = pos.left + 216 + 196 <= window.innerWidth;
-  const flyCls = `o-tbl__hflyout${flyRight ? "" : " is-left"}`;
+  const flyCls = `o-tbl__hflyout${pos.flyRight ? "" : " is-left"}`;
   return createPortal(
     <div ref={ref} className="o-tbl__hmenu" style={{ position: "fixed", left: pos.left, top: pos.top }} role="menu">
       <button type="button" className="o-tbl__hmi" onClick={() => { props.onSortAsc(); }}><IArrow dir="up" /> Sort Ascending</button>
