@@ -67,8 +67,15 @@
 
 /* ── shared page chrome ── */
 .pageInner {
+  position: relative;
   max-width: 1080px;
   padding: clamp(36px, 5vh, 64px) clamp(24px, 4vw, 64px) clamp(90px, 12vh, 150px);
+}
+.themeSlot {
+  position: absolute;
+  top: clamp(30px, 5vh, 58px);
+  right: clamp(24px, 4vw, 64px);
+  z-index: 5;
 }
 .eyebrow {
   display: inline-flex; align-items: center; gap: 11px;
@@ -2339,3 +2346,297 @@
 .grsPanel { background: var(--color-ink-panel); border: 1px solid var(--color-ink-border); border-radius: 8px; min-height: 36px; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; color: var(--color-ink-text-2); padding: 8px; text-align: center; }
 .grsPanelTall { min-height: 72px; }
 .grsPanelWarm { background: color-mix(in srgb, var(--color-ink-brand) 10%, var(--color-ink-panel)); border-color: rgba(255, 122, 0, 0.28); color: #ffb37a; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   Live Demo — light theme. Scoped to the single demo stage that carries
+   data-demo-theme="light" (set by DocsThemeProvider). Flips the ink token
+   scale so token-driven specimens invert cleanly, then patches the inverted
+   raw-hex pieces (white-on-dark fills) so contrast is preserved on light.
+   ══════════════════════════════════════════════════════════════════════ */
+.demoPanel[data-demo-theme="light"] {
+  --color-ink-page: #ffffff;
+  --color-ink-panel: #f7f8fa;
+  --color-ink-code: #eef0f3;
+  --color-ink-raised: #eef0f3;
+  --color-ink-elevated: #e7e9ed;
+  --color-ink-chip: #eceef2;
+  --color-ink-border: #e2e4e9;
+  --color-ink-border-strong: #c4c9d0;
+  --color-ink-text-1: #16181d;
+  --color-ink-text-2: #4b515a;
+  --color-ink-text-3: #6a707a;
+  --color-ink-text-4: #949aa3;
+  /* keep the ember VIBRANT so accent *backgrounds* (toggle-on, checkbox, radio,
+     slider, progress, time/date selection, badges, fab) match dark mode and the
+     kit's --accent. Orange *text* on white is darkened separately below. */
+  --color-ink-brand: #ff7a00;
+  /* many demo labels/titles use these raw near-white neutrals for text; flip
+     them here so every demo's copy reads dark without per-class overrides.
+     (their only non-text uses, a hatch swatch and a progress track, read
+     correctly inverted too.) */
+  --color-neutral-100: #16181d;
+  --color-neutral-200: #454b54;
+  color: var(--color-ink-text-1);
+  background: var(--color-ink-page);
+  border-radius: 8px;
+}
+
+/* tabs: the active (inverted-white) tab flips to dark-on-light */
+:global([data-demo-theme="light"]) .demoTab:hover { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .demoTabOn { background: #17181d; color: #fff; }
+:global([data-demo-theme="light"]) .demoTabOn:hover { color: #fff; }
+
+/* button specimens */
+:global([data-demo-theme="light"]) .vPrimary { background: #17181d; color: #fff; }
+:global([data-demo-theme="light"]) .vPrimary:hover:not(:disabled) { background: #23252c; }
+:global([data-demo-theme="light"]) .vGhost { color: var(--color-ink-text-1); border-color: #c8ccd3; }
+:global([data-demo-theme="light"]) .vGhost:hover:not(:disabled) { border-color: #adb3bb; background: rgba(0, 0, 0, 0.04); }
+:global([data-demo-theme="light"]) .vQuiet:hover:not(:disabled) { background: rgba(0, 0, 0, 0.05); }
+:global([data-demo-theme="light"]) .stateBadge { border-color: #d4d7dd; }
+
+/* text inputs: value text is a raw near-white + border is a dark raw hex */
+:global([data-demo-theme="light"]) .oinput { color: var(--color-ink-text-1); border-color: #c8ccd3; }
+:global([data-demo-theme="light"]) .oinput:hover:not(:disabled):not(:focus) { border-color: #adb3bb; }
+
+/* tags: neutral chip text + input value are raw near-whites; borders are dark raw */
+:global([data-demo-theme="light"]) .otag { color: var(--color-ink-text-1); border-color: #d4d7dd; }
+:global([data-demo-theme="light"]) .tagInput { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .tagField { border-color: #c8ccd3; }
+:global([data-demo-theme="light"]) .otagX:hover { background: rgba(0, 0, 0, 0.06); }
+/* colored fills (warm, gradient, success, error, info) keep their white labels
+   on a coloured background, which reads correctly on light too. */
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   LIGHT DEMO — nested surface/border/hover flips (auto-derived).
+   Layers over the manual overrides above; scoped to the .demoPanel stage
+   via the data-demo-theme="light" attribute, so only the Live Demo flips.
+   ═══════════════════════════════════════════════════════════════════ */
+/* ==== auto: nested demo surfaces + borders flipped for light ==== */
+:global([data-demo-theme="light"]) .card:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .scaffold { border: 1px dashed #d4d7dd; }
+:global([data-demo-theme="light"]) .stateBadge { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .vGhost { border-color: #cfd3da; }
+:global([data-demo-theme="light"]) .tokTable td { border-bottom: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .resChip { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .claudePanel { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .behLog { border-top: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .behCaption { border-top: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .configChip { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .configChip:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .configInput { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .ddText { border-top: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .ctxCaption { border-top: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .mockPage { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .mockTitle { background: #d6d9df; }
+:global([data-demo-theme="light"]) .mockLine { background: #e5e7eb; }
+:global([data-demo-theme="light"]) .mockModal { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .mockMenu { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .oinput { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .oinput:hover:not(:disabled):not(:focus) { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .otoggle:not(.otOn) { background: #e2e4e9; border: 1px solid #cfd3da; }
+:global([data-demo-theme="light"]) .ochk { border: 1px solid #cfd3da; }
+:global([data-demo-theme="light"]) .oradio { border: 1px solid #cfd3da; }
+:global([data-demo-theme="light"]) .bgNeutral { background: #eceef2; border-color: #d4d7dd; }
+:global([data-demo-theme="light"]) .bgOutline { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .otag { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .tagField { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .ocallout { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .otabsLine { border-bottom: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .otabCount { background: #eceef2; border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .otabsPill { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .otabsPill .otabOn { background: #e7e9ee; }
+:global([data-demo-theme="light"]) .otabsEnclosed .otabOn { border-color: #dadde2; }
+:global([data-demo-theme="light"]) .opagItem:hover:not(:disabled):not(.opagOn) { border-color: #dadde2; }
+:global([data-demo-theme="light"]) .olinkQuiet { border-bottom-color: #cfd3da; }
+:global([data-demo-theme="light"]) .vGhost.osplitToggle, :global([data-demo-theme="light"]) .vQuiet.osplitToggle { border-left-color: #cfd3da; }
+:global([data-demo-theme="light"]) .osplitMenu { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .osplitOpt:hover { background: #eceef2; }
+:global([data-demo-theme="light"]) .otextarea { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .otextarea:hover:not(:disabled):not(:focus) { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .ochoice { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .ochoice:hover:not(.ochoiceDisabled) { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .ochoiceIcon { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .omenu { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .omenuOpt:hover, :global([data-demo-theme="light"]) .omenuActive { background: #eceef2; }
+:global([data-demo-theme="light"]) .oddTrigger { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .oddTrigger:hover:not(:disabled) { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .oddFooter { border-top: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .osearchKbd { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .osearchResult:hover, :global([data-demo-theme="light"]) .osearchResult.omenuActive { background: #eceef2; }
+:global([data-demo-theme="light"]) .oRange { background: #e6e8ec; }
+:global([data-demo-theme="light"]) .osliderNum { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .opinCell { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .opinCellFilled { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .oupZone { border: 1.5px dashed #d4d7dd; background: #ffffff; }
+:global([data-demo-theme="light"]) .oupZone:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .oupFile { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .oupBar { background: #e6e8ec; }
+:global([data-demo-theme="light"]) .olistRow:hover, :global([data-demo-theme="light"]) .olistBtn:hover { background: #f1f2f5; }
+:global([data-demo-theme="light"]) .olistAvatar { background: #e2e4e9; }
+:global([data-demo-theme="light"]) .opill { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .opill:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .osliderDualTrack { background: #e6e8ec; }
+:global([data-demo-theme="light"]) .oupInlineBtn { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .oupInlineBtn:hover { border-color: #c4c9d0; background: #eceef2; }
+:global([data-demo-theme="light"]) .oavatar { background: #e2e4e9; }
+:global([data-demo-theme="light"]) .oavatarMore { background: #eceef2; }
+:global([data-demo-theme="light"]) .oavatarMoreBtn:hover { background: #e2e4e9; }
+:global([data-demo-theme="light"]) .oavatarPop { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .oavatarPopRow:hover { background: #eceef2; }
+:global([data-demo-theme="light"]) .ologoClearGuide { border: 1px dashed #c4c9d0; }
+:global([data-demo-theme="light"]) .ologoMisuse { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .osnack { background: #eceef2; border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .oloader { border: 2.5px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .oloaderOverlay { background: #ffffff; }
+:global([data-demo-theme="light"]) .oprogBar { background: #e6e8ec; }
+:global([data-demo-theme="light"]) .oprogViewport { background: #ffffff; }
+:global([data-demo-theme="light"]) .ostepDot { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .obcCaret:hover { background: #eceef2; }
+:global([data-demo-theme="light"]) .obcCaret[aria-expanded="true"] { background: #eceef2; }
+:global([data-demo-theme="light"]) .obcMenu { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .oemptyStage { background: #ffffff; }
+:global([data-demo-theme="light"]) .oemptyIcon { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .oaccHead:hover { background: #f1f2f5; }
+:global([data-demo-theme="light"]) .odivDashed { border-top: 1px dashed #d4d7dd; }
+:global([data-demo-theme="light"]) .omenuDivider { background: #e6e9ee; }
+:global([data-demo-theme="light"]) .omenuKbd { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .osnav { background: #ffffff; }
+:global([data-demo-theme="light"]) .osnavFloat { border-color: #d4d7dd; }
+:global([data-demo-theme="light"]) .osnavSubList { border-left: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .otnav { background: #ffffff; }
+:global([data-demo-theme="light"]) .otnavSearch { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .otnavSearch:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .ocmd { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .ocmdSearch { border-bottom: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ocmdEsc { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .ocmdItem:hover, :global([data-demo-theme="light"]) .ocmdActive { background: #eceef2; }
+:global([data-demo-theme="light"]) .ocmdFoot { border-top: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .okbd { background: #eceef2; border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .ofabMini { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .ofabMini:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .ofabMiniLabel { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .otnavFloat { border-color: #d4d7dd; }
+:global([data-demo-theme="light"]) .otnavClient { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .otnavClient:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .otnavMenu { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .otnavMenuHead { border-bottom: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .otnavNotifItem:hover { background: #eceef2; }
+:global([data-demo-theme="light"]) .otnavFlyout { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .otnavMega { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .otnavMegaL1 { border-right: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .otnavMegaRow:hover, :global([data-demo-theme="light"]) .otnavMegaRowOn { background: #eceef2; }
+:global([data-demo-theme="light"]) .otnavMegaItem:hover { background: #eceef2; }
+:global([data-demo-theme="light"]) .otnavDrawerHead { border-bottom: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .otnavDrawerClose:hover { background: #eceef2; }
+:global([data-demo-theme="light"]) .otnavMockPhone { background: #ffffff; }
+:global([data-demo-theme="light"]) .ovClose:hover { background: #eceef2; }
+:global([data-demo-theme="light"]) .ovDivider { background: #eceef2; }
+:global([data-demo-theme="light"]) .omodal { border: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .odrawer { border-left: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .odrawerLeft { border-right: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .odrawer .ovFoot { border-top: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .osheet { border-top: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .osheetGrab { background: #c8ccd3; }
+:global([data-demo-theme="light"]) .opop { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .opopArrow { border-left: 1px solid #d4d7dd; border-top: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .otip { background: #eceff4; border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .otip::after { background: #eceff4; border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .ocal { border: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ocalFoot { border-top: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .otime { border: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .otimeFoot { border-top: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ofilBar { border: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ofilSearch { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .ofilChip { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .ofilChip:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .ofilChipOn { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .ofilViewBtn { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .ofilViewBtn:hover { border-color: #c4c9d0; }
+:global([data-demo-theme="light"]) .ofilPanel { border: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ofilPanelHead { border-bottom: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ofilTabs { border-bottom: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ofilFoot { border-top: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ofilDrawer { border-left: 1px solid #eceef2; }
+:global([data-demo-theme="light"]) .ofilSavedChip { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .ofilSaveInput { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .oiconSearch { border: 1px solid #dadde2; }
+:global([data-demo-theme="light"]) .oiconSkel { background: #eceef2; }
+:global([data-demo-theme="light"]) .oiconTileDark { border: 1px solid #cfd3da; }
+:global([data-demo-theme="light"]) .onClose:hover { background: #eceef2; }
+:global([data-demo-theme="light"]) .onBellBare:hover { background: #eef0f3; }
+:global([data-demo-theme="light"]) .onBellBareOn { background: #eef0f3; }
+:global([data-demo-theme="light"]) .onCenterRow { border-bottom: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .onCenterRow:hover { background: #eef0f3; }
+:global([data-demo-theme="light"]) .fnLayer { border-bottom: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .fnBpRow { border-bottom: 1px solid #dde0e5; }
+:global([data-demo-theme="light"]) .fnShadowBox { border: 1px solid #d4d7dd; }
+:global([data-demo-theme="light"]) .grsFrame { border: 1px solid #d4d7dd; }
+
+/* ==== auto: white hover overlays -> dark for light ==== */
+:global([data-demo-theme="light"]) .navItem:hover { background: rgba(0,0,0,0.051); }
+:global([data-demo-theme="light"]) .navOn { background: rgba(0,0,0,0.060); }
+:global([data-demo-theme="light"]) .vGhost:hover:not(:disabled) { background: rgba(0,0,0,0.051); }
+:global([data-demo-theme="light"]) .vQuiet:hover:not(:disabled) { background: rgba(0,0,0,0.068); }
+:global([data-demo-theme="light"]) .tokTable tr:hover td { background: rgba(0,0,0,0.040); }
+:global([data-demo-theme="light"]) .claudeOpt:hover { background: rgba(0,0,0,0.060); }
+:global([data-demo-theme="light"]) .otagX:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .obcItem:hover { background: rgba(0,0,0,0.068); }
+:global([data-demo-theme="light"]) .osnavItem:hover { background: rgba(0,0,0,0.051); }
+:global([data-demo-theme="light"]) .osnavOn { background: rgba(0,0,0,0.076); }
+:global([data-demo-theme="light"]) .osnavSubItem:hover { background: rgba(0,0,0,0.051); }
+:global([data-demo-theme="light"]) .otnavSearchClear:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .otnavIconBtn:hover { background: rgba(0,0,0,0.068); }
+:global([data-demo-theme="light"]) .otnavHamburger:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .ocalNav:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .ocalTitle:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .ocalDay:hover:not(:disabled) { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .ocalCell:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .dateClearBtn:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .otimeOpt:hover .otimeVal { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .otimePeriodBtn:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .ofilChipClear:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .ofilAll:hover { background: rgba(0,0,0,0.068); }
+:global([data-demo-theme="light"]) .ofilSectionHead:hover { background: rgba(0,0,0,0.040); }
+:global([data-demo-theme="light"]) .ofilDropOption:hover { background: rgba(0,0,0,0.085); }
+:global([data-demo-theme="light"]) .ofilSavedX:hover { background: rgba(0,0,0,0.085); }
+
+/* light: raw near-white TITLE/name text (not caught by the neutral-var flip) -> dark */
+:global([data-demo-theme="light"]) .stats b { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .anaName { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .coTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .ochoiceTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .opinCell { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .olistTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .oemptyTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .oaccHead { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .oaccOpen > .oaccHead { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .otnavMenuName { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .opopTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .ofilSectionHead { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .ogridStatValue { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .oillEmptyTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .onTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .onCenterTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .onCenterUnread .onCenterRowTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .fnCardTitle { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .fnLayerText b { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .fnBpName { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .fnRampName b { color: var(--color-ink-text-1); }
+:global([data-demo-theme="light"]) .fnThemeTitle { color: var(--color-ink-text-1); }
+
+/* light: the active segmented "chip" (SIZE/MODE etc.) is white-on-#f4f4f5 =
+   invisible on light; give it the inverted dark-chip treatment like the tabs */
+:global([data-demo-theme="light"]) .configChipOn { background: #17181d; color: #fff; border-color: #17181d; }
+:global([data-demo-theme="light"]) .configChipOn:hover { color: #fff; }
+
+/* light: brand is vibrant ember for backgrounds, but orange TEXT on a white
+   surface needs a darker ember (#c25d00 ~ 4.6:1) to stay readable */
+:global([data-demo-theme="light"]) .stReady,
+:global([data-demo-theme="light"]) .scaffoldTag i,
+:global([data-demo-theme="light"]) .resChip i,
+:global([data-demo-theme="light"]) .behOut b,
+:global([data-demo-theme="light"]) .configCode b,
+:global([data-demo-theme="light"]) .otStatusOn,
+:global([data-demo-theme="light"]) .oiconCopied,
+:global([data-demo-theme="light"]) .fnCardNum { color: #c25d00; }
