@@ -279,16 +279,18 @@ function SlateTower({ x, z, h = 34 }: { x: number; z: number; h?: number }) {
 
 /* ── park ─────────────────────────────────────────────────────── */
 function Park({ x, z }: { x: number; z: number }) {
+  // the park sits on one block: keep it within ~13 so its grass and hedges never
+  // spill onto the surrounding roads (block usable width is ~14, roads start at 7)
   const hedges = useMemo<Obj[]>(() => {
     const o: Obj[] = [];
-    for (let a = -8; a <= 8; a += 2) { o.push({ pos: [x + a, 0.4, z - 8], rotY: 0 }); o.push({ pos: [x + a, 0.4, z + 8], rotY: 0 }); o.push({ pos: [x - 8, 0.4, z + a], rotY: 0 }); o.push({ pos: [x + 8, 0.4, z + a], rotY: 0 }); }
+    for (let a = -6; a <= 6; a += 2) { o.push({ pos: [x + a, 0.4, z - 6], rotY: 0 }); o.push({ pos: [x + a, 0.4, z + 6], rotY: 0 }); o.push({ pos: [x - 6, 0.4, z + a], rotY: 0 }); o.push({ pos: [x + 6, 0.4, z + a], rotY: 0 }); }
     return o;
   }, [x, z]);
   return (
     <group>
-      <mesh position={[x, 0.2, z]} receiveShadow><boxGeometry args={[20, 0.4, 20]} /><meshStandardMaterial color={C.grass} roughness={1} /></mesh>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[x, 0.42, z]}><planeGeometry args={[3, 20]} /><meshStandardMaterial color={C.path} roughness={1} /></mesh>
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[x, 0.42, z]}><planeGeometry args={[20, 3]} /><meshStandardMaterial color={C.path} roughness={1} /></mesh>
+      <mesh position={[x, 0.2, z]} receiveShadow><boxGeometry args={[13, 0.4, 13]} /><meshStandardMaterial color={C.grass} roughness={1} /></mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[x, 0.42, z]}><planeGeometry args={[3, 13]} /><meshStandardMaterial color={C.path} roughness={1} /></mesh>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[x, 0.42, z]}><planeGeometry args={[13, 3]} /><meshStandardMaterial color={C.path} roughness={1} /></mesh>
       {box([3, 0.6, 3], [x, 0.7, z], C.roof)}
       <mesh position={[x, 4, z]} castShadow><boxGeometry args={[1.6, 7, 1.6]} /><meshStandardMaterial color={C.white} roughness={0.85} /></mesh>
       <mesh position={[x, 7.8, z]} castShadow><boxGeometry args={[0.7, 1.2, 0.7]} /><meshStandardMaterial color={C.white} roughness={0.85} /></mesh>
@@ -594,13 +596,13 @@ function City() {
       const e = pick(ROADSX) + (Math.random() < 0.5 ? 4.6 : -4.6);
       return { pos: [e, 0, pick(PLOTSZ) + rand(-5, 5)], rotY: rand(0, 6.28) };
     };
-    const small: Obj[] = Array.from({ length: 3000 }, foot);
-    buildings.forEach((b) => { for (let t = 0; t < 4; t++) small.push({ pos: [b.x + rand(-6, 6), 0, b.z + rand(-6, 6)], rotY: rand(0, 6.28) }); });
-    greens.forEach((g) => { for (let t = 0; t < 9; t++) small.push({ pos: [g.x + rand(-6, 6), 0, g.z + rand(-6, 6)], rotY: rand(0, 6.28) }); });
+    const small: Obj[] = Array.from({ length: 3600 }, foot);
+    buildings.forEach((b) => { for (let t = 0; t < 5; t++) small.push({ pos: [b.x + rand(-6, 6), 0, b.z + rand(-6, 6)], rotY: rand(0, 6.28) }); });
+    greens.forEach((g) => { for (let t = 0; t < 11; t++) small.push({ pos: [g.x + rand(-6, 6), 0, g.z + rand(-6, 6)], rotY: rand(0, 6.28) }); });
     const big: Obj[] = [];
     // keep big trees well inside the park/green plot so their wide canopy never
     // reaches the surrounding roads (plot centre is 10 from each road)
-    for (let k = 0; k < 40; k++) big.push({ pos: [parkX + rand(-5, 5), 0, parkZ + rand(-5, 5)], rotY: rand(0, 6.28) });
+    for (let k = 0; k < 48; k++) big.push({ pos: [parkX + rand(-5, 5), 0, parkZ + rand(-5, 5)], rotY: rand(0, 6.28) });
     greens.forEach((g) => { for (let t = 0; t < 2; t++) big.push({ pos: [g.x + rand(-5, 5), 0, g.z + rand(-5, 5)], rotY: rand(0, 6.28) }); });
     // big trees live in parks and green plots only, never scattered along road edges
     /* rooftop clutter: water tanks + AC units on mid/tall roofs */
