@@ -174,8 +174,8 @@ button { font: inherit; cursor: pointer; }
 
 /* Reveal-on-scroll. Default VISIBLE so content (and colours) always render even
    if JS never runs. The hidden start only applies once JS arms an off-screen section. */
-.reveal { opacity: 1; transform: none; transition: opacity var(--dur-4) var(--ease-out), transform var(--dur-4) var(--ease-out); }
-.reveal-armed:not(.is-visible) { opacity: 0; transform: translateY(18px); }
+.reveal { opacity: 1; transform: none; transition: opacity var(--dur-3) var(--ease-out), transform var(--dur-3) var(--ease-out); }
+.reveal-armed:not(.is-visible) { opacity: 0; transform: translateY(14px); }
 .reveal.is-visible { opacity: 1; transform: none; }
 
 /* ── SITE-WIDE CONTENT UTILITIES (shared across routes) ────────── */

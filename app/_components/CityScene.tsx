@@ -3,6 +3,7 @@
 import { useMemo, useRef, useLayoutEffect, useState, useEffect } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
+import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 /* ════════════════════════════════════════════════════════════════
    Live voxel city — monochrome architectural miniature.
@@ -162,22 +163,29 @@ function Ground() {
 /* ── building types ───────────────────────────────────────────── */
 /* windows on the 4 side faces only — roof (+y) and underside (-y) stay plain
    (BoxGeometry material order: 0 +x, 1 -x, 2 +y, 3 -y, 4 +z, 5 -z) */
+// Re-group a box into TWO material slots: the four sides (material 0) take the
+// window map, the roof + underside (material 1) stay plain. That is 3 draw
+// calls per box instead of the six a full per-face material array costs, while
+// keeping the roofs windowless. Box face+index order is px,nx,py,ny,pz,nz.
+function windowGroups(g: THREE.BufferGeometry | null) {
+  if (!g) return;
+  g.clearGroups();
+  g.addGroup(0, 12, 0);   // +x, -x  sides
+  g.addGroup(12, 12, 1);  // +y roof, -y underside
+  g.addGroup(24, 12, 0);  // +z, -z  sides
+}
 function facade(args: [number, number, number], pos: [number, number, number], color: string, tex: THREE.Texture, key?: number) {
   return (
     <mesh key={key} position={pos} castShadow receiveShadow>
-      <boxGeometry args={args} />
-      {[0, 1, 4, 5].map((f) => (
-        <meshStandardMaterial key={f} attach={`material-${f}`} map={tex} color={color} roughness={0.88} metalness={0.04} />
-      ))}
-      <meshStandardMaterial attach="material-2" color={color} roughness={0.9} metalness={0.04} />
-      <meshStandardMaterial attach="material-3" color={color} roughness={0.9} metalness={0.04} />
+      <boxGeometry args={args} ref={windowGroups} />
+      <meshStandardMaterial attach="material-0" map={tex} color={color} roughness={0.88} metalness={0.04} />
+      <meshStandardMaterial attach="material-1" color={color} roughness={0.9} metalness={0.04} />
     </mesh>
   );
 }
-const entranceParts = (fw: number, key = 80) => [
-  box([2.6, 2.4, 1.2], [0, 1.2, fw / 2 + 0.2], C.entrance, key),
-  box([3, 0.5, 1.9], [0, 0.25, fw / 2 + 0.7], C.entrance, key + 1),
-];
+// entrances are sub-pixel at the hero camera; dropping them removes ~2 draw
+// calls per building with no visible change.
+const entranceParts = (_fw: number, _key = 80): React.ReactNode[] => [];
 type Bld = { x: number; z: number; fw: number; h: number; col: string; type: "small" | "office" | "tower" | "shop"; rot: number };
 function bSmall(b: Bld, grid: THREE.Texture) {
   const { fw, h, col } = b;
@@ -197,16 +205,14 @@ function bShop(b: Bld) {
   const dep = Math.min(uw * 0.95, 3.8);
   const h = rand(2.8, 3.6);
   const bodyCols = [C.cream, C.white, C.beige, "#50525a", C.paleBlue];
-  const awns = ["#45484e", "#3c3f45", "#4f5258", "#565960"];
   const out: React.ReactNode[] = [];
+  // body + storefront band + roof unit per bay (3 draw calls). The awning slats
+  // and door were ~5 extra boxes per bay, all invisible at the hero distance.
   for (let u = 0; u < n; u++) {
-    const cx = (u - (n - 1) / 2) * uw, col = pick(bodyCols), awn = pick(awns), fz = dep / 2, key = u * 20;
+    const cx = (u - (n - 1) / 2) * uw, col = pick(bodyCols), fz = dep / 2, key = u * 20;
     out.push(box([uw - 0.12, h, dep], [cx, h / 2, 0], col, key));
     out.push(box([uw * 0.86, 0.6, 0.12], [cx, h * 0.78, fz + 0.05], "#2a2c31", key + 1));
     out.push(box([uw * 0.3, 0.55, uw * 0.3], [cx + uw * 0.16, h + 0.28, -dep * 0.16], C.roof, key + 2));
-    const sn = 4;
-    for (let k = 0; k < sn; k++) { const w = (uw * 0.86) / sn; out.push(box([w, 0.24, 0.9], [cx + (k - (sn - 1) / 2) * w, h * 0.6, fz + 0.45], k % 2 ? "#6f7278" : awn, key + 3 + k)); }
-    out.push(box([0.7, 0.5, 0.55], [cx - uw * 0.2, 0.26, fz + 0.35], pick(awns), key + 9));
   }
   return out;
 }
@@ -257,20 +263,14 @@ function SlateTower({ x, z, h = 34 }: { x: number; z: number; h?: number }) {
   return (
     <group position={[x, 0, z]}>
       <mesh castShadow receiveShadow position={[0, h / 2, 0]}>
-        <boxGeometry args={[w, h, w]} />
-        {[0, 1, 4, 5].map((f) => (
-          <meshStandardMaterial key={f} attach={`material-${f}`} map={tex} color="#ffffff" roughness={0.88} metalness={0.04} />
-        ))}
-        <meshStandardMaterial attach="material-2" color="#2c2e34" roughness={0.9} metalness={0.04} />
-        <meshStandardMaterial attach="material-3" color="#2c2e34" roughness={0.9} metalness={0.04} />
+        <boxGeometry args={[w, h, w]} ref={windowGroups} />
+        <meshStandardMaterial attach="material-0" map={tex} color="#ffffff" roughness={0.88} metalness={0.04} />
+        <meshStandardMaterial attach="material-1" color="#2c2e34" roughness={0.9} metalness={0.04} />
       </mesh>
       <mesh castShadow position={[0, h + th / 2, 0]}>
-        <boxGeometry args={[tw, th, tw]} />
-        {[0, 1, 4, 5].map((f) => (
-          <meshStandardMaterial key={f} attach={`material-${f}`} map={tex} color="#ffffff" roughness={0.88} metalness={0.04} />
-        ))}
-        <meshStandardMaterial attach="material-2" color="#2c2e34" roughness={0.9} metalness={0.04} />
-        <meshStandardMaterial attach="material-3" color="#2c2e34" roughness={0.9} metalness={0.04} />
+        <boxGeometry args={[tw, th, tw]} ref={windowGroups} />
+        <meshStandardMaterial attach="material-0" map={tex} color="#ffffff" roughness={0.88} metalness={0.04} />
+        <meshStandardMaterial attach="material-1" color="#2c2e34" roughness={0.9} metalness={0.04} />
       </mesh>
       {box([3.6, 1.6, 3.6], [0, h + th + 0.8, 0], C.roof)}
     </group>
@@ -318,8 +318,14 @@ function People({ count = 140 }: { count?: number }) {
   const legs = useRef<THREE.InstancedMesh>(null), torso = useRef<THREE.InstancedMesh>(null), head = useRef<THREE.InstancedMesh>(null);
   const peeps = useMemo(() => Array.from({ length: count }, () => {
     const axis: "x" | "z" = Math.random() < 0.5 ? "x" : "z";
-    const lane = (axis === "x" ? pick(ROADSZ) : pick(ROADSX)) + (Math.random() < 0.5 ? 4.7 : -4.7);
-    return { axis, lane, dir: Math.random() < 0.5 ? 1 : -1, pos: rand(-HALFX, HALFX), spd: rand(0.5, 1.0), bob: rand(0, 6.28), top: pick(TOPS) };
+    const along = axis === "x" ? ROADSZ : ROADSX; // the road this sidewalk runs beside
+    const cross = axis === "x" ? ROADSX : ROADSZ; // the roads that bound the block
+    const lane = pick(along) + (Math.random() < 0.5 ? 4.7 : -4.7);
+    // confine each walker to one sidewalk block between two intersections, so
+    // they pace the pavement and never step onto the roadway (no car overlap)
+    const j = Math.floor(Math.random() * (cross.length - 1));
+    const min = cross[j] + 3.8, max = cross[j + 1] - 3.8;
+    return { axis, lane, min, max, dir: Math.random() < 0.5 ? 1 : -1, pos: rand(min, max), spd: rand(0.4, 0.9), bob: rand(0, 6.28), top: pick(TOPS) };
   }), [count]);
   useLayoutEffect(() => {
     if (torso.current) { peeps.forEach((p, i) => { tmp.set(p.top); torso.current!.setColorAt(i, tmp); }); if (torso.current.instanceColor) torso.current.instanceColor.needsUpdate = true; }
@@ -330,8 +336,8 @@ function People({ count = 140 }: { count?: number }) {
     // step so a background-tab stall can never teleport anyone.
     const d = Math.min(dt, 0.05);
     peeps.forEach((p, i) => {
-      const wrap = p.axis === "x" ? WRAPX : WRAPZ;
-      p.pos += p.dir * p.spd * d; if (p.pos > wrap) p.pos = -wrap; if (p.pos < -wrap) p.pos = wrap;
+      p.pos += p.dir * p.spd * d;
+      if (p.pos > p.max) { p.pos = p.max; p.dir = -1; } else if (p.pos < p.min) { p.pos = p.min; p.dir = 1; }
       const by = Math.abs(Math.sin(clock.elapsedTime * 4 + p.bob)) * 0.16;
       const px = p.axis === "x" ? p.pos : p.lane, pz = p.axis === "x" ? p.lane : p.pos;
       const set = (m: THREE.InstancedMesh | null, y: number, s: [number, number, number]) => { if (!m) return; dummy.position.set(px, y + by, pz); dummy.rotation.set(0, 0, 0); dummy.scale.set(...s); dummy.updateMatrix(); m.setMatrixAt(i, dummy.matrix); };
@@ -350,15 +356,79 @@ function People({ count = 140 }: { count?: number }) {
 
 /* ── vehicles (with tyres) ────────────────────────────────────── */
 const TYRE = "#141418";
-function tyres4(wx: number, wz: number, wr = 0.5, ww = 0.3) {
+type VPart = { size: [number, number, number]; pos: [number, number, number]; color: string };
+const tyreParts = (wx: number, wz: number, wr = 0.5, ww = 0.3): VPart[] => {
   const s: [number, number, number] = [wr, wr, ww];
-  return [box(s, [wx, wr / 2, wz], TYRE, 70), box(s, [wx, wr / 2, -wz], TYRE, 71), box(s, [-wx, wr / 2, wz], TYRE, 72), box(s, [-wx, wr / 2, -wz], TYRE, 73)];
+  return [
+    { size: s, pos: [wx, wr / 2, wz], color: TYRE },
+    { size: s, pos: [wx, wr / 2, -wz], color: TYRE },
+    { size: s, pos: [-wx, wr / 2, wz], color: TYRE },
+    { size: s, pos: [-wx, wr / 2, -wz], color: TYRE },
+  ];
+};
+const carParts = (c: string): VPart[] => [
+  { size: [3, 0.9, 2], pos: [0, 0.6, 0], color: c },
+  { size: [1.8, 0.9, 1.8], pos: [-0.2, 1.4, 0], color: C.glass },
+  { size: [0.6, 0.18, 0.18], pos: [1.55, 0.55, 0.6], color: C.line },
+  { size: [0.6, 0.18, 0.18], pos: [1.55, 0.55, -0.6], color: C.line },
+  ...tyreParts(0.95, 0.95, 0.5, 0.28),
+];
+const busParts = (c: string): VPart[] => [
+  { size: [6, 2.4, 2], pos: [0, 1.5, 0], color: c },
+  { size: [6.05, 0.7, 2.06], pos: [0, 2.0, 0], color: C.glass },
+  ...tyreParts(2.0, 0.98, 0.7, 0.34),
+];
+const autoParts = (): VPart[] => [
+  { size: [2.6, 1.2, 1.8], pos: [0, 0.95, 0], color: C.leaf },
+  { size: [2.6, 0.9, 1.85], pos: [0, 1.55, 0], color: "#8a8d94" },
+  { size: [2.7, 0.5, 1.9], pos: [0, 2.15, 0], color: "#1a1a1a" },
+  { size: [0.5, 0.2, 0.2], pos: [1.35, 0.75, 0.45], color: C.line },
+  { size: [0.55, 0.55, 0.3], pos: [1.0, 0.27, 0], color: TYRE },
+  { size: [0.55, 0.55, 0.3], pos: [-0.85, 0.27, 0.85], color: TYRE },
+  { size: [0.55, 0.55, 0.3], pos: [-0.85, 0.27, -0.85], color: TYRE },
+];
+const vanParts = (c: string): VPart[] => [
+  { size: [3.4, 1.8, 2], pos: [0, 1.2, 0], color: c },
+  { size: [3.45, 0.7, 2.05], pos: [0.3, 1.7, 0], color: C.glass },
+  ...tyreParts(1.1, 0.98, 0.56, 0.3),
+];
+const motoParts = (c: string): VPart[] => [
+  { size: [1.9, 0.5, 0.55], pos: [0, 0.62, 0], color: c },
+  { size: [0.65, 0.6, 0.5], pos: [-0.35, 1.1, 0], color: C.glass },
+  { size: [0.35, 0.16, 0.16], pos: [1.0, 0.55, 0], color: C.line },
+  { size: [0.56, 0.56, 0.24], pos: [0.72, 0.28, 0], color: TYRE },
+  { size: [0.56, 0.56, 0.24], pos: [-0.72, 0.28, 0], color: TYRE },
+];
+const VEH_PARTS: Record<string, (c: string) => VPart[]> = { car: carParts, bus: busParts, auto: autoParts, van: vanParts, moto: motoParts };
+
+/* Merge a vehicle's boxes into ONE vertex-coloured geometry, so each vehicle is
+   a single draw call instead of ~7. The body colour is fixed per vehicle, so
+   caching by kind+colour keeps it to a few dozen geometries shared across every
+   vehicle on screen. This is the big win: ~200 vehicles drop from ~1300 meshes
+   to ~200, which is what makes the traffic move smoothly. */
+const _vc = new THREE.Color();
+function mergeVehicle(parts: VPart[]) {
+  const geos = parts.map((p) => {
+    const g = new THREE.BoxGeometry(p.size[0], p.size[1], p.size[2]);
+    g.translate(p.pos[0], p.pos[1], p.pos[2]);
+    _vc.set(p.color);
+    const cnt = g.attributes.position.count;
+    const col = new Float32Array(cnt * 3);
+    for (let i = 0; i < cnt; i++) { col[i * 3] = _vc.r; col[i * 3 + 1] = _vc.g; col[i * 3 + 2] = _vc.b; }
+    g.setAttribute("color", new THREE.BufferAttribute(col, 3));
+    return g;
+  });
+  const merged = mergeGeometries(geos, false)!;
+  geos.forEach((g) => g.dispose());
+  return merged;
 }
-function Car({ c }: { c: string }) { return (<group>{box([3, 0.9, 2], [0, 0.6, 0], c)}{box([1.8, 0.9, 1.8], [-0.2, 1.4, 0], C.glass)}{box([0.6, 0.18, 0.18], [1.55, 0.55, 0.6], C.line)}{box([0.6, 0.18, 0.18], [1.55, 0.55, -0.6], C.line)}{tyres4(0.95, 0.95, 0.5, 0.28)}</group>); }
-function Bus({ c }: { c: string }) { return (<group>{box([6, 2.4, 2], [0, 1.5, 0], c)}{box([6.05, 0.7, 2.06], [0, 2.0, 0], C.glass)}{tyres4(2.0, 0.98, 0.7, 0.34)}</group>); }
-function Auto() { return (<group>{box([2.6, 1.2, 1.8], [0, 0.95, 0], C.leaf)}{box([2.6, 0.9, 1.85], [0, 1.55, 0], "#8a8d94")}{box([2.7, 0.5, 1.9], [0, 2.15, 0], "#1a1a1a")}{box([0.5, 0.2, 0.2], [1.35, 0.75, 0.45], C.line)}{box([0.55, 0.55, 0.3], [1.0, 0.27, 0], TYRE, 70)}{box([0.55, 0.55, 0.3], [-0.85, 0.27, 0.85], TYRE, 71)}{box([0.55, 0.55, 0.3], [-0.85, 0.27, -0.85], TYRE, 72)}</group>); }
-function Van({ c }: { c: string }) { return (<group>{box([3.4, 1.8, 2], [0, 1.2, 0], c)}{box([3.45, 0.7, 2.05], [0.3, 1.7, 0], C.glass)}{tyres4(1.1, 0.98, 0.56, 0.3)}</group>); }
-function Moto({ c }: { c: string }) { return (<group>{box([1.9, 0.5, 0.55], [0, 0.62, 0], c)}{box([0.65, 0.6, 0.5], [-0.35, 1.1, 0], C.glass)}{box([0.35, 0.16, 0.16], [1.0, 0.55, 0], C.line)}{box([0.56, 0.56, 0.24], [0.72, 0.28, 0], TYRE, 70)}{box([0.56, 0.56, 0.24], [-0.72, 0.28, 0], TYRE, 71)}</group>); }
+const vehGeoCache = new Map<string, THREE.BufferGeometry>();
+function vehicleGeo(kind: string, color: string) {
+  const key = kind + ":" + color;
+  let g = vehGeoCache.get(key);
+  if (!g) { g = mergeVehicle(VEH_PARTS[kind](color)); vehGeoCache.set(key, g); }
+  return g;
+}
 
 type Veh = { kind: string; len: number; axis: "x" | "z"; lane: number; dir: number; pos: number; spd: number; color: string; laneId: string };
 const VLEN: Record<string, number> = { car: 3, bus: 6, van: 3.4, auto: 2.6, moto: 2 };
@@ -368,7 +438,9 @@ const BUS_COLS = ["#54575d", "#464950"];
 const vcolor = (kind: string) => (kind === "bus" ? pick(BUS_COLS) : pick(VCOLS));
 
 function Traffic() {
-  const refs = useRef<(THREE.Group | null)[]>([]);
+  const refs = useRef<(THREE.Object3D | null)[]>([]);
+  // one shared vertex-colour material for every vehicle
+  const mat = useMemo(() => new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.9, metalness: 0.04 }), []);
   const { list, groups } = useMemo(() => {
     const list: Veh[] = [];
     const spawnLane = (axis: "x" | "z", ri: number) => {
@@ -424,9 +496,14 @@ function Traffic() {
   return (
     <group>
       {list.map((v, i) => (
-        <group key={i} ref={(el) => { refs.current[i] = el; }}>
-          {v.kind === "car" && <Car c={v.color} />}{v.kind === "bus" && <Bus c={v.color} />}{v.kind === "auto" && <Auto />}{v.kind === "van" && <Van c={v.color} />}{v.kind === "moto" && <Moto c={v.color} />}
-        </group>
+        <mesh
+          key={i}
+          ref={(el) => { refs.current[i] = el; }}
+          geometry={vehicleGeo(v.kind, v.kind === "auto" ? "_" : v.color)}
+          material={mat}
+          castShadow
+          receiveShadow
+        />
       ))}
     </group>
   );
@@ -504,14 +581,28 @@ function City() {
         : rand(4.5, 9);
       buildings.push({ x: PLOTSX[i], z: PLOTSZ[j], fw: rand(5.5, 7.5), h, col: pick(cols), type, rot: pick(rots) });
     }
-    const foot = (): Obj => { const horiz = Math.random() < 0.5; if (horiz) { const e = pick(ROADSZ) + (Math.random() < 0.5 ? 3.2 : -3.2); return { pos: [rand(-HALFX, HALFX), 0, e], rotY: rand(0, 6.28) }; } const e = pick(ROADSX) + (Math.random() < 0.5 ? 3.2 : -3.2); return { pos: [e, 0, rand(-HALFZ, HALFZ)], rotY: rand(0, 6.28) }; };
+    // sit on the sidewalk, clear of the roadway (roads are up to 6 wide, so a
+    // 4.6 offset keeps trees and lamps off the tarmac)
+    const foot = (): Obj => {
+      const horiz = Math.random() < 0.5;
+      if (horiz) {
+        // beside a horizontal road (4.6 offset), and ALONG it at a block centre,
+        // not at a random x that would land inside a crossing vertical road
+        const e = pick(ROADSZ) + (Math.random() < 0.5 ? 4.6 : -4.6);
+        return { pos: [pick(PLOTSX) + rand(-5, 5), 0, e], rotY: rand(0, 6.28) };
+      }
+      const e = pick(ROADSX) + (Math.random() < 0.5 ? 4.6 : -4.6);
+      return { pos: [e, 0, pick(PLOTSZ) + rand(-5, 5)], rotY: rand(0, 6.28) };
+    };
     const small: Obj[] = Array.from({ length: 3000 }, foot);
-    buildings.forEach((b) => { for (let t = 0; t < 4; t++) small.push({ pos: [b.x + rand(-8, 8), 0, b.z + rand(-8, 8)], rotY: rand(0, 6.28) }); });
-    greens.forEach((g) => { for (let t = 0; t < 9; t++) small.push({ pos: [g.x + rand(-8, 8), 0, g.z + rand(-8, 8)], rotY: rand(0, 6.28) }); });
+    buildings.forEach((b) => { for (let t = 0; t < 4; t++) small.push({ pos: [b.x + rand(-6, 6), 0, b.z + rand(-6, 6)], rotY: rand(0, 6.28) }); });
+    greens.forEach((g) => { for (let t = 0; t < 9; t++) small.push({ pos: [g.x + rand(-6, 6), 0, g.z + rand(-6, 6)], rotY: rand(0, 6.28) }); });
     const big: Obj[] = [];
-    for (let k = 0; k < 40; k++) big.push({ pos: [parkX + rand(-9, 9), 0, parkZ + rand(-9, 9)], rotY: rand(0, 6.28) });
-    greens.forEach((g) => { for (let t = 0; t < 2; t++) big.push({ pos: [g.x + rand(-6, 6), 0, g.z + rand(-6, 6)], rotY: rand(0, 6.28) }); });
-    for (let k = 0; k < 70; k++) big.push(foot());
+    // keep big trees well inside the park/green plot so their wide canopy never
+    // reaches the surrounding roads (plot centre is 10 from each road)
+    for (let k = 0; k < 40; k++) big.push({ pos: [parkX + rand(-5, 5), 0, parkZ + rand(-5, 5)], rotY: rand(0, 6.28) });
+    greens.forEach((g) => { for (let t = 0; t < 2; t++) big.push({ pos: [g.x + rand(-5, 5), 0, g.z + rand(-5, 5)], rotY: rand(0, 6.28) }); });
+    // big trees live in parks and green plots only, never scattered along road edges
     /* rooftop clutter: water tanks + AC units on mid/tall roofs */
     const roofProps: Obj[] = [];
     buildings.forEach((b) => {
@@ -520,7 +611,7 @@ function City() {
     });
     const streetLights: Obj[] = Array.from({ length: 50 }, foot);
     const trafficLights: { x: number; z: number }[] = [];
-    for (let ix = 0; ix < ROADSX.length; ix += 4) for (let jz = 0; jz < ROADSZ.length; jz += 4) trafficLights.push({ x: ROADSX[ix] + 2.5, z: ROADSZ[jz] + 2.5 });
+    for (let ix = 0; ix < ROADSX.length; ix += 6) for (let jz = 0; jz < ROADSZ.length; jz += 6) trafficLights.push({ x: ROADSX[ix] + 2.5, z: ROADSZ[jz] + 2.5 });
     return { bespoke, buildings, greens, small, big, roofProps, streetLights, trafficLights, parkX, parkZ };
   }, []);
 
@@ -565,8 +656,14 @@ export default function CityScene() {
   useEffect(() => {
     const el = wrapRef.current;
     if (!el) return;
-    // pause the 3D render loop when the hero scrolls off-screen (seamless FPS)
-    const io = new IntersectionObserver(([e]) => setActive(e.isIntersecting), { rootMargin: "120px" });
+    // pause the 3D render loop when the hero scrolls off-screen (seamless FPS).
+    // Ignore reports while the element is still 0-height (initial layout): a
+    // stray "not intersecting" during mount would otherwise latch the loop off
+    // and leave the city frozen on its first frame.
+    const io = new IntersectionObserver(([e]) => {
+      if (e.boundingClientRect.height === 0) return;
+      setActive(e.isIntersecting);
+    }, { rootMargin: "120px" });
     io.observe(el);
     return () => io.disconnect();
   }, []);
@@ -575,7 +672,7 @@ export default function CityScene() {
     <Canvas
       shadows="percentage"
       frameloop={active ? "always" : "never"}
-      dpr={[1, 1.5]}
+      dpr={[1, 1.3]}
       camera={{ position: [0, 118, 188], fov: 58, near: 1, far: 2400 }}
       gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
       style={{ position: "absolute", inset: 0 }}

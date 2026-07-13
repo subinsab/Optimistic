@@ -3,6 +3,7 @@ import { Inter, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import SiteNav from "./_components/SiteNav";
 import Footer from "./_components/Footer";
+import PageTransition from "./_components/PageTransition";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -47,7 +48,7 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning>
         <SiteNav />
-        {children}
+        <PageTransition keyBy="segment">{children}</PageTransition>
         <Footer />
       </body>
     </html>

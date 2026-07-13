@@ -79,7 +79,9 @@ export default function WorkflowTimeline() {
           io.disconnect();
         }
       },
-      { rootMargin: "-60px" }
+      // start the draw well before the section scrolls into view, so it is
+      // already settled by the time you reach it instead of animating in late
+      { rootMargin: "300px 0px 300px 0px" }
     );
     if (el) io.observe(el);
     return () => {

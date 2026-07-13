@@ -165,7 +165,7 @@ export default function SandboxStack() {
     // pause the loop when off-screen to keep scrolling FPS seamless
     const vis = new IntersectionObserver(
       ([e]) => { visible = e.isIntersecting; if (visible && !raf && !reduce) raf = requestAnimationFrame(step); },
-      { rootMargin: "150px" }
+      { rootMargin: "350px" }
     );
     vis.observe(canvas);
 

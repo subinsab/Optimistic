@@ -8,6 +8,7 @@ import {
   IcoLanguage,
 } from "./_components/IsoIcons";
 import ShipField from "./_components/ShipField";
+import DeferMount from "./_components/DeferMount";
 import DotField from "./_components/DotField";
 import WorkflowTimeline from "./_components/WorkflowTimeline";
 import SandboxStack from "./_components/SandboxStack";
@@ -75,7 +76,7 @@ export default async function Home() {
         <div className={s.bGrain} aria-hidden="true" />
         <div className={s.bInner}>
           {/* a real like button, quietly running the optimistic update */}
-          <OptimisticHeart hint="click the heart" />
+          <OptimisticHeart />
           <h2 className={s.bHeadline}>
             <ScrollRevealText text="Every interface has a moment of faith. The heart fills in before the server answers. Engineers call it an optimistic update. We named the whole system after it: render the finished thing first, let the proof catch up." />
           </h2>
@@ -124,7 +125,7 @@ export default async function Home() {
           </p>
           <div className={s.dGrid}>
             <article className={`${s.card} ${s.cardShip}`}>
-              <div className={s.cardViz}><ShipField /></div>
+              <div className={s.cardViz}><DeferMount><ShipField /></DeferMount></div>
               <div className={s.cardOverlay}>
                 <div className={s.cardKicker}>Tokens to release</div>
                 <div className={s.cardLabel}>
@@ -138,7 +139,7 @@ export default async function Home() {
             </article>
 
             <article className={`${s.card} ${s.cardWf}`}>
-              <div className={`${s.cardViz} ${s.cardVizPanel}`}><WorkflowTimeline /></div>
+              <div className={`${s.cardViz} ${s.cardVizPanel}`}><DeferMount><WorkflowTimeline /></DeferMount></div>
               <div className={s.cardOverlay}>
                 <div className={s.cardKicker}>Design to code</div>
                 <div className={s.cardLabel}>Pipeline</div>
@@ -150,7 +151,7 @@ export default async function Home() {
             </article>
 
             <article className={`${s.card} ${s.cardSb}`}>
-              <div className={`${s.cardViz} ${s.cardVizPanel}`}><SandboxStack /></div>
+              <div className={`${s.cardViz} ${s.cardVizPanel}`}><DeferMount><SandboxStack /></DeferMount></div>
               <div className={s.cardOverlay}>
                 <div className={s.cardKicker}>Browse and adopt</div>
                 <div className={s.cardLabel}>Library</div>
@@ -257,7 +258,7 @@ export default async function Home() {
       <section className={s.sectionH}>
         <div className={`${s.eGrain} ${s.hGrain}`} aria-hidden="true" />
         <div className={s.hLeft}>
-          <ParticleCloud />
+          <DeferMount><ParticleCloud /></DeferMount>
         </div>
         <div className={s.hRight}>
           <div className={s.eGrain} aria-hidden="true" />
@@ -384,7 +385,7 @@ export default async function Home() {
           <span className={s.eHatch} /> THE OPTIMISTIC DESIGN SYSTEM
         </div>
         <div className={s.kStage}>
-          <DotWordmark />
+          <DeferMount><DotWordmark /></DeferMount>
         </div>
         <p className={s.kCaption}>Build interfaces, optimistically.</p>
       </section>

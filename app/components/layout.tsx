@@ -1,4 +1,5 @@
 import SidebarNav from "./SidebarNav";
+import PageTransition from "../_components/PageTransition";
 import s from "./docs.module.css";
 
 export default function ComponentsLayout({
@@ -13,7 +14,7 @@ export default function ComponentsLayout({
           <SidebarNav />
         </div>
       </aside>
-      <div className={s.content}>{children}</div>
+      <div className={s.content}><PageTransition keyBy="full">{children}</PageTransition></div>
     </div>
   );
 }

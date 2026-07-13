@@ -34,7 +34,9 @@ function useInView<T extends HTMLElement>() {
           io.disconnect();
         }
       },
-      { threshold: 0.35 }
+      // fire before the panel enters view so the counters have finished by the
+      // time you reach it, rather than counting up after a visible delay
+      { rootMargin: "300px 0px 300px 0px", threshold: 0 }
     );
     io.observe(el);
     return () => io.disconnect();
