@@ -13,7 +13,6 @@ import { createPortal } from "react-dom";
 import { Drawer } from "../drawer/drawer";
 import { Tag } from "../tag/tag";
 import { Button } from "../button/button";
-import { Filter } from "../filter/filter";
 import { Checkbox } from "../checkbox/checkbox";
 import { Pagination } from "../pagination/pagination";
 import "./table.css";
@@ -73,7 +72,7 @@ export interface TableProps<T> {
   borderless?: boolean;
   /** Outer corner style. Default "round". */
   corners?: "round" | "square";
-  /** Enables a global filter bar (kit Filter) that collapses overflow to a "+N" drawer. */
+  /** Shows active filters as removable Tag chips in the toolbar, collapsing the overflow to a "+N more" popover. */
   globalFilter?: boolean;
   /** Rows frozen to the top / bottom edges, outside sort, filter and paging.
       Use for a summary or totals row. */
@@ -131,6 +130,7 @@ function advEval(cell: string, op: string, val: string): boolean {
 }
 const EXPAND = "__expand", SELECT = "__select", ROWNUM = "__rownum", DRAG = "__drag";
 const RESIZE_MIN = 64;
+const TAG_CAP = 4; // filter tags shown inline before collapsing the rest into a "+N more" popover
 
 /* ── icons ─────────────────────────────────────────────── */
 const IChevron = ({ open }: { open?: boolean }) => (
@@ -189,6 +189,8 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
   const [colFilter, setColFilter] = React.useState<Record<string, string[]>>({});
   const [openMenu, setOpenMenu] = React.useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = React.useState<HTMLElement | null>(null);
+  const [moreTagsOpen, setMoreTagsOpen] = React.useState(false);
+  const [moreTagsAnchor, setMoreTagsAnchor] = React.useState<HTMLElement | null>(null);
   const [overrides, setOverrides] = React.useState<Record<string, Record<string, string>>>({});
   const [expanded, setExpanded] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
@@ -452,7 +454,9 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
   const leadCols = (rowDraggable ? 1 : 0) + (renderDetail ? 1 : 0) + (selectable ? 1 : 0) + (rowNumbers ? 1 : 0);
   const trailCols = editable ? 1 : 0;
   const spanAll = visCols.length + leadCols + trailCols;
-  const activeFilterTags = filterTags ? [
+  // removable filter chips shown in the toolbar, for both the filterTags and the
+  // globalFilter modes; rendered with the Tag component below.
+  const activeFilterTags = (filterTags || globalFilter) ? [
     ...Object.entries(colFilter).flatMap(([k, vals]) => vals.map((v) => ({ kind: "col" as const, k, v }))),
     ...Object.keys(rangeFilter).map((k) => ({ kind: "range" as const, k, v: "" })),
   ] : [];
@@ -462,16 +466,6 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
   const advColLabel = (key: string) => { const c = columns.find((x) => x.key === key); return c && typeof c.header === "string" ? c.header : key; };
   const advOpLabel = (op: string) => ADV_OPS.find((o) => o.v === op)?.label ?? op;
   const addAdvRule = () => setAdvRules((r) => [...r, { id: `r${ruleSeq.current++}`, col: columns[0]?.key ?? "", op: "contains", val: "" }]);
-  const gfChips = globalFilter ? [
-    ...Object.entries(colFilter).flatMap(([k, vals]) => vals.map((v) => ({ value: `c|${k}|${v}`, label: `${advColLabel(k)}: ${v}` }))),
-    ...Object.entries(rangeFilter).map(([k, rg]) => ({ value: `r|${k}`, label: `${advColLabel(k)}: ${rg.min}–${rg.max}` })),
-  ] : [];
-  const gfRemove = (value: string) => {
-    const i = value.indexOf("|"); const kind = value.slice(0, i); const rest = value.slice(i + 1);
-    if (kind === "c") { const j = rest.indexOf("|"); toggleFilterVal(rest.slice(0, j), rest.slice(j + 1)); }
-    else setRangeFilter((f) => { const n = { ...f }; delete n[rest]; return n; });
-  };
-  const gfClear = () => { setColFilter({}); setRangeFilter({}); setPage(0); };
   const sized = anyPinned || resizable || Object.keys(colW).length > 0;
   const rootCls = ["o-tbl", `o-tbl--${density}`, `o-tbl--${appearance}`, borderless ? "o-tbl--bare" : "", corners === "square" ? "o-tbl--square" : "", anyPinned ? "o-tbl--pinned" : "", sized ? "o-tbl--sized" : "", columnHover ? "o-tbl--colhover" : ""].filter(Boolean).join(" ");
 
@@ -590,14 +584,44 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
                 <IWarn /> {errorRowIds.size} need attention
               </button>
             )}
-            {globalFilter && gfChips.length > 0 && (
-              <Filter chips={gfChips} onRemove={gfRemove} onClear={gfClear} />
-            )}
-            {activeFilterTags.map((t) => (
-              <Tag key={`${t.kind}-${t.k}-${t.v}`} onRemove={() => (t.kind === "col" ? toggleFilterVal(t.k, t.v) : setRangeFilter((f) => { const n = { ...f }; delete n[t.k]; return n; }))}>
-                {advColLabel(t.k)}: {t.kind === "col" ? t.v : `${rangeFilter[t.k].min}–${rangeFilter[t.k].max}`}
-              </Tag>
-            ))}
+            {(() => {
+              const tagLabel = (t: typeof activeFilterTags[number]) => `${advColLabel(t.k)}: ${t.kind === "col" ? t.v : `${rangeFilter[t.k].min}–${rangeFilter[t.k].max}`}`;
+              const tagRemove = (t: typeof activeFilterTags[number]) => () => (t.kind === "col" ? toggleFilterVal(t.k, t.v) : setRangeFilter((f) => { const n = { ...f }; delete n[t.k]; return n; }));
+              // in globalFilter mode the toolbar is busy (title, search, actions), so collapse
+              // every filter into a single "+N filters" chip; otherwise show up to TAG_CAP inline.
+              const cap = globalFilter ? 0 : TAG_CAP;
+              const shown = activeFilterTags.slice(0, cap);
+              const rest = activeFilterTags.slice(cap);
+              const restLabel = shown.length === 0
+                ? `${rest.length} ${rest.length === 1 ? "filter" : "filters"}`
+                : `+${rest.length} more ${rest.length === 1 ? "filter" : "filters"}`;
+              return (<>
+                {shown.map((t) => (
+                  <Tag key={`${t.kind}-${t.k}-${t.v}`} className="o-tbl__ftag" title={tagLabel(t)} onRemove={tagRemove(t)}>{tagLabel(t)}</Tag>
+                ))}
+                {rest.length > 0 && (
+                  <span className="o-tbl__filter">
+                    <button type="button" className={`o-tbl__moretags${shown.length === 0 ? " o-tbl__moretags--solo" : ""}${moreTagsOpen ? " is-on" : ""}`} aria-expanded={moreTagsOpen}
+                      onClick={(e) => { const el = e.currentTarget; setMoreTagsOpen((o) => !o); setMoreTagsAnchor(el); }}>
+                      {shown.length === 0 && <IFunnel on />}{restLabel}
+                    </button>
+                    {moreTagsOpen && (
+                      <FloatPopover anchor={moreTagsAnchor} container={rootRef.current} onClose={() => setMoreTagsOpen(false)}>
+                        <div className="o-tbl__menu-hd">
+                          <span>{activeFilterTags.length} filters</span>
+                          <button type="button" onClick={() => { setColFilter({}); setRangeFilter({}); setPage(0); setMoreTagsOpen(false); }}>Clear all</button>
+                        </div>
+                        <div className="o-tbl__morelist">
+                          {rest.map((t) => (
+                            <Tag key={`${t.kind}-${t.k}-${t.v}`} onRemove={tagRemove(t)}>{tagLabel(t)}</Tag>
+                          ))}
+                        </div>
+                      </FloatPopover>
+                    )}
+                  </span>
+                )}
+              </>);
+            })()}
           </div>
           <div className="o-tbl__bar-r">
             {searchable && (
@@ -755,7 +779,7 @@ export function Table<T extends Record<string, React.ReactNode>>(props: TablePro
                           <span className="o-tbl__filter">
                             <button type="button" className={`o-tbl__ico${filterOn ? " is-on" : ""}`} aria-label={`Filter ${typeof c.header === "string" ? c.header : c.key}`} aria-expanded={openMenu === c.key} onClick={(e) => { const t = e.currentTarget; setOpenMenu((m) => (m === c.key ? null : c.key)); setMenuAnchor(t); }}>
                               <IFunnel on={filterOn} />
-                              {filterOn && <span className="o-tbl__icobadge">{colFilter[c.key].length}</span>}
+                              {filterOn && !filterTags && <span className="o-tbl__icobadge">{colFilter[c.key].length}</span>}
                             </button>
                             {openMenu === c.key && (
                               <FloatPopover anchor={menuAnchor} container={rootRef.current} onClose={() => setOpenMenu(null)}>
