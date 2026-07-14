@@ -1,5 +1,9 @@
 .page {
-  animation: pageIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+  /* `backwards` (not `both`): a retained transform keyframe — even resolving to
+     `none` — keeps this element a containing block for position:fixed descendants,
+     which mispositions portaled drawers and menus. Settling to a true
+     `transform: none` at rest avoids that while keeping the same entrance. */
+  animation: pageIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 }
 
 @keyframes pageIn {
