@@ -6,6 +6,15 @@
 /* toolbar */
 .o-tbl__bar { display: flex; align-items: center; gap: var(--space-3); justify-content: space-between; padding: var(--space-3) var(--space-4); border-bottom: 1px solid var(--border); }
 .o-tbl__bar-l, .o-tbl__bar-r { display: flex; align-items: center; gap: var(--space-3); }
+.o-tbl__bar-l { min-width: 0; flex-wrap: nowrap; }
+.o-tbl__moretags { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; flex: none; background: none; color: var(--text-secondary); border: 1px dashed var(--border-strong); border-radius: var(--radius-6); font-family: var(--font-sans); font-size: 0.78rem; white-space: nowrap; cursor: pointer; transition: color .15s, border-color .15s, background .15s; }
+.o-tbl__moretags:hover, .o-tbl__moretags.is-on { color: var(--text); border-color: var(--text-muted); background: var(--surface-chip); }
+.o-tbl__moretags svg { flex: none; }
+.o-tbl__moretags--solo { border-style: solid; }
+.o-tbl__moretags--solo svg { color: var(--accent); }
+.o-tbl__ftag { flex: 0 1 auto; min-width: 4ch; max-width: 210px; }
+.o-tbl__morelist { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-2); max-height: 264px; overflow-y: auto; margin-top: var(--space-2); }
+.o-tbl__morelist .o-tag { max-width: 100%; }
 .o-tbl__title { font-size: 0.92rem; font-weight: 600; color: var(--text); }
 .o-tbl__errchip { display: inline-flex; align-items: center; gap: 6px; font: inherit; font-size: 0.75rem; font-weight: 500; padding: 3px 9px; border-radius: var(--radius-full); color: var(--warning-text); background: var(--warning-surface); border: 1px solid var(--warning-border); cursor: pointer; }
 .o-tbl__errchip:hover { border-color: var(--warning-text); }
@@ -344,7 +353,7 @@
 
 /* ── filter count badge (funnel) ─────────────────────────── */
 .o-tbl__ico { position: relative; }
-.o-tbl__icobadge { position: absolute; top: -5px; right: -5px; min-width: 14px; height: 14px; padding: 0 3px; box-sizing: border-box; border-radius: var(--radius-full); background: var(--accent); color: var(--on-accent); font-family: var(--font-mono); font-size: 0.55rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.o-tbl__icobadge { position: absolute; top: -6px; right: -6px; min-width: 15px; height: 15px; padding: 0 3px; box-sizing: border-box; border-radius: var(--radius-full); background: var(--accent); color: var(--on-accent); font-family: var(--font-mono); font-size: 0.56rem; font-weight: 700; line-height: 1; display: inline-flex; align-items: center; justify-content: center; box-shadow: 0 0 0 1.5px var(--surface-raised); }
 
 /* ── global filter bar ───────────────────────────────────── */
 .o-tbl__gf { display: flex; align-items: center; gap: 10px; padding: 8px var(--space-4); border-bottom: 1px solid var(--border); background: var(--surface); }
