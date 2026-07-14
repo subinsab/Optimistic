@@ -4,6 +4,7 @@ import "./globals.css";
 import SiteNav from "./_components/SiteNav";
 import Footer from "./_components/Footer";
 import PageTransition from "./_components/PageTransition";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -50,6 +51,7 @@ export default function RootLayout({
         <SiteNav />
         <PageTransition keyBy="segment">{children}</PageTransition>
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
