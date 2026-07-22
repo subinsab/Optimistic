@@ -57,6 +57,15 @@ export default async function Home() {
               at home in every stack, fluent in AI.
             </p>
           </Reveal>
+          <Reveal delay={300}>
+            <div className={s.cityTags}>
+              <span>Free</span>
+              <i className={s.cityTagDot} aria-hidden="true" />
+              <span>Open source</span>
+              <i className={s.cityTagDot} aria-hidden="true" />
+              <span>MIT license</span>
+            </div>
+          </Reveal>
         </div>
 
         {/* bottom status bar */}
