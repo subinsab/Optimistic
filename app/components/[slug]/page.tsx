@@ -107,10 +107,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const entry = findEntry(slug);
-  if (!entry) return { title: "Components — Optimistic" };
+  if (!entry) return { title: "Components" };
+  const url = `/components/${entry.slug}`;
   return {
-    title: `${entry.title} — Optimistic`,
+    title: entry.title,
     description: entry.desc,
+    alternates: { canonical: url },
+    openGraph: { type: "website", url, title: `${entry.title} · Optimistic`, description: entry.desc },
+    twitter: { title: `${entry.title} · Optimistic`, description: entry.desc },
   };
 }
 

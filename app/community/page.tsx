@@ -4,10 +4,12 @@ import OptimisticHeart from "../_components/OptimisticHeart";
 import CtaButton from "../_components/CtaButton";
 import s from "./community.module.css";
 
+const DESC = "Optimistic is built in the open. Propose components, contribute code, improve the docs, and land your first contribution within the hour.";
 export const metadata: Metadata = {
-  title: "Community · Optimistic",
-  description:
-    "Optimistic is built in the open. Propose components, contribute code, improve the docs, and land your first contribution within the hour.",
+  title: "Community",
+  description: DESC,
+  alternates: { canonical: "/community" },
+  openGraph: { type: "website", url: "/community", title: "Community · Optimistic", description: DESC },
 };
 
 /* pixel-family glyphs (8px grid, same family as the logo O) */

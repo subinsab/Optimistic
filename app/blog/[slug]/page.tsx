@@ -16,10 +16,22 @@ export async function generateMetadata(
 ): Promise<Metadata> {
   const { slug } = await props.params;
   const article = await getArticleBySlug(slug);
-  if (!article) return { title: "Article not found · Optimistic" };
+  if (!article) return { title: "Article not found" };
+  const url = `/blog/${article.slug}`;
   return {
-    title: `${article.title} · Optimistic`,
+    title: article.title,
     description: article.excerpt,
+    alternates: { canonical: url },
+    openGraph: {
+      type: "article",
+      url,
+      title: `${article.title} · Optimistic`,
+      description: article.excerpt,
+      publishedTime: article.publishedDate,
+      authors: ["Subin C S"],
+      section: article.category,
+    },
+    twitter: { title: `${article.title} · Optimistic`, description: article.excerpt },
   };
 }
 
@@ -35,8 +47,32 @@ export default async function ArticlePage(props: PageProps<"/blog/[slug]">) {
     ...rest.filter((a) => a.category !== article.category),
   ].slice(0, 3);
 
+  const SITE = "https://design.theoptimisticdesigner.com";
+  const articleLd = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: article.title,
+    description: article.excerpt,
+    datePublished: article.publishedDate,
+    dateModified: article.publishedDate,
+    author: { "@type": "Person", name: "Subin C S", url: SITE },
+    publisher: {
+      "@type": "Organization",
+      name: "Optimistic",
+      logo: { "@type": "ImageObject", url: `${SITE}/brand/optimistic-mark.svg` },
+    },
+    mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE}/blog/${article.slug}` },
+    articleSection: article.category,
+    image: `${SITE}/opengraph-image.png`,
+    inLanguage: "en",
+  };
+
   return (
     <main className={s.main}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
+      />
       <div className={s.grain} aria-hidden="true" />
       <div className={s.inner}>
         <Link className={s.backLink} href="/blog">

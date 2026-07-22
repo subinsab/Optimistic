@@ -3,10 +3,12 @@ import Reveal from "../_components/Reveal";
 import ContactForm from "./ContactForm";
 import s from "./contact.module.css";
 
+const DESC = "Adopting the system, proposing a partnership, or just curious? Two minutes here starts the conversation.";
 export const metadata: Metadata = {
-  title: "Let's talk — Optimistic",
-  description:
-    "Adopting the system, proposing a partnership, or just curious? Two minutes here starts the conversation.",
+  title: "Let's talk",
+  description: DESC,
+  alternates: { canonical: "/contact" },
+  openGraph: { type: "website", url: "/contact", title: "Let's talk · Optimistic", description: DESC },
 };
 
 /* pixel-family glyphs for the channels */

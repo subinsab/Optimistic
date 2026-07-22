@@ -4,10 +4,12 @@ import OptimisticHeart from "../_components/OptimisticHeart";
 import CtaButton from "../_components/CtaButton";
 import s from "./philosophy.module.css";
 
+const DESC = "What the name Optimistic means, the optimistic-update method inside it, and the five tenets every token answers to.";
 export const metadata: Metadata = {
-  title: "Philosophy — Optimistic",
-  description:
-    "What the name Optimistic means, the optimistic-update method inside it, and the five tenets every token answers to.",
+  title: "Philosophy",
+  description: DESC,
+  alternates: { canonical: "/philosophy" },
+  openGraph: { type: "website", url: "/philosophy", title: "Philosophy · Optimistic", description: DESC },
 };
 
 /* pixel-family glyphs (same 8px grid as the logo O and the heart) */

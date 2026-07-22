@@ -1,0 +1,1 @@
+Optimistic design system. Build interfaces, optimistically. A dark-first, token-driven, AI-friendly design system with 57 components for React and Angular.

@@ -4,10 +4,12 @@ import { getPublishedArticles } from "../_data/articles";
 import CoverArt, { fmtDate } from "../_components/CoverArt";
 import s from "./blog.module.css";
 
+const DESC = "Design system insights and engineering: token architecture, Figma Variables, component governance, accessibility, and scaling stories from real product teams.";
 export const metadata: Metadata = {
-  title: "Blog · Optimistic",
-  description:
-    "Design system insights and engineering: token architecture, Figma Variables, component governance, accessibility, and scaling stories from real product teams.",
+  title: "Blog",
+  description: DESC,
+  alternates: { canonical: "/blog" },
+  openGraph: { type: "website", url: "/blog", title: "Blog · Optimistic", description: DESC },
 };
 
 export default async function BlogPage() {

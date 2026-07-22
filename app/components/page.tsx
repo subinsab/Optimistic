@@ -4,10 +4,21 @@ import Reveal from "../_components/Reveal";
 import { GROUPS } from "./_data/registry";
 import s from "./docs.module.css";
 
+const DESC = "A free, open-source component library: 8 foundations, 54 components and 2 layouts, each documented with anatomy, design tokens, and production code for React and Angular.";
 export const metadata: Metadata = {
-  title: "Components — Optimistic",
-  description:
-    "The Optimistic component library: 8 foundations, 54 components and 2 layouts, each documented with anatomy, tokens and production code.",
+  title: "Components",
+  description: DESC,
+  keywords: [
+    "free component library",
+    "open source React components",
+    "open source component library",
+    "Angular component library",
+    "headless UI components",
+    "UI component library",
+    "design tokens",
+  ],
+  alternates: { canonical: "/components" },
+  openGraph: { type: "website", url: "/components", title: "Free open-source component library · Optimistic", description: DESC },
 };
 
 export default function ComponentsIndex() {
