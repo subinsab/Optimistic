@@ -214,7 +214,7 @@ export default function CommunityPage() {
               along.
             </p>
             <div className={s.ctaRow}>
-              <CtaButton href="https://discord.gg/Y29N3Wjf6" external>Join the Discord</CtaButton>
+              <CtaButton href="https://discord.gg/CvUbc8TZQ" external>Join the Discord</CtaButton>
               <a className={s.quietLink} href="https://github.com/subinsab/Optimistic" target="_blank" rel="noopener noreferrer">
                 Or star it on GitHub <span aria-hidden="true">→</span>
               </a>
